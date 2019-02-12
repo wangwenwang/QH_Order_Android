@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.android.percent.support.PercentRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_customer_check_inventory"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:fitsSystemWindows="true">
+
+    <View
+        android:id="@+id/topview"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/title_background" />
+
+    <com.zhy.android.percent.support.PercentRelativeLayout
+        android:id="@+id/percentRL_title"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/title_background"
+        app:layout_heightPercent="@string/title_height"
+        app:layout_widthPercent="@string/title_width">
+
+        <TextView
+            android:id="@+id/textView_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="生动化陈列"
+            android:textColor="@color/text_title_color"
+            android:textSize="@dimen/title_size"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/button_goback"
+            android:layout_width="38dp"
+            android:layout_height="match_parent"
+            android:paddingBottom="@dimen/title_imageview_paddingbottom"
+            android:paddingLeft="@dimen/title_imageview_paddingleft"
+            android:paddingRight="@dimen/title_imageview_paddingright"
+            android:paddingTop="@dimen/title_imageview_paddingtop"
+            android:src="@drawable/back" />
+    </com.zhy.android.percent.support.PercentRelativeLayout>
+
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/percentRL_title"
+        android:background="@null"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/llMeetingDisplay"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/gray_holo_light"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_marginLeft="10dp"
+                android:gravity="center_vertical"
+                android:textSize="16sp"
+                android:text="生动化陈列:" />
+
+            <TextView
+                android:id="@+id/strVividDisplayCbx"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:gravity="center|center_horizontal|center_vertical" />
+
+            <ImageView
+                android:layout_width="50px"
+                android:layout_height="50px"
+                android:layout_marginRight="10dp"
+                android:scaleType="fitEnd"
+                android:src="@drawable/more_max" />
+        </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="30dp"
+            android:overScrollMode="never" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:text="备注:"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/display_mark"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/lm_visit_edit_text"
+                android:gravity="start"
+                android:hint="请输入备注/选填"
+                android:lines="5"
+                android:paddingLeft="8dp"
+                android:paddingTop="8dp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <com.zhy.android.percent.support.PercentFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="@dimen/visit_button_height"
+            android:layout_gravity="bottom|center"
+            android:layout_marginBottom="@dimen/visit_button_marginbottom"
+            android:background="@drawable/lm_visit_button"
+            android:onClick="confirmOnclick"
+            android:text="确认"
+            android:textColor="@color/white"
+            android:textSize="@dimen/visit_button_size"
+            app:layout_widthPercent="41%w" />
+    </com.zhy.android.percent.support.PercentFrameLayout>
+
+</com.zhy.android.percent.support.PercentRelativeLayout>
