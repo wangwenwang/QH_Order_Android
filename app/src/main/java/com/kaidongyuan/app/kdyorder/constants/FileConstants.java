@@ -14,7 +14,7 @@ public class FileConstants {
     /**
      * 版本更新是下载新版本 app 安装包的文件名
      */
-    public static final String DOWN_NEWVERSION_APP_FILE_NAME = "kdyorder.apk";
+    public static final String DOWN_NEWVERSION_APP_FILE_NAME = "qhorder.apk";
 
     /**
      * 下载新版本 app 安装包在手机的路径

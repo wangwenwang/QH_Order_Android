@@ -76,7 +76,7 @@ public class CheckAppVersionBiz {
                     netDownUrl = obj.getString("DownLoadAddress");
                     startIndex = netDownUrl.indexOf('/')+1;
                     String appName = netDownUrl.substring(startIndex, netDownUrl.length());
-                    if ("kdyorder.apk".equals(appName)){
+                    if ("qhorder.apk".equals(appName)){
                         version = obj.getString("VersionCode");
                         mDownUrl = "http://oms.kaidongyuan.com:8888/" + netDownUrl;
                         break;

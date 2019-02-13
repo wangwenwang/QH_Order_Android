@@ -158,6 +158,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     private List<Integer> getImageList(int businessType) {
         List<Integer> imageList = new ArrayList<>();
         try {
+            imageList.add(R.drawable.ad_pic_4);
             imageList.add(R.drawable.ad_pic_0);
             imageList.add(R.drawable.ad_pic_1);
             imageList.add(R.drawable.ad_pic_2);
