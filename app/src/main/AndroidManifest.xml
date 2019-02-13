@@ -638,7 +638,7 @@
 
         <provider
             android:name="com.igexin.download.DownloadProvider"
-            android:authorities="downloads.com.kaidongyuan.app.kdyorder"
+            android:authorities="downloads.com.kaidongyuan.app.qhorder"
             android:exported="true"
             android:process=":pushservice" />
         <!--替换为第三方应用的包名-->
