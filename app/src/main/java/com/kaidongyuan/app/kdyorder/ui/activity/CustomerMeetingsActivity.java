@@ -352,7 +352,10 @@ public class CustomerMeetingsActivity extends BaseActivity implements View.OnCli
      */
     public void getMeetingsDataError(String message) {
         try {
-            ToastUtil.showToastBottom(String.valueOf(message), Toast.LENGTH_SHORT);
+            // 不提示 没有数据 4个字
+            if(!message.equals("没有数据")) {
+                ToastUtil.showToastBottom(String.valueOf(message), Toast.LENGTH_SHORT);
+            }
             handleGetCustomerMeeingsData();
         } catch (Exception e) {
             ExceptionUtil.handlerException(e);
@@ -380,10 +383,24 @@ public class CustomerMeetingsActivity extends BaseActivity implements View.OnCli
             }
             strLine = strLine.equals("") ? customerMeetingLines.get(0).getITEM_NAME() : strLine;
             tvMeetingType.setText(strLine);
-            if (mBiz.reFreshCustomerMeetingDatas()) {
-                showLoadingDialog();
-            }
 
+            if(isHasFirstPartys()) {
+                if (mBiz.reFreshCustomerMeetingDatas()) {
+                    showLoadingDialog();
+                }
+            }
+        }
+    }
+
+    private boolean isHasFirstPartys() {
+
+        if(mBiz.getMeetingFirstPartys() == null) {
+
+            ToastUtil.showToastBottom("未配置供货商，请联系管理员", Toast.LENGTH_SHORT);
+            return false;
+        }else {
+
+            return true;
         }
     }
 
@@ -634,11 +651,7 @@ public class CustomerMeetingsActivity extends BaseActivity implements View.OnCli
                     this.finish();
                     break;
                 case R.id.tv_title_right:
-                    if(tvMeetingFirstParty.getText().equals("")) {
-
-                        ToastUtil.showToastBottom(String.valueOf("供应商不能为空"), Toast.LENGTH_SHORT);
-                    }else {
-
+                    if(isHasFirstPartys()) {
                         Intent intent = new Intent(CustomerMeetingsActivity.this, CustomerCreateActivity.class);
                         intent.putExtra("fatherPartyAddressID", mBiz.getMeetingFirstPartys().get(mCurrentFirstPartyIndex).getADDRESS_IDX());
                         intent.putExtra("fatherPartyAddressName", mBiz.getMeetingFirstPartys().get(mCurrentFirstPartyIndex).getPARTY_NAME());
@@ -674,6 +687,10 @@ public class CustomerMeetingsActivity extends BaseActivity implements View.OnCli
     }
 
     private void visits(int position) {
+
+        if(!isHasFirstPartys()) {
+            return;
+        }
 
         try {
             CustomerMeeting customerM = mBiz.getCustomerMeetingList().get(position);

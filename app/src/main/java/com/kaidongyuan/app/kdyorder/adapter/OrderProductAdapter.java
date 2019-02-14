@@ -2,6 +2,7 @@ package com.kaidongyuan.app.kdyorder.adapter;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
@@ -31,7 +32,7 @@ import java.util.List;
 public class OrderProductAdapter extends BaseExpandableListAdapter implements View.OnClickListener {
 
     private Context mContext;
-    private List<Product> mProducts;
+    public List<Product> mProducts;
     private List<Product> mChoicedProducts;
     /**
      * 回调接口
@@ -259,10 +260,11 @@ public class OrderProductAdapter extends BaseExpandableListAdapter implements Vi
         } else if (v instanceof TextView && mInterfae != null) {
             switch (v.getId()) {
                 case R.id.tv_count:
-                    if (mInputDialog == null) {
-                        showInputDialog();
-                    }
                     mInputCountToIndex = (int) v.getTag();
+//                    if (mInputDialog == null) {
+                        showInputDialog();
+//                    }
+                    Log.d("LM", "下标: " + mInputCountToIndex);
                     mInputDialog.show();
                     break;
             }
@@ -273,9 +275,10 @@ public class OrderProductAdapter extends BaseExpandableListAdapter implements Vi
      * 显示输入 Dialog
      */
     private void showInputDialog() {
-        if (mInputDialog == null) {
-            mInputDialog = new ScanfProductNumberDialog(mContext);
-        }
+//        if (mInputDialog == null) {
+            Product p = mProducts.get(mInputCountToIndex);
+            mInputDialog = new ScanfProductNumberDialog(mContext, p);
+//        }
         mInputDialog.setInterface(new ScanfProductNumberDialog.ScanfProductNumberDialogInterface() {
             @Override
             public void pressConfrimButton(int inputNumber) {

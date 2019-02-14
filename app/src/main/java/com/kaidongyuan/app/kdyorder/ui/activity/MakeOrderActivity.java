@@ -478,7 +478,15 @@ public class MakeOrderActivity extends BaseActivity implements View.OnClickListe
 
                 @Override
                 public void setProductCount(int dataIndex, int giftCount) {
+
+                    Product p = mBiz.getmCurrentProductData().get(dataIndex);
+                if(Tools.hasBASE_RATE(p.getBASE_RATE())) {
+
+                    mBiz.setProductSize(dataIndex, giftCount * (int)p.getBASE_RATE());
+                }else {
+
                     mBiz.setProductSize(dataIndex, giftCount);
+                }
                     notifyDataChange();
                 }
             });

@@ -234,6 +234,11 @@ public class ArrivedStoreActivity extends BaseActivity implements View.OnClickLi
             return;
         }
 
+        if(strAddress == null || strAddress.equals("")) {
+            ToastUtil.showToastBottom("【当前位置】不能为空!", Toast.LENGTH_SHORT);
+            return;
+        }
+
         LocalMedia LM = selectList.get(0);
         Bitmap pictureBitmap1 = BitmapUtil.resizeImage(LM.getPath(), mBitmapWidth);
         Log.d("LM", "进店图片1大小|" + BitmapUtil.getBitmapSize(pictureBitmap1));

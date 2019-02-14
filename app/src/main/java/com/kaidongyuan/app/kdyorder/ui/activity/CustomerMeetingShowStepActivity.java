@@ -336,7 +336,6 @@ public class CustomerMeetingShowStepActivity extends BaseActivity implements Vie
     public void GetPictureByVisitIdxSuccess(String msg, String strStep) {
         try {
             if (mLoadingDialog != null) mLoadingDialog.dismiss();
-            ToastUtil.showToastBottom(msg, Toast.LENGTH_SHORT);
 
             if (strStep.equals("Visit")) {
                 final ArrayList<LocalMedia> selectList = new ArrayList<LocalMedia>();

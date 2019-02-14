@@ -76,8 +76,8 @@ public class CustomerMeetingAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        holder.tv_name.setText(customerMeeting.getCONTACTS());
-        holder.tv_phone.setText(customerMeeting.getCONTACTS_TEL());
+//        holder.tv_name.setText(customerMeeting.getCONTACTS());
+//        holder.tv_phone.setText(customerMeeting.getCONTACTS_TEL());
         holder.tv_time.setText(customerMeeting.getVISIT_DATE());
         holder.tv_customer_name.setText(customerMeeting.getPARTY_NAME());
         switch (customerMeeting.getVISIT_STATES()) {
@@ -106,7 +106,7 @@ public class CustomerMeetingAdapter extends BaseAdapter {
                 holder.tv_time.setVisibility(View.GONE);
                 break;
         }
-        holder.tv_customer_address.setText(customerMeeting.getPARTY_ADDRESS());
+//        holder.tv_customer_address.setText(customerMeeting.getPARTY_ADDRESS());
         holder.tv_read.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

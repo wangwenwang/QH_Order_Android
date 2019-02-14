@@ -7,10 +7,13 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kaidongyuan.app.kdyorder.R;
+import com.kaidongyuan.app.kdyorder.bean.Product;
 import com.kaidongyuan.app.kdyorder.util.ToastUtil;
+import com.kaidongyuan.app.kdyorder.util.Tools;
 
 /**
  * Created by Administrator on 2016/6/1.
@@ -21,11 +24,19 @@ public class ScanfProductNumberDialog extends Dialog implements View.OnClickList
     private Button mButtonCancel;
     private Button mButtonConfirm;
     private EditText mEditTextInputNumber;
+    private TextView mEditTextInputNumberUom;
     private ScanfProductNumberDialogInterface mInterface;
+    private Product produtM;
 
     public ScanfProductNumberDialog(Context context) {
         this(context, R.style.widgetDialog);
     }
+
+    public ScanfProductNumberDialog(Context context, Product p) {
+        this(context, R.style.widgetDialog);
+        produtM = p;
+    }
+
 
     public ScanfProductNumberDialog(Context context, int themeResId) {
         super(context, themeResId);
@@ -44,9 +55,16 @@ public class ScanfProductNumberDialog extends Dialog implements View.OnClickList
         mButtonCancel = (Button) window.findViewById(R.id.button_cancel);
         mButtonConfirm = (Button) window.findViewById(R.id.button_confirm);
         mEditTextInputNumber = (EditText) window.findViewById(R.id.edittext_inputnumber);
+        mEditTextInputNumberUom = (TextView) window.findViewById(R.id.edittext_inputnumber_uom);
         mButtonCancel.setOnClickListener(this);
         mButtonConfirm.setOnClickListener(this);
         mEditTextInputNumber.setOnClickListener(this);
+
+        if(Tools.hasBASE_RATE(produtM.getBASE_RATE())) {
+            mEditTextInputNumberUom.setText(produtM.getPACK_UOM());
+        }else {
+            mEditTextInputNumberUom.setText("");
+        }
     }
 
     @Override

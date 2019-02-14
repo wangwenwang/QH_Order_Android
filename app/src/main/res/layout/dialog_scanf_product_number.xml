@@ -18,18 +18,42 @@
         android:textColor="@color/black"
         android:textSize="@dimen/dialog_title_textsize" />
 
-    <EditText
-        android:id="@+id/edittext_inputnumber"
+
+
+    <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_widthPercent="40%w"
-        android:padding="5dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         android:layout_gravity="center_horizontal"
-        android:inputType="number"
-        android:background="@drawable/rounded_white_box_bg"
-        android:textSize="@dimen/text_size_normal"
-        android:textColor="@color/red"
-        />
+        app:layout_widthPercent="47%w">
+
+        <EditText
+            android:id="@+id/edittext_inputnumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_widthPercent="40%w"
+            android:padding="5dp"
+            android:layout_gravity="center_horizontal"
+            android:inputType="number"
+            android:background="@drawable/rounded_white_box_bg"
+            android:textSize="@dimen/text_size_normal"
+            android:textColor="@color/red"
+            />
+
+        <TextView
+            android:id="@+id/edittext_inputnumber_uom"
+            android:text="fds"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_normal"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="-28dp"
+            android:textColor="@color/black"
+            />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="0dp"

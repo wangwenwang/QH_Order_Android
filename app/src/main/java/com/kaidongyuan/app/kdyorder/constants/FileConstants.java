@@ -19,7 +19,7 @@ public class FileConstants {
     /**
      * 下载新版本 app 安装包在手机的路径
      */
-    public static final String DOWN_NEWVERSION_APP_FILE_PATH = "/downtemp/kdyorder.apk";
+    public static final String DOWN_NEWVERSION_APP_FILE_PATH = "/downtemp/qhorder.apk";
 
     /**
      * 服务端存放电子签名的图片文件夹

@@ -271,7 +271,13 @@ public class CustomerMeetingsActivityBiz {
                 mActivity.getMeetingFirstPartySuccess(meetingFirstPartys);
 
             } else {
-                mActivity.getMeetingLinesError(object.getString("msg"));
+                if(object.getString("msg").equals("没有数据")) {
+
+                    mActivity.getMeetingLinesError("未设置供货商，请联系管理员");
+                }else{
+
+                    mActivity.getMeetingLinesError(object.getString("msg"));
+                }
             }
         } catch (Exception e) {
             ExceptionUtil.handlerException(e);
