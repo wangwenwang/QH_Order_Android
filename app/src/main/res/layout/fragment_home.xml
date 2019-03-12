@@ -213,10 +213,10 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 app:layout_heightPercent="33%h"
-                app:layout_widthPercent="33.34%w">
+                app:layout_widthPercent="100%w">
 
                 <com.zhy.android.percent.support.PercentRelativeLayout
-                    android:id="@+id/percentrl_tms_order_check"
+                    android:id="@+id/percentrl_kpi_track"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -232,7 +232,7 @@
                         app:layout_marginBottomPercent="@string/block_marginBottomPercent"
                         app:layout_marginLeftPercent="@string/block_marginLeftPercent"
                         app:layout_marginRightPercent="@string/block_marginRightPercent"
-                        android:src="@drawable/ic_tms_orderlist"
+                        android:src="@drawable/ic_kpi_tracking"
                         android:scaleType="fitXY"
                         />
                     <TextView
@@ -243,7 +243,83 @@
                         app:layout_heightPercent="@string/block_textview_height"
                         android:layout_alignParentBottom="true"
                         android:gravity="center_horizontal|top"
-                        android:text="物流订单"
+                        android:text="业绩追踪"
+                        android:textSize="@dimen/blockTextSize"
+                        android:textColor="@color/text_color_normal"
+                        />
+                </com.zhy.android.percent.support.PercentRelativeLayout>
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/line_color"/>
+
+                <com.zhy.android.percent.support.PercentRelativeLayout
+                    android:id="@+id/percentrl_order_check"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/block_pressed_background"
+                    >
+                    <ImageView
+                        android:id="@+id/image_tms_order_check"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        app:layout_widthPercent="@string/block_imageview_width"
+                        app:layout_heightPercent="@string/block_imageview_height"
+                        app:layout_marginTopPercent="@string/block_marginTopPercent"
+                        app:layout_marginBottomPercent="@string/block_marginBottomPercent"
+                        app:layout_marginLeftPercent="@string/block_marginLeftPercent"
+                        app:layout_marginRightPercent="@string/block_marginRightPercent"
+                        android:src="@drawable/ic_order_track"
+                        android:scaleType="fitXY"
+                        />
+                    <TextView
+                        android:id="@+id/textview_chart"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        app:layout_widthPercent="@string/block_textview_width"
+                        app:layout_heightPercent="@string/block_textview_height"
+                        android:layout_alignParentBottom="true"
+                        android:gravity="center_horizontal|top"
+                        android:text="订单查询"
+                        android:textSize="@dimen/blockTextSize"
+                        android:textColor="@color/text_color_normal"
+                        />
+                </com.zhy.android.percent.support.PercentRelativeLayout>
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/line_color"/>
+
+                <com.zhy.android.percent.support.PercentRelativeLayout
+                    android:id="@+id/percentrl_customer_man"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/block_pressed_background"
+                    >
+                    <ImageView
+                        android:id="@+id/image_tms_order_check"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        app:layout_widthPercent="@string/block_imageview_width"
+                        app:layout_heightPercent="@string/block_imageview_height"
+                        app:layout_marginTopPercent="@string/block_marginTopPercent"
+                        app:layout_marginBottomPercent="@string/block_marginBottomPercent"
+                        app:layout_marginLeftPercent="@string/block_marginLeftPercent"
+                        app:layout_marginRightPercent="@string/block_marginRightPercent"
+                        android:src="@drawable/ic_customer_man"
+                        android:scaleType="fitXY"
+                        />
+                    <TextView
+                        android:id="@+id/textview_chart"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        app:layout_widthPercent="@string/block_textview_width"
+                        app:layout_heightPercent="@string/block_textview_height"
+                        android:layout_alignParentBottom="true"
+                        android:gravity="center_horizontal|top"
+                        android:text="客户管理"
                         android:textSize="@dimen/blockTextSize"
                         android:textColor="@color/text_color_normal"
                         />
@@ -260,6 +336,7 @@
                 app:layout_widthPercent="33.34%w"
                 android:layout_height="1dp"
                 android:background="@color/line_color" />
+
 
         </com.zhy.android.percent.support.PercentLinearLayout>
 

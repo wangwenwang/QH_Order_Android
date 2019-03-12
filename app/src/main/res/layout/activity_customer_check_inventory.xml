@@ -52,30 +52,97 @@
         android:layout_alignParentStart="true"
         android:layout_below="@+id/percentRL_title"
         android:background="@null"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
-        <TextView
-            android:layout_width="80dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="80dp"
-            android:text="检查库存:"
-            android:textColor="@color/black"
-            android:textSize="16sp" />
 
-        <EditText
-            android:id="@+id/check_mark"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="15dp"
-            android:layout_marginTop="80dp"
-            android:background="@drawable/lm_visit_edit_text"
-            android:gravity="start"
-            android:hint="请检查库存"
-            android:lines="7"
-            android:paddingLeft="8dp"
-            android:paddingTop="8dp" />
+            android:orientation="horizontal">
+            <LinearLayout
+                android:id="@+id/ll_prodct_brand"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="10dp"
+                android:gravity="center"
+                android:background="@color/gray_holo_light">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="品牌:"
+                    android:textSize="@dimen/text_size_normal"
+                    />
+                <TextView
+                    android:id="@+id/tv_brand"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="暂无数据"
+                    android:textSize="@dimen/text_size_normal"
+                    />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/more_black"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/ll_product_type"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginLeft="3dp"
+                android:padding="10dp"
+                android:gravity="center"
+                android:background="@color/gray_holo_light">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="类型:"
+                    android:textSize="@dimen/text_size_normal"
+                    />
+                <TextView
+                    android:id="@+id/tv_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="暂无数据"
+                    android:textSize="@dimen/text_size_normal"
+                    />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/more_black"/>
+            </LinearLayout>
+        </LinearLayout>
+
+
+        <com.kaidongyuan.app.kdyorder.widget.xlistview.XListView
+            android:id="@+id/lv_product_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:minHeight="@dimen/xlistview_minheight"
+            android:cacheColorHint="#00000000"/>
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/gray_holo_light"
+            android:padding="10dp"
+            android:text="已检查库存" />
+
+
+        <com.kaidongyuan.app.kdyorder.widget.xlistview.XListView
+            android:id="@+id/lv_ok_product_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:minHeight="@dimen/xlistview_minheight"
+            android:cacheColorHint="#00000000"/>
+
+
     </LinearLayout>
 
 
@@ -83,7 +150,44 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:orientation="vertical">
+
+
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/percentRL_title"
+            android:layout_gravity="bottom|center"
+            android:layout_marginBottom="70dp"
+            android:background="@null"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="5dp"
+                android:text="备注:"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/check_mark"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/lm_visit_edit_text"
+                android:gravity="start"
+                android:hint="补充说明"
+                android:lines="2"
+                android:paddingLeft="8dp"
+                android:paddingTop="8dp" />
+        </LinearLayout>
 
         <Button
             android:id="@+id/button_confirm"

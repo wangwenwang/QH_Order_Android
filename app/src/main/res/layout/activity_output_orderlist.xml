@@ -28,7 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="出库明细"
+            android:text="入库明细"
             android:textColor="@color/text_title_color"
             android:textStyle="bold"
             android:textSize="@dimen/title_size" />

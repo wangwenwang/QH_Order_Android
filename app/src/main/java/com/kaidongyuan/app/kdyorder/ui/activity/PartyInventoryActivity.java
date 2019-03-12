@@ -281,7 +281,7 @@ public class PartyInventoryActivity extends BaseActivity implements View.OnClick
                     startActivity(intent3);
                     break;
                 case R.id.percentrl_output_product:
-                    //出库
+                    //销售出库
                     Intent intent4=new Intent(this,OutputInventoryActivity.class);
                     intent4.putExtra(EXTRAConstants.ORDER_PARTY_ID,party_id);
                     intent4.putExtra(EXTRAConstants.ORDER_PARTY_NO,party_code);

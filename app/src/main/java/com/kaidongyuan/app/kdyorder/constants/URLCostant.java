@@ -311,6 +311,8 @@ public class URLCostant {
     public static final String GetFirstPartyList=BASE_URL+"GetFirstPartyList";
     // 根据业务代码，获取客户编号
     public static final String ObtainPartyCode=BASE_URL+"ObtainPartyCode";
+    // 获取目标金额目标销量
+    public static final String GetTargetByUserIdx=BASE_URL+"GetTargetByUserIdx";
 }
 
 

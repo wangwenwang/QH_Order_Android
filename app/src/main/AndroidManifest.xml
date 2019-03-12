@@ -560,6 +560,12 @@
             android:launchMode="standard"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
+        <!--业绩追踪-->
+        <activity
+            android:name=".ui.activity.KpiTrackActivity"
+            android:launchMode="standard"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <!--****************************************** 百度地图配置开始 ******************************************-->
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"

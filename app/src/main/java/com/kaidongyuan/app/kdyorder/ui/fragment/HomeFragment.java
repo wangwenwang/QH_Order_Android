@@ -16,6 +16,7 @@ import com.kaidongyuan.app.kdyorder.ui.activity.ChartCheckActivity;
 import com.kaidongyuan.app.kdyorder.ui.activity.CheckTmsOrderListActivity;
 import com.kaidongyuan.app.kdyorder.ui.activity.CustomerMeetingsActivity;
 import com.kaidongyuan.app.kdyorder.ui.activity.InventoryPartyListActivity;
+import com.kaidongyuan.app.kdyorder.ui.activity.KpiTrackActivity;
 import com.kaidongyuan.app.kdyorder.util.ExceptionUtil;
 import com.kaidongyuan.app.kdyorder.util.OrderUtil;
 import com.kaidongyuan.app.kdyorder.widget.CycleViewpager;
@@ -57,9 +58,18 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
      */
     private PercentRelativeLayout mPercentrlChart;
     /**
-     * 跳转到 物流订单
+     * 跳转到 业绩追踪
      */
-    private PercentRelativeLayout mPercentrlTmsOrderCheck;
+    private PercentRelativeLayout mPercentrlKpiTrack;
+    /**
+     * 跳转到 订单查询
+     */
+    private PercentRelativeLayout mPercentrlOrderCheck;
+    /**
+     * 跳转到 客户管理
+     */
+    private PercentRelativeLayout mPercentrlCustomerMan;
+
 
     @Nullable
     @Override
@@ -92,8 +102,10 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
             mMoveButtonMakeOrder = (MoveButton) mParentView.findViewById(R.id.movebutton_makeOrder);
             mPercentrlChart = (PercentRelativeLayout) mParentView.findViewById(R.id.percentrl_chart);
             mPercentrlVisitCustomer = (PercentRelativeLayout) mParentView.findViewById(R.id.percentrl_visit_customer);
-            mPercentrlTmsOrderCheck = (PercentRelativeLayout) mParentView.findViewById(R.id.percentrl_tms_order_check);
-            mPercentrlPartyInventory= (PercentRelativeLayout) mParentView.findViewById(R.id.percentrl_party_inventory);
+            mPercentrlKpiTrack = (PercentRelativeLayout) mParentView.findViewById(R.id.percentrl_kpi_track);
+            mPercentrlPartyInventory = (PercentRelativeLayout) mParentView.findViewById(R.id.percentrl_party_inventory);
+            mPercentrlOrderCheck = (PercentRelativeLayout) mParentView.findViewById(R.id.percentrl_order_check);
+            mPercentrlCustomerMan = (PercentRelativeLayout) mParentView.findViewById(R.id.percentrl_customer_man);
 
         } catch (Exception e) {
             ExceptionUtil.handlerException(e);
@@ -143,7 +155,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
             mPercentrlVisitCustomer.setOnClickListener(this);
             mPercentrlPartyInventory.setOnClickListener(this);
             mPercentrlChart.setOnClickListener(this);
-            mPercentrlTmsOrderCheck.setOnClickListener(this);
+            mPercentrlKpiTrack.setOnClickListener(this);
         } catch (Exception e) {
             ExceptionUtil.handlerException(e);
         }
@@ -159,6 +171,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         List<Integer> imageList = new ArrayList<>();
         try {
             imageList.add(R.drawable.ad_pic_4);
+            imageList.add(R.drawable.ad_pic_5);
             imageList.add(R.drawable.ad_pic_0);
             imageList.add(R.drawable.ad_pic_1);
             imageList.add(R.drawable.ad_pic_2);
@@ -174,25 +187,24 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     public void onClick(View v) {
         try {
             switch (v.getId()) {
-                case R.id.percentrl_visit_customer://跳转到查看报表界面
+                case R.id.percentrl_visit_customer:  // 跳转到 查看报表
                     startActivity(new Intent(this.getActivity(), CustomerMeetingsActivity.class));
                     break;
-                case R.id.percentrl_party_inventory://跳转到库存管理客户选择 Activity
-                    if (OrderUtil.getBusinessType()==BusinessConstants.BUSINESS_TYPE_DIKUI){
-                        Intent partyInventoryIntent=new Intent(this.getActivity(), BusinessInventoryActivity.class);
-                        startActivity(partyInventoryIntent);
-                    }else {
-                        Intent inventoryPartyListIntent=new Intent(this.getActivity(),InventoryPartyListActivity.class);
-                        startActivity(inventoryPartyListIntent);
-                    }
+                case R.id.percentrl_party_inventory: // 跳转到 库存管理
+                    Intent inventoryPartyListIntent=new Intent(this.getActivity(),InventoryPartyListActivity.class);
+                    startActivity(inventoryPartyListIntent);
                     break;
-                case R.id.percentrl_chart://跳转到查看报表界面
+                case R.id.percentrl_chart:           // 跳转到 查看报表
                     Intent chartCheckIntent = new Intent(this.getActivity(), ChartCheckActivity.class);
                     startActivity(chartCheckIntent);
                     break;
-                case R.id.percentrl_tms_order_check://（跳转到货物轨迹界面）20180103 替换成查看物流订单列表
-                    Intent checkTmsIrdersIntent=new Intent(this.getActivity(), CheckTmsOrderListActivity.class);
-                    startActivity(checkTmsIrdersIntent);
+                case R.id.percentrl_kpi_track:       // 跳转到 业绩追踪
+                    Intent kpiTrackIntent = new Intent(this.getActivity(), KpiTrackActivity.class);
+                    startActivity(kpiTrackIntent);
+                    break;
+                case R.id.percentrl_order_check:     // 跳转到 订单查询
+                    break;
+                case R.id.percentrl_customer_man:    // 跳转到 客户管理
                     break;
                 default:
                     break;
