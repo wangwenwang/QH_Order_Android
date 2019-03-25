@@ -164,7 +164,7 @@ public class CustomerMeetingsActivityBiz {
     public boolean GetCustomerMeetingDatas() {
 
         try {
-            StringRequest request = new StringRequest(Request.Method.POST, URLCostant.GetPartyVisitList, new Response.Listener<String>() {
+            StringRequest request = new StringRequest(Request.Method.POST, URLCostant.GetPartyVisitListNew, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
                     Logger.w(CustomerMeetingsActivityBiz.this.getClass() + ".GetPartyVisitList:" + response);

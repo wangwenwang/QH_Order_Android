@@ -4,17 +4,7 @@
     android:layout_height="wrap_content"
     android:clickable="true"
     android:gravity="center_vertical"
-    android:padding="10dp">
-
-    <TextView
-        android:id="@+id/tv_state"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingLeft="10dp"
-        android:text="产品名称："
-        android:textColor="@color/black"
-        android:textSize="@dimen/listview_titletextsize" />
-
+    android:padding="3dp">
     <TextView
         android:id="@+id/tv_product_name"
         android:layout_width="wrap_content"
@@ -36,7 +26,7 @@
             android:layout_height="35dp"
             android:padding="5dp"
             android:scaleType="fitXY"
-            android:src="@drawable/ic_del" />
+            android:src="@drawable/del_cell" />
 
     </LinearLayout>
 

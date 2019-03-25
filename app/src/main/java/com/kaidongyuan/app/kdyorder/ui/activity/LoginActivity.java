@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -42,7 +43,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     /**
      * 登录按钮
      */
-    private Button mBtLogin,mBtRegister;
+    private Button mBtLogin, mBtRegister;
     /**
      * 登录界面业务类
      */
@@ -86,7 +87,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     protected void onDestroy() {
         try {
             super.onDestroy();
-            if (mBusinessDialog!=null && mBusinessDialog.isShowing()) {
+            if (mBusinessDialog != null && mBusinessDialog.isShowing()) {
                 mBusinessDialog.dismiss();
             }
             mBusinessDialog = null;
@@ -94,7 +95,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             mEtUserName = null;
             mEtPassword = null;
             mBtLogin = null;
-            mBtRegister=null;
+            mBtRegister = null;
             mBiz = null;
             mListViewBusiness = null;
             mButtonCancelLogin = null;
@@ -113,15 +114,15 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         }
     }
 
-    private void setTop () {
+    private void setTop() {
         //版本4.4以上设置状态栏透明，界面布满整个界面
-        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.KITKAT) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             Window window = getWindow();
             window.setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             View topView = findViewById(R.id.topview);
             ViewGroup.LayoutParams topParams = topView.getLayoutParams();
-            topParams.height = DensityUtil.getStatusHeight()*16/30;
-            Logger.w("topView.Height:"+DensityUtil.getStatusHeight()*16/30+"");
+            topParams.height = DensityUtil.getStatusHeight() * 16 / 30;
+            Logger.w("topView.Height:" + DensityUtil.getStatusHeight() * 16 / 30 + "");
             topView.setLayoutParams(topParams);
         }
     }
@@ -132,6 +133,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             mEtPassword = (EditText) this.findViewById(R.id.et_pwd);
             mBtLogin = (Button) this.findViewById(R.id.btn_login);
             mBtRegister= (Button) this.findViewById(R.id.btn_register);
+
             //设置上次登录的用户名和密码
             mEtUserName.setText(String.valueOf(mBiz.getUserName()));
             mEtPassword.setText(String.valueOf(mBiz.getPassword()));
@@ -157,7 +159,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     login();
                     break;
                 case R.id.btn_register:
-                    Intent registterIntent=new Intent(LoginActivity.this,RegisterActivity.class);
+                    Intent registterIntent = new Intent(LoginActivity.this, RegisterActivity.class);
                     startActivity(registterIntent);
                     break;
                 case R.id.button_cancelLogin:
@@ -173,6 +175,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
      * 登录
      */
     private void login() {
+
         try {
             String userName = mEtUserName.getText().toString();
             if (TextUtils.isEmpty(userName)) {
@@ -186,7 +189,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             }
             if (mBiz.login(userName, password)) {//发送请求成功
                 mBtLogin.setEnabled(false);
-               // mBtRegister.setEnabled(false);
+                // mBtRegister.setEnabled(false);
                 mBtLogin.setText("登录中...");//发送请求失败
             } else {
                 ToastUtil.showToastBottom(MyApplication.getmRes().getString(R.string.sendrequest_fail), Toast.LENGTH_SHORT);

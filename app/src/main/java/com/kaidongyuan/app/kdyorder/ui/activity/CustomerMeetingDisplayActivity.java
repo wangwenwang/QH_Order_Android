@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -98,6 +99,8 @@ public class CustomerMeetingDisplayActivity extends BaseActivity implements View
     // 备注
     private EditText remark;
 
+    private Button btnConfirm;
+
     private final String mTagDisplay = "mTagDisplay";
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,6 +119,7 @@ public class CustomerMeetingDisplayActivity extends BaseActivity implements View
         strVividDisplayCbx = (TextView) this.findViewById(R.id.strVividDisplayCbx);
         recyclerView = (RecyclerView) findViewById(R.id.recycler);
         remark = (EditText) findViewById(R.id.display_mark);
+        btnConfirm = (Button) this.findViewById(R.id.btn_confirm);
         FullyGridLayoutManager manager = new FullyGridLayoutManager(CustomerMeetingDisplayActivity.this, 4, GridLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(manager);
         adapter = new GridImageAdapter(CustomerMeetingDisplayActivity.this, onAddPicClickListener);
@@ -174,6 +178,26 @@ public class CustomerMeetingDisplayActivity extends BaseActivity implements View
     }
 
     public void confirmOnclick(View view) {
+
+        btnConfirm.setClickable(false);
+
+        new Thread() {
+            public void run() {
+
+                try {
+                    sleep(1 * 1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        btnConfirm.setClickable(true);
+                    }
+                });
+            }
+        }.start();
 
         final CustomerMeeting customerM = (CustomerMeeting) getIntent().getParcelableExtra("CustomerMeeting");
         final String displayCbx = strVividDisplayCbx.getText().toString();

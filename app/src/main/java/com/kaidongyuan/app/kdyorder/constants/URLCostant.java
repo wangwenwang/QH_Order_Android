@@ -280,7 +280,7 @@ public class URLCostant {
     // 客户拜访线路
     public static final String GetPartyVisitLine=BASE_URL+"GetPartyVisitLine";
     // 获取客户拜访列表
-    public static final String GetPartyVisitList=BASE_URL+"GetPartyVisitList";
+    public static final String GetPartyVisitListNew=BASE_URL+"GetPartyVisitListNew";
     // 客户拜访：获取渠道
     public static final String GetPartyVisitChannel=BASE_URL+"GetPartyVisitChannel";
     // 增加地址
@@ -313,6 +313,8 @@ public class URLCostant {
     public static final String ObtainPartyCode=BASE_URL+"ObtainPartyCode";
     // 获取目标金额目标销量
     public static final String GetTargetByUserIdx=BASE_URL+"GetTargetByUserIdx";
+    // 获取拜访历史
+    public static final String GetPartyVisitHistory=BASE_URL+"GetPartyVisitHistory";
 }
 
 

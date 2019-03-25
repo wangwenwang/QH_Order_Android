@@ -158,7 +158,7 @@ public class CustomerMeetingCheckInventoryActivity extends BaseActivity implemen
         }
         int itemCount = listAdapter.getCount();
         LinearLayout.LayoutParams layoutParams = null;
-        layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, itemHeight * 4);
+        layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, itemHeight * 3);
         listView.setLayoutParams(layoutParams);
     }
 
@@ -378,21 +378,21 @@ public class CustomerMeetingCheckInventoryActivity extends BaseActivity implemen
         try {
             mImageViewGoBack = (ImageView) this.findViewById(R.id.button_goback);
 
+            mTextViewCurrentOrderBrand = (TextView) this.findViewById(R.id.tv_brand);
+            mTextViewCurrentOrderType = (TextView) this.findViewById(R.id.tv_type);
+
+            llProdctBrand = (LinearLayout) findViewById(R.id.ll_prodct_brand);
+            llProductType = (LinearLayout) findViewById(R.id.ll_product_type);
+
             mProductAdapter = new CheckInvertoryListAdapter(this, null, null);
             mListViewProduct = (XListView) this.findViewById(R.id.lv_product_list);
             mListViewProduct.setAdapter(mProductAdapter);
             mListViewProduct.setPullRefreshEnable(false);
 
-            mTextViewCurrentOrderBrand = (TextView) this.findViewById(R.id.tv_brand);
-            mTextViewCurrentOrderType = (TextView) this.findViewById(R.id.tv_type);
-
-            mListViewProductOK = (XListView) this.findViewById(R.id.lv_ok_product_list);
             mProductOKAdapter = new CheckInvertoryListOKAdapter(this, null);
+            mListViewProductOK = (XListView) this.findViewById(R.id.lv_ok_product_list);
             mListViewProductOK.setAdapter(mProductOKAdapter);
             mListViewProductOK.setPullRefreshEnable(false);
-
-            llProdctBrand = (LinearLayout) findViewById(R.id.ll_prodct_brand);
-            llProductType = (LinearLayout) findViewById(R.id.ll_product_type);
         } catch (Exception e) {
             ExceptionUtil.handlerException(e);
         }

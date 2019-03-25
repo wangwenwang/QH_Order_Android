@@ -17,4 +17,19 @@ public class Tools {
             return false;
         }
     }
+
+    /**
+     * 拜访状态转义
+     * @param VISIT_STATES 转义前拜访状态
+     * @return 转义后的状态
+     */
+    public static String getVISIT_STATES(String VISIT_STATES) {
+        if(VISIT_STATES.equals("")) {
+            return "未拜访";
+        }else if(VISIT_STATES.equals("离店")) {
+            return "已拜访";
+        }else {
+            return "拜访中";
+        }
+    }
 }

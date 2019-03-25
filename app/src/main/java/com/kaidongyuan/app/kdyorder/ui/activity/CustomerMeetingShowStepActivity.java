@@ -23,6 +23,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.kaidongyuan.app.kdyorder.R;
+import com.kaidongyuan.app.kdyorder.adapter.CheckInvertoryListShowAdapter;
 import com.kaidongyuan.app.kdyorder.adapter.GridImageShowAdapter;
 import com.kaidongyuan.app.kdyorder.adapter.OutputSimpleOrderListAdapter;
 import com.kaidongyuan.app.kdyorder.app.MyApplication;
@@ -39,6 +40,7 @@ import com.kaidongyuan.app.kdyorder.model.CustomerMeetingShowStepActivityBiz;
 import com.kaidongyuan.app.kdyorder.model.CustomerMeetingsActivityBiz;
 import com.kaidongyuan.app.kdyorder.util.ExceptionUtil;
 import com.kaidongyuan.app.kdyorder.util.HttpUtil;
+import com.kaidongyuan.app.kdyorder.util.ListViewUtils;
 import com.kaidongyuan.app.kdyorder.util.NetworkUtil;
 import com.kaidongyuan.app.kdyorder.util.ToastUtil;
 import com.kaidongyuan.app.kdyorder.util.logger.Logger;
@@ -51,6 +53,7 @@ import com.luck.picture.lib.entity.LocalMedia;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -100,6 +103,10 @@ public class CustomerMeetingShowStepActivity extends BaseActivity implements Vie
 
     private Context mContext;
 
+    // 查看检查库存
+    private XListView mCheckInventoryShowListView;
+    private CheckInvertoryListShowAdapter mAdapterCheckInvertoryShow;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer_show_step);
@@ -138,7 +145,7 @@ public class CustomerMeetingShowStepActivity extends BaseActivity implements Vie
         CONTACTS.setText(customerM.getCONTACTS());
         CONTACTS_TEL.setText(customerM.getCONTACTS_TEL());
 
-        CHECK_INVENTORY.setText(customerM.getCHECK_INVENTORY());
+        CHECK_INVENTORY.setText(getCHECK_INVENTORY_remark(customerM.getCHECK_INVENTORY()));
         RECOMMENDED_ORDER.setText(customerM.getRECOMMENDED_ORDER());
         VIVID_DISPLAY_TEXT.setText(customerM.getVIVID_DISPLAY_TEXT());
         VISIT_STATES.setText(customerM.getVISIT_STATES());
@@ -174,6 +181,9 @@ public class CustomerMeetingShowStepActivity extends BaseActivity implements Vie
             this.mOutputOrderListView = (XListView) this.findViewById(R.id.lv_outputorder_list);
             mOutputOrderListView.setPullRefreshEnable(false);
 
+            this.mCheckInventoryShowListView = (XListView) this.findViewById(R.id.list_check_inventory);
+            mCheckInventoryShowListView.setPullRefreshEnable(false);
+
 
             if (customerM.getGRADE().equals("0")) {
 
@@ -197,6 +207,18 @@ public class CustomerMeetingShowStepActivity extends BaseActivity implements Vie
                 ToastUtil.showToastBottom(String.valueOf("未知客户类型，字段GRADE"), Toast.LENGTH_SHORT);
             }
 
+            String remark = customerM.getCHECK_INVENTORY();
+            String[] fd = (remark + " ").split("\\^；");
+            ArrayList list = new ArrayList(Arrays.asList(fd));
+            if (list.size() > 0) {
+                list.remove(list.size() - 1);
+            }
+            list.remove("");
+            // 查看已检查库存
+            this.mAdapterCheckInvertoryShow = new CheckInvertoryListShowAdapter(null, CustomerMeetingShowStepActivity.this);
+            mCheckInventoryShowListView.setAdapter(mAdapterCheckInvertoryShow);
+            mAdapterCheckInvertoryShow.notifyChange(list);
+            ListViewUtils.setListViewHeightBasedOnChildren(mCheckInventoryShowListView);
         } catch (Exception e) {
             ExceptionUtil.handlerException(e);
         }
@@ -413,7 +435,7 @@ public class CustomerMeetingShowStepActivity extends BaseActivity implements Vie
     public void requestError(String msg) {
         try {
             if (mLoadingDialog != null) mLoadingDialog.dismiss();
-            ToastUtil.showToastBottom(msg, Toast.LENGTH_SHORT);
+//            ToastUtil.showToastBottom(msg, Toast.LENGTH_SHORT);
         } catch (Exception e) {
             ExceptionUtil.handlerException(e);
         }
@@ -456,7 +478,7 @@ public class CustomerMeetingShowStepActivity extends BaseActivity implements Vie
             }
         }
         //『经销商』对『门店』的出库单
-        else{
+        else {
             try {
                 Intent outputOrderDetailIntent = new Intent(this, OutPutOrderDetailActivity.class);
                 outputOrderDetailIntent.putExtra(EXTRAConstants.EXTRA_ORDER_IDX, mBiz.getmOutputSimpleOrderList().get(position - 1).getIDX());
@@ -467,34 +489,12 @@ public class CustomerMeetingShowStepActivity extends BaseActivity implements Vie
         }
     }
 
-    //为listview动态设置高度（有多少条目就显示多少条目）
-    public void setListViewHeight() {
-//        //获取listView的adapter
-//        OutputSimpleOrderListAdapter adapter_lm = (OutputSimpleOrderListAdapter) mOutputOrderListView.getAdapter();
-//        if (adapter_lm == null) {
-//            return;
-//        }
-//        int totalHeight = 0;
-//        //listAdapter.getCount()返回数据项的数目
-//        for (int i = 0,len = adapter_lm.getCount(); i < len; i++) {
-//            View listItem = adapter_lm.getView(i, null, listView);
-//            listItem.measure(0, 0);
-//            totalHeight += listItem.getMeasuredHeight();
-//        }
-//        // listView.getDividerHeight()获取子项间分隔符占用的高度
-//        // params.height最后得到整个ListView完整显示需要的高度
-        ViewGroup.LayoutParams params = mOutputOrderListView.getLayoutParams();
-//        params.height = totalHeight + (mOutputOrderListView.getDividerHeight() *  (listAdapter .getCount() - 1));
-        params.height = 300;
-        mOutputOrderListView.setLayoutParams(params);
-    }
-
     void fillInfo() {
         try {
-            StringRequest request = new StringRequest(Request.Method.POST, URLCostant.GetPartyVisitList, new Response.Listener<String>() {
+            StringRequest request = new StringRequest(Request.Method.POST, URLCostant.GetPartyVisitHistory, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
-                    Logger.w(this.getClass() + ".GetPartyVisitList:" + response);
+                    Logger.w(this.getClass() + ".GetPartyVisitHistory:" + response);
                     JSONObject object = JSON.parseObject(response);
                     int type = object.getInteger("type");
                     if (type == 1) {
@@ -518,7 +518,7 @@ public class CustomerMeetingShowStepActivity extends BaseActivity implements Vie
                                         public void run() {
 
                                             ACTUAL_VISITING_ADDRESS.setText(customerM.getACTUAL_VISITING_ADDRESS());
-                                            CHECK_INVENTORY.setText(customerM.getCHECK_INVENTORY());
+                                            CHECK_INVENTORY.setText(getCHECK_INVENTORY_remark(customerM.getCHECK_INVENTORY()));
                                             RECOMMENDED_ORDER.setText(customerM.getRECOMMENDED_ORDER());
                                             VIVID_DISPLAY_TEXT.setText(customerM.getVIVID_DISPLAY_TEXT());
                                             VISIT_STATES.setText(customerM.getVISIT_STATES());
@@ -537,13 +537,12 @@ public class CustomerMeetingShowStepActivity extends BaseActivity implements Vie
                 @Override
                 protected Map<String, String> getParams() throws AuthFailureError {
                     Map<String, String> params = new HashMap<>();
-                    params.put("strUserID", MyApplication.getInstance().getUser().getIDX());
-                    params.put("strSearch", "");
-                    params.put("strLine", "全部");
-                    params.put("strStates", "全部");
+                    params.put("strBusinessIdx", MyApplication.getInstance().getBusiness().getBUSINESS_IDX());
+                    params.put("strPartyCode", customerM.getPARTY_NO());
                     params.put("strPage", "1");
-                    params.put("strPageCount", "99");
-                    params.put("strFartherPartyID", customerM.getFARTHER_ADDRESS_ID());
+                    params.put("strPageCount", "30");
+                    params.put("startTime", "2017-1-1");
+                    params.put("endTime", "2022-1-1");
                     params.put("strLicense", "");
                     return params;
                 }
@@ -556,6 +555,16 @@ public class CustomerMeetingShowStepActivity extends BaseActivity implements Vie
         } catch (Exception e) {
             ExceptionUtil.handlerException(e);
 
+        }
+    }
+
+    // 获取检查库存备注
+    private String getCHECK_INVENTORY_remark(String org) {
+        String[] fd = (org + " ").split("\\^；");
+        if (fd.length > 0) {
+            return fd[fd.length - 1];
+        } else {
+            return "bug，请联系开发人员";
         }
     }
 }

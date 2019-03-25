@@ -24,6 +24,8 @@ public class BaseActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Logger.w(this.getClass() + ":onCreate");
+
+
         MyApplication.getInstance().addActivityToManager(this);
     }
 

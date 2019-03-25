@@ -566,6 +566,13 @@
             android:launchMode="standard"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
+        <!--历史拜访-->
+        <activity
+            android:name=".ui.activity.CustomerMetHistoryActivity"
+            android:launchMode="standard"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+
         <!--****************************************** 百度地图配置开始 ******************************************-->
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"

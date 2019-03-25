@@ -84,4 +84,7 @@
     <color name="yb_main_color">#0094D7</color>
     <color name="yb_main_text_gray_9">#999999</color>
 
+
+    <color name="lm_cell_separation_line">#dfdfdf</color>
+
 </resources>

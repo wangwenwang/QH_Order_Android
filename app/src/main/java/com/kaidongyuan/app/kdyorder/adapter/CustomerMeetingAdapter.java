@@ -67,68 +67,42 @@ public class CustomerMeetingAdapter extends BaseAdapter {
             holder.tv_phone = (TextView) convertView.findViewById(R.id.tv_phone);
             holder.tv_time = (TextView) convertView.findViewById(R.id.tv_time);
             holder.tv_customer_name = (TextView) convertView.findViewById(R.id.tv_customer_name);
-            holder.tv_state = (TextView) convertView.findViewById(R.id.tv_state);
             holder.tv_customer_address = (TextView) convertView.findViewById(R.id.tv_customer_address);
-            holder.tv_create = (TextView) convertView.findViewById(R.id.tv_create);
-            holder.tv_read = (TextView) convertView.findViewById(R.id.tv_read);
-            holder.tv_write = (TextView) convertView.findViewById(R.id.tv_write);
+            holder.tv_visit = (TextView) convertView.findViewById(R.id.tv_visit);
+            holder.tv_visited = (TextView) convertView.findViewById(R.id.tv_visited);
+            holder.tv_history = (TextView) convertView.findViewById(R.id.tv_history);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-//        holder.tv_name.setText(customerMeeting.getCONTACTS());
-//        holder.tv_phone.setText(customerMeeting.getCONTACTS_TEL());
-        holder.tv_time.setText(customerMeeting.getVISIT_DATE());
+        holder.tv_time.setText("上次拜访时间：" + customerMeeting.getVISIT_DATE());
         holder.tv_customer_name.setText(customerMeeting.getPARTY_NAME());
-        switch (customerMeeting.getVISIT_STATES()) {
-            case "":
-                holder.tv_state.setText("未拜访");
-                holder.tv_state.setTextColor(mContext.getResources().getColor(R.color.text_color_heavy));
-                holder.tv_read.setVisibility(View.GONE);
-                holder.tv_write.setVisibility(View.GONE);
-                holder.tv_create.setVisibility(View.VISIBLE);
-                holder.tv_time.setVisibility(View.GONE);
-                break;
-            case "离店":
-                holder.tv_state.setText("已拜访");
-                holder.tv_state.setTextColor(mContext.getResources().getColor(R.color.dark_green));
-                holder.tv_read.setVisibility(View.VISIBLE);
-                holder.tv_write.setVisibility(View.GONE);
-                holder.tv_create.setVisibility(View.GONE);
-                holder.tv_time.setVisibility(View.VISIBLE);
-                break;
-            default:
-                holder.tv_state.setText("拜访中");
-                holder.tv_state.setTextColor(mContext.getResources().getColor(R.color.text_color_normal));
-                holder.tv_read.setVisibility(View.VISIBLE);
-                holder.tv_write.setVisibility(View.VISIBLE);
-                holder.tv_create.setVisibility(View.GONE);
-                holder.tv_time.setVisibility(View.GONE);
-                break;
+
+        if (customerMeeting.getFREQUENCY().equals("")) {
+
+            holder.tv_visited.setText("已拜访" + customerMeeting.getVISIT_NUMBER() + "次");
+        }else {
+
+            holder.tv_visited.setText("本" + customerMeeting.getFREQUENCY() + "已拜访" + customerMeeting.getVISIT_NUMBER() + "次");
         }
-//        holder.tv_customer_address.setText(customerMeeting.getPARTY_ADDRESS());
-        holder.tv_read.setOnClickListener(new View.OnClickListener() {
+
+        holder.tv_history.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onClickListenerStr.onClick(position, "tv_read");
+                onClickListenerStr.onClick(position, "tv_history");
             }
         });
-        holder.tv_write.setOnClickListener(new View.OnClickListener() {
+        holder.tv_visit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onClickListenerStr.onClick(position, "tv_write");
-            }
-        });
-        holder.tv_create.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onClickListenerStr.onClick(position, "tv_create");
+                onClickListenerStr.onClick(position, "tv_visit");
             }
         });
         return convertView;
     }
 
     class ViewHolder {
-        TextView tv_name, tv_phone, tv_time, tv_customer_name, tv_state, tv_customer_address, tv_create, tv_write, tv_read;
+
+        TextView tv_name, tv_phone, tv_time, tv_customer_name, tv_customer_address, tv_visit, tv_history, tv_visited;
     }
 }

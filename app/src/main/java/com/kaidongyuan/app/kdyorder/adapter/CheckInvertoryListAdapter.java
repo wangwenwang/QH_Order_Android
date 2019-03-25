@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.kaidongyuan.app.kdyorder.R;
 import com.kaidongyuan.app.kdyorder.bean.Product;
 import com.kaidongyuan.app.kdyorder.util.ToastUtil;
+import com.kaidongyuan.app.kdyorder.util.Tools;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,6 +88,7 @@ public class CheckInvertoryListAdapter extends BaseAdapter {
             holder.textViewProductName = (TextView) convertView.findViewById(R.id.tv_product_name);
             holder.buttonConfirm = (Button) convertView.findViewById(R.id.btn_confirm);
             holder.ed_product_qty = (EditText) convertView.findViewById(R.id.ed_product_qty);
+            holder.tv_product_uom = (TextView) convertView.findViewById(R.id.tv_product_uom);
             convertView.setTag(holder);
         } else {
             holder = (Holder) convertView.getTag();
@@ -99,10 +101,17 @@ public class CheckInvertoryListAdapter extends BaseAdapter {
 
         holder.ed_product_qty.setText("");
 
+        if(Tools.hasBASE_RATE(product.getBASE_RATE())) {
+
+            holder.tv_product_uom.setText(product.getPACK_UOM());
+        }else {
+
+            holder.tv_product_uom.setText(product.getPRODUCT_UOM());
+        }
+
         //设置监听
 //        holder.buttonConfirm.setTag(position);
 //        holder.buttonConfirm.setOnClickListener(this);
-
 
         holder.buttonConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,6 +135,7 @@ public class CheckInvertoryListAdapter extends BaseAdapter {
         TextView textViewProductName;
         TextView buttonConfirm;
         EditText ed_product_qty;
+        TextView tv_product_uom;
     }
 
 //    @Override

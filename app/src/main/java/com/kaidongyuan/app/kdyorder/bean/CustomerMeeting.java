@@ -34,9 +34,14 @@ public class CustomerMeeting implements Parcelable {
     private String VIVID_DISPLAY_TEXT;
     private String VISIT_IDX;
     private String ADDRESS_IDX;
-    private String GRADE;
     private String FARTHER_PARTY_ID;
     private String FARTHER_ADDRESS_ID;
+    private String GRADE;
+    private String LONGITUDE;
+    private String LATITUDE;
+    private String FREQUENCY;
+    private String VISIT_NUMBER;
+    private String VISITING_NUMBER;
     public CustomerMeeting() {
     }
 
@@ -72,6 +77,11 @@ public class CustomerMeeting implements Parcelable {
         GRADE = in.readString();
         FARTHER_PARTY_ID = in.readString();
         FARTHER_ADDRESS_ID = in.readString();
+        LONGITUDE = in.readString();
+        LATITUDE = in.readString();
+        FREQUENCY = in.readString();
+        VISIT_NUMBER = in.readString();
+        VISITING_NUMBER = in.readString();
     }
 
     public static final Creator<CustomerMeeting> CREATOR = new Creator<CustomerMeeting>() {
@@ -336,6 +346,46 @@ public class CustomerMeeting implements Parcelable {
         this.FARTHER_ADDRESS_ID = FARTHER_ADDRESS_ID;
     }
 
+    public String getLONGITUDE() {
+        return LONGITUDE;
+    }
+
+    public void setLONGITUDE(String LONGITUDE) {
+        this.LONGITUDE = LONGITUDE;
+    }
+
+    public String getLATITUDE() {
+        return LATITUDE;
+    }
+
+    public void setLATITUDE(String LATITUDE) {
+        this.LATITUDE = LATITUDE;
+    }
+
+    public String getFREQUENCY() {
+        return FREQUENCY;
+    }
+
+    public void setFREQUENCY(String FREQUENCY) {
+        this.FREQUENCY = FREQUENCY;
+    }
+
+    public String getVISIT_NUMBER() {
+        return VISIT_NUMBER;
+    }
+
+    public void setVISIT_NUMBER(String VISIT_NUMBER) {
+        this.VISIT_NUMBER = VISIT_NUMBER;
+    }
+
+    public String getVISITING_NUMBER() {
+        return VISITING_NUMBER;
+    }
+
+    public void setVISITING_NUMBER(String VISITING_NUMBER) {
+        this.VISITING_NUMBER = VISITING_NUMBER;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -373,5 +423,10 @@ public class CustomerMeeting implements Parcelable {
         dest.writeString(GRADE);
         dest.writeString(FARTHER_PARTY_ID);
         dest.writeString(FARTHER_ADDRESS_ID);
+        dest.writeString(LONGITUDE);
+        dest.writeString(LATITUDE);
+        dest.writeString(FREQUENCY);
+        dest.writeString(VISIT_NUMBER);
+        dest.writeString(VISITING_NUMBER);
     }
 }

@@ -3,6 +3,7 @@ package com.kaidongyuan.app.kdyorder.ui.activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -74,15 +75,14 @@ public class CustomerMeetingsActivity extends BaseActivity implements View.OnCli
      */
     private ImageView mImageViewGoBack;
     private TextView tvTitleRight;
-    private LinearLayout llMeetingType, llMeetingState, llmeetingFirstParty;
-    private TextView tvMeetingType, tvMeetingState, tvMeetingFirstParty;
+    private LinearLayout llMeetingType, llmeetingFirstParty;
+    private TextView tvMeetingType, tvMeetingFirstParty;
     private EditText edSearch;
     private ImageView ivSearch;
     public String strSearch = "";
     public String strLine = "";
-    public String strState = "未拜访";//已拜访,未拜访,拜访中,全部
+    public String strState = "";//已拜访,未拜访,拜访中,全部
     public String strFartherPartyID = "";//供货商ID
-    private List<String> statelist = new ArrayList<String>(Arrays.asList("未拜访", "拜访中", "已拜访", "全部"));
     /**
      * 选择供货商的 Dialog
      */
@@ -115,22 +115,6 @@ public class CustomerMeetingsActivity extends BaseActivity implements View.OnCli
      * 记录当前选中的报表在 ListView 中的位置
      */
     private int mCurrentLineIndex = 0;
-    /**
-     * 选择拜访状态的 Dialog
-     */
-    private Dialog mChoiceStateDialog;
-    /**
-     * 显示拜访状态的 ListView
-     */
-    private ListView mListViewChoiceStates;
-    /**
-     * 选择拜访状态的 Adapter
-     */
-    private StateChoiceAdapter mStatesChoiceAdapter;
-    /**
-     * 记录当前选中的状态在 ListView 中的位置
-     */
-    private int mCurrentStateIndex = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -238,8 +222,6 @@ public class CustomerMeetingsActivity extends BaseActivity implements View.OnCli
             tvTitleRight = (TextView) findViewById(R.id.tv_title_right);
             llMeetingType = (LinearLayout) findViewById(R.id.ll_meeting_type);
             tvMeetingType = (TextView) findViewById(R.id.tv_meeting_type);
-            llMeetingState = (LinearLayout) findViewById(R.id.ll_meeting_state);
-            tvMeetingState = (TextView) findViewById(R.id.tv_meeting_state);
             edSearch = (EditText) findViewById(R.id.ed_search);
             ivSearch = (ImageView) findViewById(R.id.iv_search);
             this.mXlistViewInformations = (XListView) this.findViewById(R.id.lv_customer_meetings);
@@ -260,7 +242,6 @@ public class CustomerMeetingsActivity extends BaseActivity implements View.OnCli
             mAdapter.setOnClickListenerStr(this);
             tvTitleRight.setOnClickListener(this);
             llMeetingType.setOnClickListener(this);
-            llMeetingState.setOnClickListener(this);
             llmeetingFirstParty.setOnClickListener(this);
             edSearch.addTextChangedListener(new TextWatcher() {
                 @Override
@@ -353,7 +334,7 @@ public class CustomerMeetingsActivity extends BaseActivity implements View.OnCli
     public void getMeetingsDataError(String message) {
         try {
             // 不提示 没有数据 4个字
-            if(!message.equals("没有数据")) {
+            if (!message.equals("没有数据")) {
                 ToastUtil.showToastBottom(String.valueOf(message), Toast.LENGTH_SHORT);
             }
             handleGetCustomerMeeingsData();
@@ -384,7 +365,7 @@ public class CustomerMeetingsActivity extends BaseActivity implements View.OnCli
             strLine = strLine.equals("") ? customerMeetingLines.get(0).getITEM_NAME() : strLine;
             tvMeetingType.setText(strLine);
 
-            if(isHasFirstPartys()) {
+            if (isHasFirstPartys()) {
                 if (mBiz.reFreshCustomerMeetingDatas()) {
                     showLoadingDialog();
                 }
@@ -394,11 +375,11 @@ public class CustomerMeetingsActivity extends BaseActivity implements View.OnCli
 
     private boolean isHasFirstPartys() {
 
-        if(mBiz.getMeetingFirstPartys() == null) {
+        if (mBiz.getMeetingFirstPartys() == null) {
 
             ToastUtil.showToastBottom("未配置供货商，请联系管理员", Toast.LENGTH_SHORT);
             return false;
-        }else {
+        } else {
 
             return true;
         }
@@ -464,36 +445,6 @@ public class CustomerMeetingsActivity extends BaseActivity implements View.OnCli
         }
     }
 
-    /**
-     * 显示选择拜访状态 Dialog
-     */
-    private void showChoiceStateDialog() {
-        try {
-            if (mChoiceStateDialog == null) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.create();
-                mChoiceStateDialog = builder.show();
-                mChoiceStateDialog.setCanceledOnTouchOutside(false);
-                Window window = mChoiceStateDialog.getWindow();
-                window.setContentView(R.layout.dialog_state_choice);
-                window.findViewById(R.id.button_cancel).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        mChoiceStateDialog.dismiss();
-                    }
-                });
-                mListViewChoiceStates = (ListView) window.findViewById(R.id.listView_chart_choice);
-                mStatesChoiceAdapter = new StateChoiceAdapter(null, this);
-                mListViewChoiceStates.setAdapter(mStatesChoiceAdapter);
-                mListViewChoiceStates.setOnItemClickListener(new CustomerMeetingsActivity.InnerOnItemClickListener2());
-            }
-            mChoiceStateDialog.show();
-            mStatesChoiceAdapter.notifyChange(statelist);
-        } catch (Exception e) {
-            ExceptionUtil.handlerException(e);
-        }
-    }
-
     @Override
     public void onRefresh() {
         showLoadingDialog();
@@ -510,19 +461,15 @@ public class CustomerMeetingsActivity extends BaseActivity implements View.OnCli
     public boolean onClick(int position, String... tags) {
         if (tags != null && tags.length > 0) {
             switch (tags[0]) {
-                case "tv_read":
-                    Intent intent1 = new Intent(this, CustomerMeetingShowStepActivity.class);
-                    intent1.putExtra("CustomerMeeting", mBiz.getCustomerMeetingList().get(position));
-                    intent1.putExtra("isShowStep", true);
+                case "tv_history":
+                    CustomerMeeting customerM = mBiz.getCustomerMeetingList().get(position);
+                    Intent intent1 = new Intent(this, CustomerMetHistoryActivity.class);
+                    intent1.putExtra("strFartherPartyID", strFartherPartyID);
+                    intent1.putExtra("strPartyCode", customerM.getPARTY_NO());
                     startActivity(intent1);
                     break;
-                case "tv_write":
+                case "tv_visit":
                     visits(position);
-                    break;
-                case "tv_create":
-                    Intent intent2 = new Intent(this, CustomerMeetingCreateActivity.class);
-                    intent2.putExtra("CustomerMeeting", mBiz.getCustomerMeetingList().get(position));
-                    startActivity(intent2);
                     break;
                 default:
                     break;
@@ -589,30 +536,6 @@ public class CustomerMeetingsActivity extends BaseActivity implements View.OnCli
     }
 
     /**
-     * Dialog 中选择拜访状态的监听
-     */
-    private class InnerOnItemClickListener2 implements AdapterView.OnItemClickListener {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            try {
-                mChoiceStateDialog.dismiss();
-                if (mCurrentStateIndex == position && mBiz.getCustomerMeetingList().size() > 0) {
-                    return;
-                }
-                mCurrentStateIndex = position;
-                showLoadingDialog();
-                strState = statelist.get(mCurrentStateIndex);
-                tvMeetingState.setText(strState);
-                mBiz.reFreshCustomerMeetingDatas();
-
-
-            } catch (Exception e) {
-                ExceptionUtil.handlerException(e);
-            }
-        }
-    }
-
-    /**
      * 获取客户拜访列表成功
      */
     public void getMeetingsDataSuccess() {
@@ -651,7 +574,7 @@ public class CustomerMeetingsActivity extends BaseActivity implements View.OnCli
                     this.finish();
                     break;
                 case R.id.tv_title_right:
-                    if(isHasFirstPartys()) {
+                    if (isHasFirstPartys()) {
                         Intent intent = new Intent(CustomerMeetingsActivity.this, CustomerCreateActivity.class);
                         intent.putExtra("fatherPartyAddressID", mBiz.getMeetingFirstPartys().get(mCurrentFirstPartyIndex).getADDRESS_IDX());
                         intent.putExtra("fatherPartyAddressName", mBiz.getMeetingFirstPartys().get(mCurrentFirstPartyIndex).getPARTY_NAME());
@@ -660,9 +583,6 @@ public class CustomerMeetingsActivity extends BaseActivity implements View.OnCli
                     break;
                 case R.id.ll_meeting_type:
                     showChoiceLineDialog();
-                    break;
-                case R.id.ll_meeting_state:
-                    showChoiceStateDialog();
                     break;
                 case R.id.ll_meeting_first_party:
                     showChoiceFartherIdDialog();
@@ -688,18 +608,49 @@ public class CustomerMeetingsActivity extends BaseActivity implements View.OnCli
 
     private void visits(int position) {
 
-        if(!isHasFirstPartys()) {
+        if (!isHasFirstPartys()) {
+
+            ToastUtil.showToastBottom("供应商不能为空", Toast.LENGTH_SHORT);
             return;
         }
 
         try {
-            CustomerMeeting customerM = mBiz.getCustomerMeetingList().get(position);
+            final CustomerMeeting customerM = mBiz.getCustomerMeetingList().get(position);
             String status = customerM.getVISIT_STATES();
             if (status.equals("")) {
 
-                Intent intent = new Intent(CustomerMeetingsActivity.this, CustomerMeetingCreateActivity.class);
-                intent.putExtra("CustomerMeeting", customerM);
-                startActivity(intent);
+                // 当 customerM.getVISITING_NUMBER() 为""，会抛出异常
+                int VISITING_NUMBER = 0;
+                try {
+                    VISITING_NUMBER = Integer.parseInt(customerM.getVISITING_NUMBER());
+                } catch (Exception e) {
+
+                }
+
+                if (VISITING_NUMBER > 0) {
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(CustomerMeetingsActivity.this);
+                    builder.setTitle("");
+                    builder.setMessage("上次拜访未完成，是否新建拜访？");
+                    builder.setPositiveButton("新建", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                            Intent intent = new Intent(CustomerMeetingsActivity.this, CustomerMeetingCreateActivity.class);
+                            intent.putExtra("CustomerMeeting", customerM);
+                            startActivity(intent);
+                        }
+                    });
+                    builder.setNegativeButton("取消", null);
+                    builder.show();
+                } else {
+
+                    Intent intent = new Intent(CustomerMeetingsActivity.this, CustomerMeetingCreateActivity.class);
+                    intent.putExtra("CustomerMeeting", customerM);
+                    startActivity(intent);
+                }
+
+
             } else if (status.equals("新建") || status.equals("确认客户信息")) {
 
                 Intent intent = new Intent(CustomerMeetingsActivity.this, ArrivedStoreActivity.class);

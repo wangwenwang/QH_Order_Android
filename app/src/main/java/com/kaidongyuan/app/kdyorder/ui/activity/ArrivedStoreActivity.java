@@ -3,14 +3,11 @@ package com.kaidongyuan.app.kdyorder.ui.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -25,7 +22,6 @@ import com.baidu.location.LocationClientOption;
 import com.kaidongyuan.app.kdyorder.R;
 import com.kaidongyuan.app.kdyorder.adapter.GridImageAdapter;
 import com.kaidongyuan.app.kdyorder.bean.CustomerMeeting;
-import com.kaidongyuan.app.kdyorder.constants.EXTRAConstants;
 import com.kaidongyuan.app.kdyorder.model.ArrivedStoreActivityBiz;
 import com.kaidongyuan.app.kdyorder.util.BitmapUtil;
 import com.kaidongyuan.app.kdyorder.util.ExceptionUtil;
@@ -36,7 +32,6 @@ import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.config.PictureMimeType;
 import com.luck.picture.lib.entity.LocalMedia;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -229,12 +224,32 @@ public class ArrivedStoreActivity extends BaseActivity implements View.OnClickLi
 
     private void nextOnclick() {
 
+        submitbutton.setClickable(false);
+
+        new Thread() {
+            public void run() {
+
+                try {
+                    sleep(1 * 1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        submitbutton.setClickable(true);
+                    }
+                });
+            }
+        }.start();
+
         if (selectList.size() <= 0) {
             ToastUtil.showToastBottom("请将门店照片上传!", Toast.LENGTH_SHORT);
             return;
         }
 
-        if(strAddress == null || strAddress.equals("")) {
+        if (strAddress == null || strAddress.equals("")) {
             ToastUtil.showToastBottom("【当前位置】不能为空!", Toast.LENGTH_SHORT);
             return;
         }
@@ -242,7 +257,6 @@ public class ArrivedStoreActivity extends BaseActivity implements View.OnClickLi
         LocalMedia LM = selectList.get(0);
         Bitmap pictureBitmap1 = BitmapUtil.resizeImage(LM.getPath(), mBitmapWidth);
         Log.d("LM", "进店图片1大小|" + BitmapUtil.getBitmapSize(pictureBitmap1));
-
 
 
         Bitmap pictureBitmap2 = null;

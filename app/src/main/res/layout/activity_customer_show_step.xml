@@ -195,16 +195,23 @@
                 android:text="检查库存"
                 android:textColor="@color/black" />
 
+            <com.kaidongyuan.app.kdyorder.widget.xlistview.XListView
+                android:id="@+id/list_check_inventory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:cacheColorHint="#00000000"
+                android:minHeight="@dimen/xlistview_minheight" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:padding="10dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="25dp"
+                    android:layout_marginTop="10dp"
                     android:orientation="horizontal">
 
                     <TextView
@@ -376,24 +383,23 @@
     </ScrollView>
 
     <com.zhy.android.percent.support.PercentFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-        <Button
-            android:id="@+id/button_leave_shop"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/visit_button_height"
-            android:layout_gravity="bottom|center"
-            android:layout_marginBottom="@dimen/visit_button_marginbottom"
-            android:background="@drawable/lm_visit_button"
-            android:onClick="confirmOnclick"
-            android:text="确认离店"
-            android:textColor="@color/white"
-            android:textSize="@dimen/visit_button_size"
-            app:layout_widthPercent="41%w" />
+    <Button
+    android:id="@+id/button_leave_shop"
+    android:layout_width="0dp"
+    android:layout_height="@dimen/visit_button_height"
+    android:layout_gravity="bottom|center"
+    android:layout_marginBottom="@dimen/visit_button_marginbottom"
+    android:background="@drawable/lm_visit_button"
+    android:onClick="confirmOnclick"
+    android:text="确认离店"
+    android:textColor="@color/white"
+    android:textSize="@dimen/visit_button_size"
+    app:layout_widthPercent="41%w" />
     </com.zhy.android.percent.support.PercentFrameLayout>
-
 
 </com.zhy.android.percent.support.PercentRelativeLayout>

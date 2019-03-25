@@ -69,7 +69,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="供货商名称:"
+                android:text="供货商名称: "
                 android:layout_marginLeft="15dp"
                 android:textSize="@dimen/text_size_normal"
                 />
@@ -98,12 +98,12 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:padding="10dp"
-            android:gravity="center"
             android:background="@color/gray_holo_light">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="拜访线路:"
+                android:layout_marginLeft="15dp"
+                android:text="拜访线路: "
                 android:textSize="@dimen/text_size_normal"
                 />
             <TextView
@@ -111,34 +111,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="暂无数据"
-                android:textSize="@dimen/text_size_normal"
-                />
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/more_black"/>
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/ll_meeting_state"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginLeft="3dp"
-            android:padding="10dp"
-            android:gravity="center"
-            android:background="@color/gray_holo_light">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="拜访状态:"
-                android:textSize="@dimen/text_size_normal"
-                />
-            <TextView
-                android:id="@+id/tv_meeting_state"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="未拜访"
                 android:textSize="@dimen/text_size_normal"
                 />
             <ImageView
