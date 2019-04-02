@@ -56,7 +56,7 @@ import java.util.List;
  * Created by Administrator on 2018/8/7.
  */
 
-public class YBMyAddressAdd2 extends Activity implements View.OnClickListener{
+public class YBMyAddressAdd2 extends BaseActivity implements View.OnClickListener{
     private ImageView titleLeftImage;
     private MapView mMapView = null;
     private BaiduMap mBaiduMap;
@@ -64,7 +64,7 @@ public class YBMyAddressAdd2 extends Activity implements View.OnClickListener{
 //    private String address = "";
     private double mCurrentLat = 0.0;
     private double mCurrentLon = 0.0;
-    public MyLocationListenner myListener = new MyLocationListenner();
+    public MyLocationListener myListener = new MyLocationListener();
     private LocationClient mLocClient;
     //    private Button dw_bt;
     private boolean touch =false;
@@ -382,11 +382,23 @@ public class YBMyAddressAdd2 extends Activity implements View.OnClickListener{
         mLocClient = new LocationClient(this);
         mLocClient.registerLocationListener(myListener);
         LocationClientOption option = new LocationClientOption();
+
+        option.setProdName(this.getPackageName());
+        option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);// 设置定位模式
+        option.setIsNeedAddress(true);
+        option.setTimeOut(10 * 1000); // 网络定位的超时时间
+
+
         option.setOpenGps(true); // 打开gps
         option.setCoorType("bd09ll"); // 设置坐标类型
         option.setScanSpan(1000);
+
         mLocClient.setLocOption(option);
         mLocClient.start();
+        Log.d("LM", "initView: ");
+
+
+
     }
 
     private void pingYiAmin(ImageView iv) {
@@ -421,7 +433,7 @@ public class YBMyAddressAdd2 extends Activity implements View.OnClickListener{
     /**
      * 定位SDK监听函数
      */
-    public class MyLocationListenner implements BDLocationListener {
+    public class MyLocationListener implements BDLocationListener {
 
         @Override
         public void onReceiveLocation(BDLocation location) {
