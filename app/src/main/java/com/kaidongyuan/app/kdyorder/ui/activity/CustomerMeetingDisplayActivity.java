@@ -31,6 +31,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.kaidongyuan.app.kdyorder.R;
 import com.kaidongyuan.app.kdyorder.adapter.GridImageAdapter;
 import com.kaidongyuan.app.kdyorder.adapter.LineChoiceAdapter;
+import com.kaidongyuan.app.kdyorder.app.MyApplication;
 import com.kaidongyuan.app.kdyorder.bean.CustomerMeeting;
 import com.kaidongyuan.app.kdyorder.bean.CustomerMeetingLine;
 import com.kaidongyuan.app.kdyorder.constants.URLCostant;
@@ -399,7 +400,7 @@ public class CustomerMeetingDisplayActivity extends BaseActivity implements View
         try {
             switch (v.getId()) {
                 case R.id.button_goback:
-                    this.finish();
+                    pop();
                     break;
                 case R.id.llMeetingDisplay:
                     showChoiceDispalyDialog();
@@ -408,6 +409,28 @@ public class CustomerMeetingDisplayActivity extends BaseActivity implements View
                     break;
             }
         } catch (Exception e) {
+            ExceptionUtil.handlerException(e);
+        }
+    }
+
+
+    private void pop() {
+
+        MyApplication.getInstance().finishActivity(CustomerMeetingCreateActivity.class);
+        MyApplication.getInstance().finishActivity(ArrivedStoreActivity.class);
+        MyApplication.getInstance().finishActivity(CustomerMeetingCheckInventoryActivity.class);
+        MyApplication.getInstance().finishActivity(CustomerMeetingRecomOrderActivity.class);
+        this.finish();
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        try {
+
+            pop();
+        } catch (Exception e) {
+
             ExceptionUtil.handlerException(e);
         }
     }

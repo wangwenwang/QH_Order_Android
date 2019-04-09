@@ -69,8 +69,8 @@
                 android:layout_height="fill_parent"
                 android:layout_marginLeft="10dp"
                 android:gravity="center_vertical"
-                android:textSize="16sp"
-                android:text="生动化陈列:" />
+                android:text="生动化陈列:"
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/strVividDisplayCbx"
@@ -95,12 +95,21 @@
             android:layout_marginTop="30dp"
             android:overScrollMode="never" />
 
+    </LinearLayout>
+
+    <com.zhy.android.percent.support.PercentFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="40dp"
+            android:layout_gravity="bottom|center"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginBottom="70dp"
             android:orientation="horizontal">
 
             <TextView
@@ -119,19 +128,11 @@
                 android:background="@drawable/lm_visit_edit_text"
                 android:gravity="start"
                 android:hint="请输入备注/选填"
-                android:lines="5"
+                android:lines="1"
                 android:paddingLeft="8dp"
-                android:paddingTop="8dp" />
+                android:paddingTop="5dp" />
 
         </LinearLayout>
-
-    </LinearLayout>
-
-    <com.zhy.android.percent.support.PercentFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
 
         <Button
             android:id="@+id/btn_confirm"

@@ -1,6 +1,8 @@
 package com.kaidongyuan.app.kdyorder.ui.activity;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -313,9 +315,17 @@ public class CustomerMeetingShowStepActivity extends BaseActivity implements Vie
             String msg = object.getString("msg");
             mLoadingDialog.dismiss();
             if (type == 1) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(CustomerMeetingShowStepActivity.this);
+                builder.setTitle("");
+                builder.setMessage("拜访完成");
+                builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
 
-                Intent intent = new Intent(this, CustomerMeetingsActivity.class);
-                startActivity(intent);
+                        pop();
+                    }
+                });
+                builder.show();
             } else {
 
                 ToastUtil.showToastBottom(String.valueOf(msg), Toast.LENGTH_SHORT);
@@ -340,12 +350,35 @@ public class CustomerMeetingShowStepActivity extends BaseActivity implements Vie
         try {
             switch (v.getId()) {
                 case R.id.button_goback:
-                    this.finish();
+                    pop();
                     break;
                 default:
                     break;
             }
         } catch (Exception e) {
+            ExceptionUtil.handlerException(e);
+        }
+    }
+
+
+    private void pop() {
+
+        MyApplication.getInstance().finishActivity(CustomerMeetingCreateActivity.class);
+        MyApplication.getInstance().finishActivity(ArrivedStoreActivity.class);
+        MyApplication.getInstance().finishActivity(CustomerMeetingCheckInventoryActivity.class);
+        MyApplication.getInstance().finishActivity(CustomerMeetingRecomOrderActivity.class);
+        MyApplication.getInstance().finishActivity(CustomerMeetingDisplayActivity.class);
+        this.finish();
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        try {
+
+            pop();
+        } catch (Exception e) {
+
             ExceptionUtil.handlerException(e);
         }
     }

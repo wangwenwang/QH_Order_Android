@@ -303,12 +303,33 @@ public class CustomerMeetingRecomOrderActivity extends BaseActivity implements V
         try {
             switch (v.getId()) {
                 case R.id.button_goback:
-                    this.finish();
+                    pop();
                     break;
                 default:
                     break;
             }
         } catch (Exception e) {
+            ExceptionUtil.handlerException(e);
+        }
+    }
+
+
+    private void pop() {
+
+        MyApplication.getInstance().finishActivity(CustomerMeetingCreateActivity.class);
+        MyApplication.getInstance().finishActivity(ArrivedStoreActivity.class);
+        MyApplication.getInstance().finishActivity(CustomerMeetingCheckInventoryActivity.class);
+        this.finish();
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        try {
+
+            pop();
+        } catch (Exception e) {
+
             ExceptionUtil.handlerException(e);
         }
     }

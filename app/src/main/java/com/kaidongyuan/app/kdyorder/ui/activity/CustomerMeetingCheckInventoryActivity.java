@@ -2,9 +2,11 @@ package com.kaidongyuan.app.kdyorder.ui.activity;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +17,7 @@ import android.widget.HeaderViewListAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,6 +48,8 @@ import com.kaidongyuan.app.kdyorder.util.Tools;
 import com.kaidongyuan.app.kdyorder.util.logger.Logger;
 import com.kaidongyuan.app.kdyorder.widget.loadingdialog.MyLoadingDialog;
 import com.kaidongyuan.app.kdyorder.widget.xlistview.XListView;
+import com.zhy.android.percent.support.PercentFrameLayout;
+import com.zhy.android.percent.support.PercentRelativeLayout;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -78,6 +83,11 @@ public class CustomerMeetingCheckInventoryActivity extends BaseActivity implemen
     private XListView mListViewProduct;
 
     /**
+     * 已检查产品列表适配器 提示
+     */
+    private TextView mTextViewOkListPrompt;
+
+    /**
      * 已检查产品列表适配器
      */
     public CheckInvertoryListOKAdapter mProductOKAdapter;
@@ -107,6 +117,10 @@ public class CustomerMeetingCheckInventoryActivity extends BaseActivity implemen
 
     private LinearLayout llProdctBrand, llProductType;
 
+    private PercentRelativeLayout prlTitleView;
+
+    private LinearLayout ll_remark;
+
     /**
      * 选择品牌的 Dialog
      */
@@ -123,9 +137,13 @@ public class CustomerMeetingCheckInventoryActivity extends BaseActivity implemen
     private BrandChoiceAdapter mTypeChoiceAdapter;
     private List<String> mTypeList;
 
+    private Context mContext;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer_check_inventory);
+
+        mContext = this;
 
         remark = (EditText) findViewById(R.id.check_mark);
         mImageViewGoBack = (ImageView) this.findViewById(R.id.button_goback);
@@ -139,27 +157,76 @@ public class CustomerMeetingCheckInventoryActivity extends BaseActivity implemen
 
         initView();
         setListener();
-        setListViewHeight(mListViewProduct);
+        setListViewHeight(mListViewProduct, mListViewProductOK);
     }
 
-    private void setListViewHeight(XListView listView) {
+    private void setListViewHeight(XListView listView, XListView okListView) {
 
+        // 屏幕总高度
+        int h_screen = Tools.getScreen_h(mContext);
+        // 已检查产品列表
+        HeaderViewListAdapter hAdapterOk = (HeaderViewListAdapter) okListView.getAdapter();
+        CheckInvertoryListOKAdapter listAdapterOk = (CheckInvertoryListOKAdapter) hAdapterOk.getWrappedAdapter();
+        if (hAdapterOk == null) {
+            return;
+        }
+        int itemHeightOk = 100;
+        if (mBiz.getChoiceProducts().size() > 0) {
+            View itemView = listAdapterOk.getView(0, null, listView);
+            itemView.measure(0, 0);
+            itemHeightOk = itemView.getMeasuredHeight();
+        }
+        LinearLayout.LayoutParams layoutParamsOk = (LinearLayout.LayoutParams) okListView.getLayoutParams();
+        int okItemCount = listAdapterOk.getCount();
+
+        // 产品列表
         HeaderViewListAdapter hAdapter = (HeaderViewListAdapter) listView.getAdapter();
         CheckInvertoryListAdapter listAdapter = (CheckInvertoryListAdapter) hAdapter.getWrappedAdapter();
         if (listAdapter == null) {
             return;
         }
-
-        int itemHeight = 132;
-        if (mBiz.getmCurrentProductData().size() > 0) {
+        int itemHeight = 130;
+        if (mBiz.getChoiceProducts().size() > 0) {
             View itemView = listAdapter.getView(0, null, listView);
             itemView.measure(0, 0);
             itemHeight = itemView.getMeasuredHeight();
         }
-        int itemCount = listAdapter.getCount();
         LinearLayout.LayoutParams layoutParams = null;
-        layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, itemHeight * 3);
+//        layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, itemHeight * 4);
+        layoutParams = (LinearLayout.LayoutParams) listView.getLayoutParams();
+
+        // 已检查库存，listview显示最大行数
+        int okItemCountMax = 3;
+        if (okItemCount <= okItemCountMax) {
+
+            // 总高 - (状态栏 + 标题栏 + 品牌高 + 已检查提示 + Cell*已检查数量 + 底部高 + 一些margin)
+            int stateBarH = (int) Tools.getStateBar2(mContext);
+            int bottomNavBar = Tools.getNavigationBarHeight(mContext); // h_screen 已经减去了 bottomNavBar
+            float titleViewH = (float) ((h_screen - stateBarH) / 100.0 * 8);
+            int brandH = Tools.dip2px(mContext, 40);
+            int checkedH = Tools.dip2px(mContext, 35);
+            int cellH = itemHeightOk;
+            int bottomH = Tools.dip2px(mContext, (65 + 30));
+            Log.d("LM",
+                    "状态栏: " + stateBarH + "\n" +
+                            "标题栏: " + titleViewH + "\n" +
+                            "品牌: " + brandH + "\n" +
+                            "提示: " + checkedH + "\n" +
+                            "CellH: " + cellH + "\n" +
+                            "底部: " + bottomH + "\n");
+            if (mBiz.getChoiceProducts().size() > 0) {
+                int listHeigth = (int) (h_screen - (stateBarH + titleViewH + brandH + checkedH + cellH * mBiz.getChoiceProducts().size() + bottomH + 20));
+                layoutParams.height = listHeigth;
+                mTextViewOkListPrompt.setVisibility(View.VISIBLE);
+                layoutParamsOk.height = okItemCountMax * cellH + 12;
+            } else {
+                int listHeigth = (int) (h_screen - (stateBarH + titleViewH + brandH + cellH * mBiz.getChoiceProducts().size() + bottomH + 20));
+                layoutParams.height = listHeigth;
+                mTextViewOkListPrompt.setVisibility(View.GONE);
+            }
+        }
         listView.setLayoutParams(layoutParams);
+
     }
 
     public void confirmOnclick(View view) {
@@ -169,14 +236,14 @@ public class CustomerMeetingCheckInventoryActivity extends BaseActivity implemen
         for (int i = 0; i < mBiz.getChoiceProducts().size(); i++) {
             Product p = mBiz.getChoiceProducts().get(i);
             String uom;
-            if(Tools.hasBASE_RATE(p.getBASE_RATE())) {
+            if (Tools.hasBASE_RATE(p.getBASE_RATE())) {
                 uom = p.getPACK_UOM();
-            }else {
+            } else {
                 uom = p.getPRODUCT_UOM();
             }
-            if(checkContext.equals("")) {
+            if (checkContext.equals("")) {
                 checkContext = p.getPRODUCT_NAME() + "（" + p.getCHOICED_SIZE() + uom + "）";
-            }else {
+            } else {
                 checkContext = checkContext + "^；" + p.getPRODUCT_NAME() + "（" + p.getCHOICED_SIZE() + uom + "）";
             }
         }
@@ -292,7 +359,7 @@ public class CustomerMeetingCheckInventoryActivity extends BaseActivity implemen
         try {
             switch (v.getId()) {
                 case R.id.button_goback:
-                    this.finish();
+                    pop();
                     break;
                 case R.id.ll_prodct_brand:
                     showChoiceBrandDialog();
@@ -308,6 +375,25 @@ public class CustomerMeetingCheckInventoryActivity extends BaseActivity implemen
         }
     }
 
+    private void pop() {
+
+        MyApplication.getInstance().finishActivity(CustomerMeetingCreateActivity.class);
+        MyApplication.getInstance().finishActivity(ArrivedStoreActivity.class);
+        this.finish();
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        try {
+
+            pop();
+        } catch (Exception e) {
+
+            ExceptionUtil.handlerException(e);
+        }
+    }
+
     private void setListener() {
         try {
             mImageViewGoBack.setOnClickListener(CustomerMeetingCheckInventoryActivity.this);
@@ -316,6 +402,7 @@ public class CustomerMeetingCheckInventoryActivity extends BaseActivity implemen
                 public void okProduct(int dataIndex) {
 
                     mProductOKAdapter.notifyChange(mBiz.getChoiceProducts());
+                    setListViewHeight(mListViewProduct, mListViewProductOK);
                 }
             });
             mProductOKAdapter.setInterface(new CheckInvertoryListOKAdapter.CheckInvertoryListOKAdapterInterface() {
@@ -324,6 +411,7 @@ public class CustomerMeetingCheckInventoryActivity extends BaseActivity implemen
 
                     mBiz.getChoiceProducts().remove(dataIndex);
                     mProductOKAdapter.notifyChange(mBiz.getChoiceProducts());
+                    setListViewHeight(mListViewProduct, mListViewProductOK);
                 }
             });
             llProdctBrand.setOnClickListener(this);
@@ -344,7 +432,7 @@ public class CustomerMeetingCheckInventoryActivity extends BaseActivity implemen
                 ToastUtil.showToastBottom("产品数据为空!", Toast.LENGTH_SHORT);
             }
             notifyDataChange();
-            setListViewHeight(mListViewProduct);
+            setListViewHeight(mListViewProduct, mListViewProductOK);
         } catch (Exception e) {
             ExceptionUtil.handlerException(e);
         }
@@ -356,7 +444,7 @@ public class CustomerMeetingCheckInventoryActivity extends BaseActivity implemen
             mLoadingDialog.dismiss();
             ToastUtil.showToastBottom(String.valueOf(msg), Toast.LENGTH_SHORT);
             notifyDataChange();
-            setListViewHeight(mListViewProduct);
+            setListViewHeight(mListViewProduct, mListViewProductOK);
         } catch (Exception e) {
             ExceptionUtil.handlerException(e);
         }
@@ -389,10 +477,14 @@ public class CustomerMeetingCheckInventoryActivity extends BaseActivity implemen
             mListViewProduct.setAdapter(mProductAdapter);
             mListViewProduct.setPullRefreshEnable(false);
 
+            mTextViewOkListPrompt = (TextView) this.findViewById(R.id.tv_ok_list_prompt);
             mProductOKAdapter = new CheckInvertoryListOKAdapter(this, null);
             mListViewProductOK = (XListView) this.findViewById(R.id.lv_ok_product_list);
             mListViewProductOK.setAdapter(mProductOKAdapter);
             mListViewProductOK.setPullRefreshEnable(false);
+
+            prlTitleView = (PercentRelativeLayout) this.findViewById(R.id.percentRL_title);
+            ll_remark = (LinearLayout) findViewById(R.id.ll_remark);
         } catch (Exception e) {
             ExceptionUtil.handlerException(e);
         }
@@ -461,7 +553,6 @@ public class CustomerMeetingCheckInventoryActivity extends BaseActivity implemen
     }
 
 
-
     /**
      * 显示选择类型 Dialog
      */
@@ -511,7 +602,7 @@ public class CustomerMeetingCheckInventoryActivity extends BaseActivity implemen
                 mChoiceBrandDialog.dismiss();
                 String brand = mBrandList.get(position);
                 mTextViewCurrentOrderBrand.setText(brand);
-                if(brand.equals(MyApplication.getmRes().getString(R.string.all))) {
+                if (brand.equals(MyApplication.getmRes().getString(R.string.all))) {
                     brand = "";
                 }
                 mBiz.setmCurrentOrderBrand(brand);
@@ -540,11 +631,11 @@ public class CustomerMeetingCheckInventoryActivity extends BaseActivity implemen
                 mChoiceTypeDialog.dismiss();
                 String type = mTypeList.get(position);
                 mTextViewCurrentOrderType.setText(type);
-                if(type.equals(MyApplication.getmRes().getString(R.string.all))) {
+                if (type.equals(MyApplication.getmRes().getString(R.string.all))) {
                     type = "";
                 }
                 String brand = mBiz.getCurrentOrderBrand();
-                if(brand.equals(MyApplication.getmRes().getString(R.string.all))) {
+                if (brand.equals(MyApplication.getmRes().getString(R.string.all))) {
                     brand = "";
                 }
                 mBiz.setmCurrentProductType(type);

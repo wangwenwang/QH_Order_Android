@@ -85,6 +85,6 @@
     <!--客户拜访按钮字体大小-->
     <dimen name="visit_button_size">15sp</dimen>
     <dimen name="visit_button_marginbottom">14dp</dimen>
-    <dimen name="visit_button_height">40dp</dimen>
+    <dimen name="visit_button_height">37dp</dimen>
 
 </resources>

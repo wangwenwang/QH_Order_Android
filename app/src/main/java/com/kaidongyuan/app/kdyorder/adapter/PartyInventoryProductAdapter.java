@@ -47,12 +47,13 @@ public class PartyInventoryProductAdapter extends BaseExpandableListAdapter impl
     /**
      * 设置是否需要考虑库存
      */
-    private String  isInventory="Y";
-    public PartyInventoryProductAdapter(Context context, List<Product> products, List<Product> choicedProduct,boolean isInventory) {
+    private String isInventory = "Y";
+
+    public PartyInventoryProductAdapter(Context context, List<Product> products, List<Product> choicedProduct, boolean isInventory) {
         this.mContext = context;
         this.mProducts = products == null ? new ArrayList<Product>() : products;
         this.mChoicedProducts = choicedProduct == null ? new ArrayList<Product>() : choicedProduct;
-        this.isInventory=isInventory?"Y":"N";
+        this.isInventory = isInventory ? "Y" : "N";
     }
 
     public void notifyChange(List<Product> products, List<Product> choicedProduct) {
@@ -157,12 +158,16 @@ public class PartyInventoryProductAdapter extends BaseExpandableListAdapter impl
         groupViewHolder.textViewProductName.setText(StringUtils.getProductName(name));
         groupViewHolder.textViewProductStyle.setText(StringUtils.getProductStyle(name));
         groupViewHolder.textViewOriginPrice.setText("￥" + product.getPRODUCT_PRICE());
+        if(!product.getPRODUCT_UOM().equals("")) {
+
+            groupViewHolder.textViewOriginPrice.setText("￥" + product.getPRODUCT_PRICE() + "/" + product.getPRODUCT_UOM());
+        }
 
         product.setISINVENTORY(isInventory);
         //库存是否显示
         if (BusinessConstants.ISNEED_CARE_NVENTORY.equals(product.getISINVENTORY())) {
             groupViewHolder.linearLayoutKucun.setVisibility(View.VISIBLE);
-            groupViewHolder.textViewProdcutInventory.setText(String.valueOf((int)product.getSTOCK_QTY()));
+            groupViewHolder.textViewProdcutInventory.setText(String.valueOf((int) product.getSTOCK_QTY()));
         } else {
             groupViewHolder.linearLayoutKucun.setVisibility(View.GONE);
         }
@@ -234,10 +239,10 @@ public class PartyInventoryProductAdapter extends BaseExpandableListAdapter impl
         } else if (v instanceof TextView && mInterfae != null) {
             switch (v.getId()) {
                 case R.id.tv_count:
-                    if (mInputDialog == null) {
-                        showInputDialog();
-                    }
                     mInputCountToIndex = (int) v.getTag();
+//                    if (mInputDialog == null) {
+                    showInputDialog();
+//                    }
                     mInputDialog.show();
                     break;
             }
@@ -248,9 +253,10 @@ public class PartyInventoryProductAdapter extends BaseExpandableListAdapter impl
      * 显示输入 Dialog
      */
     private void showInputDialog() {
-        if (mInputDialog == null) {
-            mInputDialog = new ScanfProductNumberDialog(mContext);
-        }
+//        if (mInputDialog == null) {
+        Product p = mProducts.get(mInputCountToIndex);
+        mInputDialog = new ScanfProductNumberDialog(mContext, p);
+//        }
         mInputDialog.setInterface(new ScanfProductNumberDialog.ScanfProductNumberDialogInterface() {
             @Override
             public void pressConfrimButton(int inputNumber) {

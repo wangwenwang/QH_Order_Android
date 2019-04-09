@@ -631,17 +631,17 @@ public class CustomerMeetingsActivity extends BaseActivity implements View.OnCli
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(CustomerMeetingsActivity.this);
                     builder.setTitle("");
-                    builder.setMessage("上次拜访未完成，是否新建拜访？");
-                    builder.setPositiveButton("新建", new DialogInterface.OnClickListener() {
+                    builder.setMessage("上次拜访未完成，不能新建拜访");
+                    builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
 
-                            Intent intent = new Intent(CustomerMeetingsActivity.this, CustomerMeetingCreateActivity.class);
-                            intent.putExtra("CustomerMeeting", customerM);
-                            startActivity(intent);
+//                            Intent intent = new Intent(CustomerMeetingsActivity.this, CustomerMeetingCreateActivity.class);
+//                            intent.putExtra("CustomerMeeting", customerM);
+//                            startActivity(intent);
                         }
                     });
-                    builder.setNegativeButton("取消", null);
+//                    builder.setNegativeButton("取消", null);
                     builder.show();
                 } else {
 

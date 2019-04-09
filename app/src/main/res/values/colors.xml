@@ -84,7 +84,13 @@
     <color name="yb_main_color">#0094D7</color>
     <color name="yb_main_text_gray_9">#999999</color>
 
-
     <color name="lm_cell_separation_line">#dfdfdf</color>
+
+
+    <!--蓝牙打印-->
+    <color name="button_main">#18c117</color>
+    <color name="button_dark">#0fa466</color>
+    <color name="button_unable">#cccccc</color>
+    <color name="disconnet_color">#ea0923</color>
 
 </resources>

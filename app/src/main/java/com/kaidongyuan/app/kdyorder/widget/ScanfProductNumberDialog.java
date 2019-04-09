@@ -63,7 +63,7 @@ public class ScanfProductNumberDialog extends Dialog implements View.OnClickList
         if(Tools.hasBASE_RATE(produtM.getBASE_RATE())) {
             mEditTextInputNumberUom.setText(produtM.getPACK_UOM());
         }else {
-            mEditTextInputNumberUom.setText("");
+            mEditTextInputNumberUom.setText(produtM.getPRODUCT_UOM());
         }
     }
 

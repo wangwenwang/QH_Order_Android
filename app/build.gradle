@@ -46,6 +46,7 @@ dependencies {
     compile files('libs/BaiduLBS_Android.jar')
     compile files('libs/picasso-2.5.2.jar')
     compile files('libs/aspectjweaver-1.8.10.jar')
+    compile files('libs/posprinterconnectandsendsdk.jar')
     compile project(':mylibrary')
     compile files('libs/photoview-library-1.2.2.jar')
     compile 'com.android.support:design:23.+'
