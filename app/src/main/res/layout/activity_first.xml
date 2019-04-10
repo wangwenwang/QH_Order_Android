@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.zhy.android.percent.support.PercentRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.zhy.android.percent.support.PercentLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/activity_customer_recommend_order"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    android:fitsSystemWindows="true">
+    android:background="@color/default_bg"
+    android:orientation="vertical"
+    android:paddingBottom="15dp"
+    tools:context=".ui.activity.CheckOrderPictureActivity">
 
     <View
         android:id="@+id/topview"
@@ -44,58 +46,93 @@
     </com.zhy.android.percent.support.PercentRelativeLayout>
 
     <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:orientation="vertical">
 
-        <!--<LinearLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="208dp"-->
-            <!--android:layout_alignParentLeft="true"-->
-            <!--android:layout_alignParentStart="true"-->
-            <!--android:layout_below="@+id/percentRL_title"-->
-            <!--android:background="@null"-->
-            <!--android:orientation="horizontal">-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal">
 
-            <!--<button-->
-                <!--android:layout_width="80dp"-->
-                <!--android:layout_height="34dp"-->
-                <!--android:layout_marginLeft="10dp"-->
-                <!--android:layout_marginRight="0dp"-->
-                <!--android:layout_marginTop="80dp"-->
-                <!--android:background="@drawable/button_background_blue_selector"-->
-                <!--android:text="设备"-->
-                <!--android:textColor="@color/black"-->
-                <!--android:textSize="16sp" />-->
+            <Button
+                android:id="@+id/buttonSB"
+                style="@style/ButtonText"
+                android:layout_width="60dp"
+                android:layout_height="50dp"
+                android:text="@string/sb"
+                android:textSize="15sp"
+                android:visibility="visible"
+                tools:ignore="OnClick" />
 
-            <!--<EditText-->
-                <!--android:id="@+id/recommend_mark"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginRight="15dp"-->
-                <!--android:layout_marginTop="80dp"-->
-                <!--android:background="@drawable/lm_visit_edit_text"-->
-                <!--android:gravity="start"-->
-                <!--android:hint="请选择蓝牙设备"-->
-                <!--android:lines="1"-->
-                <!--android:paddingLeft="8dp"-->
-                <!--android:paddingTop="8dp" />-->
-        <!--</LinearLayout>-->
-
+            <EditText
+                android:id="@+id/showET"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="2"
+                android:ems="10"
+                android:hint="@string/bleselect"
+                android:textSize="15sp" />
+        </LinearLayout>
 
 
         <Button
-            android:id="@+id/bt_cancel"
-            android:layout_width="300dp"
-            android:layout_height="30dp"
-            android:text="连接"
-            android:onClick="fds"
-            android:background="@drawable/button_background_blue_selector"
-            android:textSize="@dimen/text_size_bigger"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            />
+            android:id="@+id/buttonConnect"
+            style="@style/ButtonText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:enabled="true"
+            android:paddingBottom="12dp"
+            android:paddingTop="12dp"
+            android:text="@string/connect"
+            android:textSize="15sp" />
+
+        <Button
+            android:id="@+id/buttonDisconnect"
+            style="@style/ButtonText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:enabled="true"
+            android:paddingBottom="12dp"
+            android:paddingTop="12dp"
+            android:text="@string/discon"
+            android:textSize="15sp" />
+
+        <Button
+            android:id="@+id/btText"
+            style="@style/ButtonText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:enabled="true"
+            android:paddingBottom="12dp"
+            android:paddingTop="12dp"
+            android:text="打印"
+            android:textSize="15sp" />
 
     </LinearLayout>
 
-</com.zhy.android.percent.support.PercentRelativeLayout>
+
+</com.zhy.android.percent.support.PercentLinearLayout>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

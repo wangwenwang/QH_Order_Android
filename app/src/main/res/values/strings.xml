@@ -64,11 +64,12 @@
     <string name="toast_discon_success">断开连接成功</string>
     <string name="toast_discon_faile">断开连接失败</string>
     <string name="toast_present_con">当前并未连接</string>
-    <string name="connect_first">请先先连接打印机!</string>
+    <string name="connect_first">请先连接打印机!</string>
     <string name="none_ipaddress">请先输入ip地址!</string>
     <string name="con_success">连接成功</string>
     <string name="con_failed">连接失败</string>
     <string name="con_has_discon">连接已断开</string>
+    <string name="text_for">请输入要打印的内容!</string>
 </resources>
 
 

@@ -153,6 +153,7 @@ public class LoginActivityBiz {
             editor.putString("name", name);
             editor.putString("pwd", password);
             editor.apply();//提交修改
+            MyApplication.userName = name;
         }catch (Exception e) {
             ExceptionUtil.handlerException(e);
         }

@@ -37,6 +37,11 @@ public class MyApplication extends Application {
     public static boolean isLogin = false;
 
     /**
+     * 用于保存登录帐号
+     */
+    public static String userName = "";
+
+    /**
      * 日志输出标记
      */
     private final String mLoggerTag = "Tom";

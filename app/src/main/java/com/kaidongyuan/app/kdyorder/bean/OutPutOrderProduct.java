@@ -4,7 +4,7 @@ package com.kaidongyuan.app.kdyorder.bean;
  * 出库订单详情的产品列表
  * Created by ${tom} on 2017/9/27.
  */
-public class OutPutOrderProduct {
+public class OutPutOrderProduct implements java.io.Serializable  {
     private String IDX;//	ID号
     private String ENT_IDX;//	企业ID号
     private String OUTPUT_IDX;//	出库ID号

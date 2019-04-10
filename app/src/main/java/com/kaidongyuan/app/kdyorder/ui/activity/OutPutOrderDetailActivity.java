@@ -1,5 +1,6 @@
 package com.kaidongyuan.app.kdyorder.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -25,6 +26,7 @@ import com.kaidongyuan.app.kdyorder.util.StringUtils;
 import com.kaidongyuan.app.kdyorder.util.ToastUtil;
 import com.kaidongyuan.app.kdyorder.widget.loadingdialog.MyLoadingDialog;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -56,6 +58,11 @@ public class OutPutOrderDetailActivity extends BaseActivity implements View.OnCl
      * 网络请求是显示的 Dialog
      */
     private MyLoadingDialog mLoadingDialog;
+
+// 打印
+    private TextView tv_Print;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,6 +112,7 @@ public class OutPutOrderDetailActivity extends BaseActivity implements View.OnCl
             this.lv_outputorder_productlist.setAdapter(mAdapter);
             this.bt_confirm= (Button) this.findViewById(R.id.bt_confirm);
             this.bt_cancel= (Button) this.findViewById(R.id.bt_cancel);
+            this.tv_Print = (TextView) this.findViewById(R.id.tv_print);
         } catch (Exception e) {
             ExceptionUtil.handlerException(e);
         }
@@ -115,6 +123,7 @@ public class OutPutOrderDetailActivity extends BaseActivity implements View.OnCl
         textview_nodata.setOnClickListener(this);
         bt_cancel.setOnClickListener(this);
         bt_confirm.setOnClickListener(this);
+        tv_Print.setOnClickListener(this);
     }
     /**
      * 显示 DownloadingDialog
@@ -245,6 +254,14 @@ public class OutPutOrderDetailActivity extends BaseActivity implements View.OnCl
                 }catch (Exception ex){
                     ExceptionUtil.handlerException(ex);
                 }
+                break;
+            case R.id.tv_print:
+                Intent printIntent = new Intent(OutPutOrderDetailActivity.this, PrintActivity.class);
+                printIntent.putExtra(EXTRAConstants.EXTRA_OUTPUT_PARTY, mBiz.getInfo().getPARTY_NAME());
+                printIntent.putExtra(EXTRAConstants.EXTRA_OUTPUT_GOODS_QTY, mBiz.getInfo().getOUTPUT_QTY());
+                printIntent.putExtra(EXTRAConstants.EXTRA_OUTPUT_NO, mBiz.getInfo().getOUTPUT_NO());
+                printIntent.putExtra(EXTRAConstants.EXTRA_OUTPUT_GOODS, (Serializable) mBiz.getList());
+                startActivity(printIntent);
                 break;
             default:
                 return;

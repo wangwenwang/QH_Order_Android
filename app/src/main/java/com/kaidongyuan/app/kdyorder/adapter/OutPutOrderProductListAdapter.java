@@ -70,7 +70,7 @@ public class OutPutOrderProductListAdapter extends BaseAdapter {
             holder = (Holder) convertView.getTag();
         }
         holder.tv_product_name.setText(mProduct.getPRODUCT_NAME());
-        holder.tv_product_qty.setText((int) mProduct.getOUTPUT_QTY()+mProduct.getOUTPUT_UOM());
+        holder.tv_product_qty.setText(mProduct.getOUTPUT_QTY()+mProduct.getOUTPUT_UOM());
         holder.tv_ORG_PRICE.setText(mProduct.getORG_PRICE());
         holder.tv_OUTPUT_WEIGHT.setText(mProduct.getOUTPUT_WEIGHT()+"");
         holder.tv_ACT_PRICE.setText(mProduct.getACT_PRICE());

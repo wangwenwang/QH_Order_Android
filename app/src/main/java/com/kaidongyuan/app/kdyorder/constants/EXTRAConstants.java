@@ -200,6 +200,26 @@ public class EXTRAConstants {
      */
     public static final String EXTRA_VISIT_IDX = "EXTRA_VISIT_IDX";
 
+    /**
+     * 从出库单详细 跳转到 打印  客户名称
+     */
+    public static final String EXTRA_OUTPUT_PARTY = "EXTRA_OUTPUT_PARTY";
+
+    /**
+     * 从出库单详细 跳转到 打印  出库单商品总数量
+     */
+    public static final String EXTRA_OUTPUT_GOODS_QTY = "EXTRA_OUTPUT_GOODS_QTY";
+
+    /**
+     * 从出库单详细 跳转到 打印  出库单号
+     */
+    public static final String EXTRA_OUTPUT_NO = "EXTRA_OUTPUT_NO";
+
+    /**
+     * 从出库单详细 跳转到 打印  商品数组
+     */
+    public static final String EXTRA_OUTPUT_GOODS = "EXTRA_OUTPUT_GOODS";
+
 }
 
 

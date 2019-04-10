@@ -21,17 +21,6 @@
         app:layout_heightPercent="@string/title_height"
         app:layout_widthPercent="@string/title_width">
 
-        <TextView
-            android:id="@+id/textView_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:gravity="center"
-            android:text="出库详情"
-            android:textColor="@color/text_title_color"
-            android:textSize="@dimen/title_size"
-            android:textStyle="bold" />
-
         <ImageView
             android:id="@+id/button_goback"
             android:layout_width="38dp"
@@ -41,6 +30,29 @@
             android:paddingRight="@dimen/title_imageview_paddingright"
             android:paddingTop="@dimen/title_imageview_paddingtop"
             android:src="@drawable/back" />
+
+        <TextView
+            android:id="@+id/tv_print"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:gravity="center"
+            android:layout_marginRight="10dp"
+            android:text="打印"
+            android:textColor="@color/text_title_color"
+            android:textSize="@dimen/title_size"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textView_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="出库详情"
+            android:layout_marginLeft="200dp"
+            android:textColor="@color/text_title_color"
+            android:textSize="@dimen/title_size"
+            android:textStyle="bold" />
 
     </com.zhy.android.percent.support.PercentRelativeLayout>
     <TextView
