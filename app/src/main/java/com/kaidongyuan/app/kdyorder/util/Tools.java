@@ -10,8 +10,11 @@ import android.util.TypedValue;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by Administrator on 2019/2/11.
@@ -148,5 +151,36 @@ public class Tools {
         Date date = new Date(System.currentTimeMillis());
         String time1 = simpleDateFormat.format(date);
         return simpleDateFormat.format(date);
+    }
+
+    /**
+     * 判断是否为今天
+     *
+     * @param day 传入的 时间  "2019/4/12 10:10:30"
+     * @return true今天 false不是
+     * @throws ParseException
+     */
+    public static boolean isToday(String day) throws ParseException {
+
+        ThreadLocal<SimpleDateFormat> DateLocal = new ThreadLocal<SimpleDateFormat>();
+        if (null == DateLocal.get()) {
+            DateLocal.set(new SimpleDateFormat("yyyy/MM/dd", Locale.CHINA));
+        }
+
+        Calendar pre = Calendar.getInstance();
+        Date predate = new Date(System.currentTimeMillis());
+        pre.setTime(predate);
+        Calendar cal = Calendar.getInstance();
+        Date date = DateLocal.get().parse(day);
+        cal.setTime(date);
+        if (cal.get(Calendar.YEAR) == (pre.get(Calendar.YEAR))) {
+            int diffDay = cal.get(Calendar.DAY_OF_YEAR)
+                    - pre.get(Calendar.DAY_OF_YEAR);
+
+            if (diffDay == 0) {
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -22,6 +22,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -36,6 +37,7 @@ import com.kaidongyuan.app.kdyorder.constants.SharedPreferenceConstants;
 import com.kaidongyuan.app.kdyorder.ui.print.DeviceReceiver;
 import com.kaidongyuan.app.kdyorder.util.DateUtil;
 import com.kaidongyuan.app.kdyorder.util.ExceptionUtil;
+import com.kaidongyuan.app.kdyorder.util.SharedPreferencesUtil;
 import com.kaidongyuan.app.kdyorder.util.StringUtils;
 import com.kaidongyuan.app.kdyorder.util.ToastUtil;
 import com.kaidongyuan.app.kdyorder.util.Tools;
@@ -53,6 +55,11 @@ import java.util.List;
 import java.util.Set;
 
 public class PrintActivity extends BaseActivity implements View.OnClickListener {
+
+    /**
+     * 返回上一界面按钮
+     */
+    private ImageView mImageViewGoBack;
 
     //IMyBinder接口，所有可供调用的连接和发送数据的方法都封装在这个接口内
     public static IMyBinder binder;
@@ -76,7 +83,8 @@ public class PrintActivity extends BaseActivity implements View.OnClickListener 
     Button BTCon,//连接按钮
             BTDisconnect,
             BtSb,
-            btText;//断开 按钮
+            btPrintCustom,   //打印客户联
+            btPrintReceipt;  //打印回单联
     EditText showET;//显示
     BluetoothAdapter bluetoothAdapter;
     private View dialogView;
@@ -107,6 +115,8 @@ public class PrintActivity extends BaseActivity implements View.OnClickListener 
 //            setTop();
             initView();
             setlistener();
+            // 自动填充蓝牙打机机并连接（上一次成功连接）
+            autoConBlue();
         } catch (Exception e) {
             ExceptionUtil.handlerException(e);
         }
@@ -115,20 +125,22 @@ public class PrintActivity extends BaseActivity implements View.OnClickListener 
     //初始化控件
     private void initView() {
 
+        mImageViewGoBack = (ImageView) this.findViewById(R.id.button_goback);
         BtSb = (Button) findViewById(R.id.buttonSB);
         showET = (EditText) findViewById(R.id.showET);
         BTCon = (Button) findViewById(R.id.buttonConnect);
         BTDisconnect = (Button) findViewById(R.id.buttonDisconnect);
-        btText = (Button) findViewById(R.id.btText);
+        btPrintCustom = (Button) findViewById(R.id.btPrintCustom);
     }
 
     //给按钮添加监听事件
     private void setlistener() {
 
+        mImageViewGoBack.setOnClickListener(this);
         BtSb.setOnClickListener(this);
         BTCon.setOnClickListener(this);
         BTDisconnect.setOnClickListener(this);
-        btText.setOnClickListener(this);
+        btPrintCustom.setOnClickListener(this);
 
 //        conPort.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 //            @Override
@@ -166,6 +178,40 @@ public class PrintActivity extends BaseActivity implements View.OnClickListener 
 //            }
 //        });
 
+    }
+
+    private void autoConBlue() {
+
+        String mac = SharedPreferencesUtil.getValueByName(SharedPreferenceConstants.BUSSINESS_CODE,
+                SharedPreferenceConstants.LAST_BLUETOOTH_CONNECTION, SharedPreferencesUtil.STRING);
+        if (!mac.equals("")) {
+
+            Log.d("LM", "有");
+
+            showET.setText(mac);
+            ToastUtil.showToastBottom("正在连接打印机...", Toast.LENGTH_LONG);
+
+            new Thread() {
+                public void run() {
+
+                    try {
+                        sleep(400);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            connetBle();
+                        }
+                    });
+                }
+            }.start();
+        } else {
+
+            Log.d("LM", "没有 ");
+        }
     }
 
     public void setBluetooth() {
@@ -238,6 +284,11 @@ public class PrintActivity extends BaseActivity implements View.OnClickListener 
 
                     String msg = deviceList_bonded.get(arg2);
                     mac = msg.substring(msg.length() - 17);
+
+                    // 存储mac，下次自动连接
+                    SharedPreferencesUtil.WriteSharedPreferences(SharedPreferenceConstants.BUSSINESS_CODE,
+                            SharedPreferenceConstants.LAST_BLUETOOTH_CONNECTION, mac);
+
                     String name = msg.substring(0, msg.length() - 18);
                     //lv1.setSelection(arg2);
                     dialog.cancel();
@@ -263,6 +314,11 @@ public class PrintActivity extends BaseActivity implements View.OnClickListener 
                     }
                     String msg = deviceList_found.get(arg2);
                     mac = msg.substring(msg.length() - 17);
+
+                    // 存储mac，下次自动连接
+                    SharedPreferencesUtil.WriteSharedPreferences(SharedPreferenceConstants.BUSSINESS_CODE,
+                            SharedPreferenceConstants.LAST_BLUETOOTH_CONNECTION, mac);
+
                     String name = msg.substring(0, msg.length() - 18);
                     //lv2.setSelection(arg2);
                     dialog.cancel();
@@ -354,6 +410,12 @@ public class PrintActivity extends BaseActivity implements View.OnClickListener 
 
         int id = view.getId();
 
+        // 返回
+        if (id == R.id.button_goback) {
+
+            this.finish();
+        }
+
         // 设备按钮
         if (id == R.id.buttonSB) {
 
@@ -387,11 +449,21 @@ public class PrintActivity extends BaseActivity implements View.OnClickListener 
             }
         }
 
-        // 打印
-        if (id == R.id.btText) {
+        // 打印客户联
+        if (id == R.id.btPrintCustom) {
 
-            printText();
+            printText("客户联");
+
+            printText("虚线");
+
+            printText("回单联");
         }
+
+//        // 打印回单联
+//        if (id == R.id.btPrintReceipt) {
+//
+//            printText("回单联");
+//        }
     }
 
     /*
@@ -399,7 +471,7 @@ public class PrintActivity extends BaseActivity implements View.OnClickListener 
         pos指令中并没有专门的打印文本的指令
         但是，你发送过去的数据，如果不是打印机能识别的指令，满一行后，就可以自动打印了，或者加上OA换行，也能打印
          */
-    private void printText() {
+    private void printText(final String CUSTOM_OR_RECEIPT) {
 
         if (!ISCONNECT) {
             ToastUtil.showToastBottom(getString(R.string.connect_first), Toast.LENGTH_SHORT);
@@ -428,6 +500,23 @@ public class PrintActivity extends BaseActivity implements View.OnClickListener 
                             //初始化打印机，清除缓存
                             list.add(DataForSendToPrinterPos80.initializePrinter());
 
+                            if (CUSTOM_OR_RECEIPT.equals("虚线")) {
+
+                                list.add(DataForSendToPrinterPos80.printAndFeedLine());
+                                list.add(StringUtils.strTobytes("- - - - - - - - - - - - - - - - - - - - - - - -"));
+                                list.add(DataForSendToPrinterPos80.printAndFeedLine());
+                                list.add(DataForSendToPrinterPos80.printAndFeedLine());
+                                return list;
+                            }
+
+                            // 客户联|回单联
+                            list.add(DataForSendToPrinterPos80.setAbsolutePrintPosition(200, 01));
+                            if (CUSTOM_OR_RECEIPT.equals("客户联")) {
+                                list.add(StringUtils.strTobytes("【客户联】"));
+                            } else if (CUSTOM_OR_RECEIPT.equals("回单联")) {
+                                list.add(StringUtils.strTobytes("【回单联】"));
+                            } list.add(DataForSendToPrinterPos80.printAndFeedLine());
+
                             // 头部
                             // 抬头 居中
                             list.add(DataForSendToPrinterPos80.selectAlignment(1));
@@ -437,17 +526,28 @@ public class PrintActivity extends BaseActivity implements View.OnClickListener 
                             list.add(StringUtils.strTobytes("---------------------------------------------"));
                             list.add(DataForSendToPrinterPos80.printAndFeedLine());
 
+                            // 客户代码
+                            String patyCode = "";
                             // 客户名称
                             String patyName = "";
+                            // 客户电话
+                            String patyTel = "";
                             Intent intent = getIntent();
                             List<OutPutOrderProduct> goods = null;
                             try {
-                                patyName = intent.getStringExtra(EXTRAConstants.EXTRA_OUTPUT_PARTY);
+                                patyCode = intent.getStringExtra(EXTRAConstants.EXTRA_OUTPUT_PARTY_CODE);
+                                patyTel = intent.getStringExtra(EXTRAConstants.EXTRA_OUTPUT_PARTY_TEL);
+                                patyName = intent.getStringExtra(EXTRAConstants.EXTRA_OUTPUT_PARTY_NAME);
                                 goods = (List<OutPutOrderProduct>) getIntent().getSerializableExtra(EXTRAConstants.EXTRA_OUTPUT_GOODS);
                             } catch (Exception e) {
                             }
+                            list.add(DataForSendToPrinterPos80.setAbsolutePrintPosition(00, 00));
+                            // 客户代码/电话/ 居左
+                            String partyCode = "客户代码：" + patyCode + "   [" + patyTel + "]";
                             // 客户名称 居左
                             String partyName = "客户名称：" + patyName;
+                            list.add(StringUtils.strTobytes(partyCode));
+                            list.add(DataForSendToPrinterPos80.printAndFeedLine());
                             list.add(StringUtils.strTobytes(partyName));
                             list.add(DataForSendToPrinterPos80.printAndFeedLine());
                             list.add(StringUtils.strTobytes("---------------------------------------------"));
@@ -522,6 +622,12 @@ public class PrintActivity extends BaseActivity implements View.OnClickListener 
                                 String ordNo = "订单号：" + orderNO;
                                 list.add(StringUtils.strTobytes(ordNo));
                                 list.add(DataForSendToPrinterPos80.printAndFeedLine());
+
+                                if (CUSTOM_OR_RECEIPT.equals("回单联")) {
+                                    list.add(DataForSendToPrinterPos80.printAndFeedLine());
+                                    list.add(StringUtils.strTobytes("客户签名："));
+                                    list.add(DataForSendToPrinterPos80.printAndFeedLine());
+                                }
                             }
                             return list;
                         }

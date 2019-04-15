@@ -1,11 +1,14 @@
 package com.kaidongyuan.app.kdyorder.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.kaidongyuan.app.kdyorder.R;
@@ -13,8 +16,10 @@ import com.kaidongyuan.app.kdyorder.bean.CustomerMeeting;
 import com.kaidongyuan.app.kdyorder.bean.Information;
 import com.kaidongyuan.app.kdyorder.constants.URLCostant;
 import com.kaidongyuan.app.kdyorder.interfaces.OnClickListenerStrInterface;
+import com.kaidongyuan.app.kdyorder.util.Tools;
 import com.squareup.picasso.Picasso;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,6 +61,7 @@ public class CustomerMeetingAdapter extends BaseAdapter {
         return position;
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         final ViewHolder holder;
@@ -71,6 +77,7 @@ public class CustomerMeetingAdapter extends BaseAdapter {
             holder.tv_visit = (TextView) convertView.findViewById(R.id.tv_visit);
             holder.tv_visited = (TextView) convertView.findViewById(R.id.tv_visited);
             holder.tv_history = (TextView) convertView.findViewById(R.id.tv_history);
+            holder.ll_cell = (LinearLayout) convertView.findViewById(R.id.ll_cell);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -84,6 +91,30 @@ public class CustomerMeetingAdapter extends BaseAdapter {
         }else {
 
             holder.tv_visited.setText("本" + customerMeeting.getFREQUENCY() + "已拜访" + customerMeeting.getVISIT_NUMBER() + "次");
+        }
+
+        // 拜访日期为今天且已拜访，显示绿色表示完成
+        // 拜访日期为今天且拜访中，显示黄色表示正在进行中
+        // 其它的显示红色表示未完成
+        boolean isToday = false;
+        try {
+            isToday = Tools.isToday(customerMeeting.getVISIT_DATE());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        int visiting_number = 0;
+        try { visiting_number = Integer.parseInt(customerMeeting.getVISITING_NUMBER());}
+        catch (Exception e) { }
+
+        if(isToday && visiting_number <= 0) {
+            holder.ll_cell.setBackgroundColor(Color.argb(77, 2, 167, 6));
+        }else if(visiting_number > 0) {
+
+            holder.ll_cell.setBackgroundColor(Color.argb(77, 255, 227, 48));
+        }else {
+
+            holder.ll_cell.setBackgroundColor(Color.argb(77, 255, 75, 70));
         }
 
         holder.tv_history.setOnClickListener(new View.OnClickListener() {
@@ -104,5 +135,6 @@ public class CustomerMeetingAdapter extends BaseAdapter {
     class ViewHolder {
 
         TextView tv_name, tv_phone, tv_time, tv_customer_name, tv_customer_address, tv_visit, tv_history, tv_visited;
+        LinearLayout ll_cell;
     }
 }
