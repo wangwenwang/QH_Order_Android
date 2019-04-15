@@ -35,6 +35,8 @@ public class OutPutOrderInfo implements java.io.Serializable {
     private String ADUT_DATE;//	审核时间
     private String EDIT_DATE;//	修改时间
     private String OPER_USER;//	操作人
+    private String CONTACT_PERSON;//	联系人
+    private String CONTACT_TEL;//	联系电话
 
     public String getIDX() {
         return IDX;
@@ -260,12 +262,20 @@ public class OutPutOrderInfo implements java.io.Serializable {
         this.EDIT_DATE = EDIT_DATE;
     }
 
-    public String getOPER_USER() {
-        return OPER_USER;
+    public String getCONTACT_PERSON() {
+        return CONTACT_PERSON;
     }
 
-    public void setOPER_USER(String OPER_USER) {
-        this.OPER_USER = OPER_USER;
+    public void setCONTACT_PERSON(String CONTACT_PERSON) {
+        this.CONTACT_PERSON = CONTACT_PERSON;
+    }
+
+    public String getCONTACT_TEL() {
+        return CONTACT_TEL;
+    }
+
+    public void setCONTACT_TEL(String CONTACT_TEL) {
+        this.CONTACT_TEL = CONTACT_TEL;
     }
 
     @Override
@@ -300,6 +310,8 @@ public class OutPutOrderInfo implements java.io.Serializable {
                 ", ADUT_DATE='" + ADUT_DATE + '\'' +
                 ", EDIT_DATE='" + EDIT_DATE + '\'' +
                 ", OPER_USER='" + OPER_USER + '\'' +
+                ", CONTACT_PERSON='" + CONTACT_PERSON + '\'' +
+                ", CONTACT_TEL='" + CONTACT_TEL + '\'' +
                 '}';
     }
 }

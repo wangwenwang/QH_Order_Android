@@ -105,7 +105,7 @@
             android:textSize="15sp" />
 
         <Button
-            android:id="@+id/btText"
+            android:id="@+id/btPrintCustom"
             style="@style/ButtonText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -115,6 +115,18 @@
             android:paddingTop="12dp"
             android:text="打印"
             android:textSize="15sp" />
+
+        <!--<Button-->
+            <!--android:id="@+id/btPrintReceipt"-->
+            <!--style="@style/ButtonText"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="10dp"-->
+            <!--android:enabled="true"-->
+            <!--android:paddingBottom="12dp"-->
+            <!--android:paddingTop="12dp"-->
+            <!--android:text="打印回单联"-->
+            <!--android:textSize="15sp" />-->
 
     </LinearLayout>
 

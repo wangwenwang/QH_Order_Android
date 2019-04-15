@@ -201,9 +201,19 @@ public class EXTRAConstants {
     public static final String EXTRA_VISIT_IDX = "EXTRA_VISIT_IDX";
 
     /**
+     * 从出库单详细 跳转到 打印  客户代码
+     */
+    public static final String EXTRA_OUTPUT_PARTY_CODE = "EXTRA_OUTPUT_PARTY_CODE";
+
+    /**
      * 从出库单详细 跳转到 打印  客户名称
      */
-    public static final String EXTRA_OUTPUT_PARTY = "EXTRA_OUTPUT_PARTY";
+    public static final String EXTRA_OUTPUT_PARTY_NAME = "EXTRA_OUTPUT_PARTY_NAME";
+
+    /**
+     * 从出库单详细 跳转到 打印  客户电话
+     */
+    public static final String EXTRA_OUTPUT_PARTY_TEL = "EXTRA_OUTPUT_PARTY_TEL";
 
     /**
      * 从出库单详细 跳转到 打印  出库单商品总数量

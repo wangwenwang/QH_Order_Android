@@ -116,6 +116,8 @@ public class CustomerMeetingsActivity extends BaseActivity implements View.OnCli
      */
     private int mCurrentLineIndex = 0;
 
+    private boolean hasVisitng = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -547,6 +549,22 @@ public class CustomerMeetingsActivity extends BaseActivity implements View.OnCli
      */
     private void handleGetCustomerMeeingsData() {
         try {
+
+            // 设置没有『拜访中』
+            this.hasVisitng = false;
+
+            // 查看，看看此用户有没有『拜访中』
+            for (int i = 0; i < mBiz.getCustomerMeetingList().size(); i++) {
+
+                CustomerMeeting cm = mBiz.getCustomerMeetingList().get(i);
+                int visiting_number = 0;
+                try { visiting_number = Integer.parseInt(cm.getVISITING_NUMBER());}
+                catch (Exception e) { }
+                if(visiting_number > 0 && !hasVisitng) {
+                    hasVisitng = true;
+                }
+            }
+
             mXlistViewInformations.stopRefresh();
             mXlistViewInformations.stopLoadMore();
             mLoadingDialog.dismiss();
@@ -627,7 +645,7 @@ public class CustomerMeetingsActivity extends BaseActivity implements View.OnCli
 
                 }
 
-                if (VISITING_NUMBER > 0) {
+                if (hasVisitng) {
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(CustomerMeetingsActivity.this);
                     builder.setTitle("");

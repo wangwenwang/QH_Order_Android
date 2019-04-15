@@ -26,6 +26,10 @@ public class SharedPreferenceConstants {
      */
     public static final String SHARED_NAME = "ORDER_SYSTEM";
 
+    /**
+     * 上次蓝牙连接
+     */
+    public static final String LAST_BLUETOOTH_CONNECTION = "LAST_BLUETOOTH_CONNECTION";
 
 }
 

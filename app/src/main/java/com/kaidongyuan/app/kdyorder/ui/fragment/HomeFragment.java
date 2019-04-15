@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.kaidongyuan.app.kdyorder.R;
 import com.kaidongyuan.app.kdyorder.app.MyApplication;
@@ -19,6 +20,7 @@ import com.kaidongyuan.app.kdyorder.ui.activity.InventoryPartyListActivity;
 import com.kaidongyuan.app.kdyorder.ui.activity.KpiTrackActivity;
 import com.kaidongyuan.app.kdyorder.util.ExceptionUtil;
 import com.kaidongyuan.app.kdyorder.util.OrderUtil;
+import com.kaidongyuan.app.kdyorder.util.ToastUtil;
 import com.kaidongyuan.app.kdyorder.widget.CycleViewpager;
 import com.kaidongyuan.app.kdyorder.widget.MoveButton;
 import com.zhy.android.percent.support.PercentRelativeLayout;
@@ -156,6 +158,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
             mPercentrlPartyInventory.setOnClickListener(this);
             mPercentrlChart.setOnClickListener(this);
             mPercentrlKpiTrack.setOnClickListener(this);
+            mPercentrlOrderCheck.setOnClickListener(this);
+            mPercentrlCustomerMan.setOnClickListener(this);
         } catch (Exception e) {
             ExceptionUtil.handlerException(e);
         }
@@ -203,8 +207,11 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                     startActivity(kpiTrackIntent);
                     break;
                 case R.id.percentrl_order_check:     // 跳转到 订单查询
+                    Intent checkOrderIntent = new Intent(BroadcastConstants.JUMPTO_CHECKORDER_FRAGMENT);
+                    MyApplication.getAppContext().sendBroadcast(checkOrderIntent);
                     break;
                 case R.id.percentrl_customer_man:    // 跳转到 客户管理
+                    ToastUtil.showToastBottom("维护中...", Toast.LENGTH_SHORT);
                     break;
                 default:
                     break;
