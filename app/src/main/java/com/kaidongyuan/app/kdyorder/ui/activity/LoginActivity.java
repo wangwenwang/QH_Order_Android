@@ -30,6 +30,7 @@ import com.kaidongyuan.app.kdyorder.util.logger.Logger;
 import java.util.ArrayList;
 import java.util.List;
 
+//
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
 
     /**
