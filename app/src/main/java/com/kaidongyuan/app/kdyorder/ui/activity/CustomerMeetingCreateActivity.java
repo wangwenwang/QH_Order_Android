@@ -1,9 +1,12 @@
 package com.kaidongyuan.app.kdyorder.ui.activity;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -22,7 +25,13 @@ import com.kaidongyuan.app.kdyorder.model.CustomerMeetingCreateActivityBiz;
 import com.kaidongyuan.app.kdyorder.util.DensityUtil;
 import com.kaidongyuan.app.kdyorder.util.ExceptionUtil;
 import com.kaidongyuan.app.kdyorder.util.ToastUtil;
+import com.kaidongyuan.app.kdyorder.util.Tools;
 import com.kaidongyuan.app.kdyorder.widget.loadingdialog.MyLoadingDialog;
+//import com.kongzue.dialog.listener.OnMenuItemClickListener;
+//import com.kongzue.dialog.v2.BottomMenu;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Administrator on 2016/5/24.
@@ -48,6 +57,8 @@ public class CustomerMeetingCreateActivity extends BaseActivity implements View.
     private TextView ed_customer_address;
     private EditText ed_address_person;
     private EditText ed_address_tel;
+    private ImageView mImageViewCallTel;
+    private ImageView mImageViewNva;
 
     private final int RequestAddContact = 1001;
     private final int RequestAddressBelong = 1008;
@@ -70,10 +81,13 @@ public class CustomerMeetingCreateActivity extends BaseActivity implements View.
     private EditText edMeetingRemark;
     private Button buttonEdit;
     private Button buttonUpdata;
+    public static Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mContext = this;
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         setContentView(R.layout.activity_create_meeting);
         try {
@@ -97,6 +111,8 @@ public class CustomerMeetingCreateActivity extends BaseActivity implements View.
             mBiz.cancelRequest();
             mBiz = null;
             mImageViewGoBack = null;
+            mImageViewCallTel = null;
+            mImageViewNva = null;
         } catch (Exception e) {
             ExceptionUtil.handlerException(e);
         }
@@ -171,6 +187,8 @@ public class CustomerMeetingCreateActivity extends BaseActivity implements View.
             edMeetingRemark = (EditText) this.findViewById(R.id.ed_meeting_remark);
             buttonEdit = (Button) this.findViewById(R.id.button_edit);
             buttonUpdata = (Button) this.findViewById(R.id.button_updata);
+            mImageViewCallTel = (ImageView) this.findViewById(R.id.button_call_tel);
+//            mImageViewNva = (ImageView) this.findViewById(R.id.button_nav);
         } catch (Exception e) {
             ExceptionUtil.handlerException(e);
         }
@@ -181,6 +199,8 @@ public class CustomerMeetingCreateActivity extends BaseActivity implements View.
             mImageViewGoBack.setOnClickListener(this);
             buttonEdit.setOnClickListener(this);
             buttonUpdata.setOnClickListener(this);
+            mImageViewCallTel.setOnClickListener(this);
+            mImageViewNva.setOnClickListener(this);
         } catch (Exception e) {
             ExceptionUtil.handlerException(e);
         }
@@ -306,6 +326,17 @@ public class CustomerMeetingCreateActivity extends BaseActivity implements View.
                 case R.id.bt_dialog_cancel:
                     if (mDialog != null) mDialog.dismiss();
                     break;
+                case R.id.button_call_tel:
+                    String tel = "tel:" + mBiz.getCustomerMeeting().getCONTACTS_TEL();
+                    if (tel.startsWith("mailto:") || tel.startsWith("geo:") || tel.startsWith("tel:")) {
+
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(tel));
+                        startActivity(intent);
+                    }
+                    break;
+//                case R.id.button_nav:
+//                    Tools.ToNavigation(mBiz.getCustomerMeeting().getPARTY_ADDRESS(), mContext, getResources().getString(R.string.app_name));
+//                    break;
                 default:
                     break;
             }

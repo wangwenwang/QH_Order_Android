@@ -146,7 +146,7 @@ public class OutPutToAddress implements Parcelable {
     }
 
     public void setCONTACT_TEL(String CONTACT_TEL) {
-        this.CONTACT_PERSON = CONTACT_TEL;
+        this.CONTACT_TEL = CONTACT_TEL;
     }
 
     @Override

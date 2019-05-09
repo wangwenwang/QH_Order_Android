@@ -108,13 +108,13 @@ public class CustomerMeetingAdapter extends BaseAdapter {
         catch (Exception e) { }
 
         if(isToday && visiting_number <= 0) {
-            holder.ll_cell.setBackgroundColor(Color.argb(77, 2, 167, 6));
+            holder.ll_cell.setBackgroundColor(Color.argb(77, 46,196,182));
         }else if(visiting_number > 0) {
 
-            holder.ll_cell.setBackgroundColor(Color.argb(77, 255, 227, 48));
+            holder.ll_cell.setBackgroundColor(Color.argb(77, 251,255,185));
         }else {
 
-            holder.ll_cell.setBackgroundColor(Color.argb(77, 255, 75, 70));
+            holder.ll_cell.setBackgroundColor(Color.argb(77, 229,101,105));
         }
 
         holder.tv_history.setOnClickListener(new View.OnClickListener() {

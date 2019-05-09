@@ -139,6 +139,12 @@ public class OutputInventoryActivity extends BaseActivity implements View.OnClic
      * 出库客户名称
      */
     private String mOutPutToPartyName;
+
+    // 出库联系人
+    private String mOutPutToPerson;
+
+    // 出库联系电话
+    private String mOutPutToTel;
     /**
      * 出库客户地址
      */
@@ -180,7 +186,7 @@ public class OutputInventoryActivity extends BaseActivity implements View.OnClic
      */
     private TextView mTextViewOtherInformations;
     /**
-     * 发货信息，收货地址
+     * 发货方，收货方
      */
     private TextView tv_outputfrom_info,tv_outputto_info;
     /**
@@ -274,6 +280,13 @@ public class OutputInventoryActivity extends BaseActivity implements View.OnClic
      * 客户拜访，拜访ID
      */
     private String VISIT_IDX;
+
+    // 收货信息
+    OutPutToAddress OT;
+    // 收货
+    TextView textViewPartyName_receive = null;
+    TextView textViewPartyAddress_receive = null;
+    TextView textViewPartyAddressContact_receive=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -390,9 +403,11 @@ public class OutputInventoryActivity extends BaseActivity implements View.OnClic
             }
             if(strOutputOrderType.equals("output_visit_sale")) {
                 if (intent.hasExtra("OutPutToAddress")) {
-                    OutPutToAddress OT = intent.getParcelableExtra("OutPutToAddress");
+                    OT = intent.getParcelableExtra("OutPutToAddress");
                     mOutPutToPartyCode = OT.getITEM_CODE();
                     mOutPutToPartyName = OT.getPARTY_NAME();
+                    mOutPutToPerson = OT.getCONTACT_PERSON();
+                    mOutPutToTel = OT.getCONTACT_TEL();
                     mOutPutToPartyAddress = OT.getADDRESS_INFO();
                 }
             }
@@ -431,19 +446,19 @@ public class OutputInventoryActivity extends BaseActivity implements View.OnClic
             mDrawerLayout = (DrawerLayout) this.findViewById(R.id.drawerlayout_products);
             mExpandableListViewProduct = (ExpandableListView) this.findViewById(R.id.lv_product);
             if (strOutputOrderType!=null&&strOutputOrderType.equals("output_return")){
-                tv_outputfrom_info.setText("收货信息："+String.valueOf(mOrderAddressInformation));
-                tv_outputto_info.setText("发货地址：");
+                tv_outputfrom_info.setText("收货方："+String.valueOf(mOrderPartyName));
+                tv_outputto_info.setText("发货方：");
                 mOrderProductAdapter = new PartyInventoryProductAdapter(this, null, null,false);
             }else if (strOutputOrderType!=null&&strOutputOrderType.equals("output_other")){
-                tv_outputfrom_info.setText("发货信息："+String.valueOf(mOrderAddressInformation));
+                tv_outputfrom_info.setText("发货方："+String.valueOf(mOrderPartyName));
                 tv_outputto_info.setVisibility(View.INVISIBLE);
                 mOutPutToPartyCode="";
                 mOutPutToPartyName="其它出库客户";
                 mOutPutToPartyAddress="其它出库客户地址信息";
                 mOrderProductAdapter = new PartyInventoryProductAdapter(this, null, null,true);
             }else {
-                tv_outputfrom_info.setText("发货信息："+String.valueOf(mOrderAddressInformation));
-                tv_outputto_info.setText("收货地址：");
+                tv_outputfrom_info.setText("发货方："+String.valueOf(mOrderPartyName));
+                tv_outputto_info.setText("收货方：");
                 mOrderProductAdapter = new PartyInventoryProductAdapter(this, null, null,true);
             }
             mExpandableListViewProduct.setAdapter(mOrderProductAdapter);
@@ -468,7 +483,7 @@ public class OutputInventoryActivity extends BaseActivity implements View.OnClic
 
             // 客户拜访 --> 建议订单（销售出库）
             if(strOutputOrderType.equals("output_visit_sale")) {
-                tv_outputto_info.setText("发货地址：" + CheckStringEmptyUtil.checkStringIsEmptyWithNoSet(mOutPutToPartyAddress));
+                tv_outputto_info.setText("收货方：" + CheckStringEmptyUtil.checkStringIsEmptyWithNoSet(mOutPutToPartyName));
             }
         } catch (Exception e) {
             ExceptionUtil.handlerException(e);
@@ -684,7 +699,7 @@ public class OutputInventoryActivity extends BaseActivity implements View.OnClic
                 ToastUtil.showToastBottom("至少选择一种产品！", Toast.LENGTH_SHORT);
                 return;
             }else if (mOutPutToPartyAddress==null||mOutPutToPartyAddress.isEmpty()){
-                ToastUtil.showToastBottom("请先选择地址信息！", Toast.LENGTH_LONG);
+                ToastUtil.showToastBottom("请选择收货方！", Toast.LENGTH_LONG);
                 return;
             }
             mBiz.setProdcutCurrentPrice();
@@ -701,6 +716,8 @@ public class OutputInventoryActivity extends BaseActivity implements View.OnClic
             intent.putExtra(EXTRAConstants.ORDER_PARTY_NO,mOrderPartyCode);
             intent.putExtra(EXTRAConstants.OUTPUT_TOPARTYCODE,mOutPutToPartyCode);
             intent.putExtra(EXTRAConstants.OUTPUT_TOPARTYNAME,mOutPutToPartyName);
+            intent.putExtra(EXTRAConstants.OUTPUT_TOPERSON,mOutPutToPerson);
+            intent.putExtra(EXTRAConstants.OUTPUT_TOTEL,mOutPutToTel);
             intent.putExtra(EXTRAConstants.OUTPUT_TOADDRESS,mOutPutToPartyAddress);
             intent.putExtra("VISIT_IDX",VISIT_IDX);
             if (strOutputOrderType!=null){
@@ -797,6 +814,7 @@ public class OutputInventoryActivity extends BaseActivity implements View.OnClic
      */
     private void showConfirmDialog() {
         try {
+            // 发货
             TextView textViewPartyName = null;
             TextView textViewPartyAddress = null;
             TextView textViewPartyAddressContact=null;
@@ -807,7 +825,7 @@ public class OutputInventoryActivity extends BaseActivity implements View.OnClic
                 mConfirmCustomerInformationDialog.setCancelable(false);
                 mConfirmCustomerInformationDialog.show();
                 Window window = mConfirmCustomerInformationDialog.getWindow();
-                window.setContentView(R.layout.dialog_confirm_customer_information);
+                window.setContentView(R.layout.dialog_confirm_customer_information_output);
                 WindowManager.LayoutParams lp = window.getAttributes();
                 lp.gravity = Gravity.CENTER;
                 lp.width = DensityUtil.dip2px(DensityUtil.getWidth_dp()*0.8f);//宽高可设置具体大小
@@ -827,6 +845,10 @@ public class OutputInventoryActivity extends BaseActivity implements View.OnClic
                 mListViewPaymentType.setAdapter(mPaymentTypeAdapter);
                 mListViewPaymentType.setOnItemClickListener(this);
                 mTextViewPaymentType = (TextView) window.findViewById(R.id.textView_paymentType);
+
+                textViewPartyName_receive = (TextView) window.findViewById(R.id.textview_partyname_receive);
+                textViewPartyAddress_receive = (TextView) window.findViewById(R.id.textview_address_receive);
+                textViewPartyAddressContact_receive= (TextView) window.findViewById(R.id.textview_contact_receive);
             }
             if (!mIsFirstTimeShow && mButtonCancelInConfirmDialog != null) {
                 mButtonCancelInConfirmDialog.setVisibility(View.GONE);
@@ -838,8 +860,25 @@ public class OutputInventoryActivity extends BaseActivity implements View.OnClic
                 textViewPartyAddress.setText(String.valueOf(mOrderAddressInformation));
             }
             if (textViewPartyAddressContact!=null){
-                textViewPartyAddressContact.setText(mOrderAddressContactPerson+"\t"+mOrderAddressContactTel);
+                textViewPartyAddressContact.setText(mOrderAddressContactPerson+"     "+mOrderAddressContactTel);
             }
+
+            if (OT != null) {
+
+                if (textViewPartyName_receive != null) {
+
+                    textViewPartyName_receive.setText(OT.getPARTY_NAME());
+                }
+                if (textViewPartyAddress_receive != null) {
+
+                    textViewPartyAddress_receive.setText(OT.getADDRESS_INFO());
+                }
+                if (textViewPartyAddressContact_receive != null) {
+
+                    textViewPartyAddressContact_receive.setText(OT.getCONTACT_PERSON()+"     "+OT.getCONTACT_TEL());
+                }
+            }
+
             if (mTextViewPaymentType != null) {
                 String paymentType = CheckStringEmptyUtil.checkStringIsEmptyWithNoSet(mBiz.getPayType().getText());
                 mTextViewPaymentType.setText(paymentType);
@@ -910,13 +949,18 @@ public class OutputInventoryActivity extends BaseActivity implements View.OnClic
             try {
                 switch (requestCode) {
                     case REQUESETCODE_OUTPUTPARTYLIST:
-                         mOutPutToPartyCode=data.getStringExtra(EXTRAConstants.OUTPUT_TOPARTYCODE);
-                         mOutPutToPartyName=data.getStringExtra(EXTRAConstants.OUTPUT_TOPARTYNAME);
-                         mOutPutToPartyAddress=data.getStringExtra(EXTRAConstants.OUTPUT_TOADDRESS);
+                        mOutPutToPartyCode = data.getStringExtra(EXTRAConstants.OUTPUT_TOPARTYCODE);
+                        mOutPutToPartyName = data.getStringExtra(EXTRAConstants.OUTPUT_TOPARTYNAME);
+                        mOutPutToPartyAddress = data.getStringExtra(EXTRAConstants.OUTPUT_TOADDRESS);
+                        mOutPutToPerson = data.getStringExtra(EXTRAConstants.OUTPUT_TOPERSON);
+                        mOutPutToTel = data.getStringExtra(EXTRAConstants.OUTPUT_TOTEL);
                         if (strOutputOrderType!=null&&strOutputOrderType.equals("output_return")){
-                            tv_outputto_info.setText("发货地址："+CheckStringEmptyUtil.checkStringIsEmptyWithNoSet(mOutPutToPartyAddress));
+                            tv_outputto_info.setText("发货方："+CheckStringEmptyUtil.checkStringIsEmptyWithNoSet(mOutPutToPartyName));
                         }else {
-                            tv_outputto_info.setText("收货地址："+CheckStringEmptyUtil.checkStringIsEmptyWithNoSet(mOutPutToPartyAddress));
+                            tv_outputto_info.setText("收货方："+CheckStringEmptyUtil.checkStringIsEmptyWithNoSet(mOutPutToPartyName));
+                            textViewPartyName_receive.setText(mOutPutToPartyName);
+                            textViewPartyAddress_receive.setText(mOutPutToPartyAddress);
+                            textViewPartyAddressContact_receive.setText(mOutPutToPerson + "     " + mOutPutToTel);
                         }
                         break;
                     default:

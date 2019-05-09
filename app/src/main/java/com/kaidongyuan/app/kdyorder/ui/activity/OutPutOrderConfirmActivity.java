@@ -64,7 +64,17 @@ public class OutPutOrderConfirmActivity extends BaseFragmentActivity implements 
      */
     private ImageView mImageViewGoBack;
 
-    private TextView tv_outputfrom_info,tv_outputto_info;
+    // 发货方
+    private TextView tv_outputfrom_partName;
+    private TextView tv_outputfrom_person;
+    private TextView tv_outputfrom_tel;
+    private TextView tv_outputfrom_address;
+
+    // 收货方
+    private TextView tv_outputto_partName;
+    private TextView tv_outputto_person;
+    private TextView tv_outputto_tel;
+    private TextView tv_outputto_address;
 
     /**
      * 用户选中的商品
@@ -151,24 +161,25 @@ public class OutPutOrderConfirmActivity extends BaseFragmentActivity implements 
      * 赠品的品类集合
      */
     private List<OrderGift> mGiftCategoryData;
-    /**
-     * 出库客户地址id
-     */
-    public String strAddressIDX;
-    /**
-     *
-     */
+
     public String party_idx;
+
+    public String strOutputOrderType;
+
+    // 发货
     public String strPartyName;
     public String strPartyCode;
-    public String strAddressCode;
-    public String strAddressInfo;
     public String strContactPerson;
     public String strContactTel;
+    public String strAddressCode;
+    public String strAddressInfo;
+    public String strAddressIDX;
+    // 收货
     public String strToPartyCode;
     public String strToPartyName;
+    public String strToPerson;
+    public String strToTel;
     public String strToAddress;
-    public String strOutputOrderType;
 
     /**
      * 客户拜访，拜访ID
@@ -200,8 +211,17 @@ public class OutPutOrderConfirmActivity extends BaseFragmentActivity implements 
                 mLoadingDialog.dismiss();
             }
             mLoadingDialog = null;
-            tv_outputfrom_info=null;
-            tv_outputto_info=null;
+            // 发货
+            tv_outputfrom_partName=null;
+            tv_outputfrom_person=null;
+            tv_outputfrom_tel=null;
+            tv_outputfrom_address=null;
+            // 收货
+            tv_outputto_partName=null;
+            tv_outputto_person=null;
+            tv_outputto_tel=null;
+            tv_outputto_address=null;
+            // 返回
             mImageViewGoBack = null;
             mChoicedProducts = null;
             mTextViewTime = null;
@@ -267,6 +287,12 @@ public class OutPutOrderConfirmActivity extends BaseFragmentActivity implements 
             if (intent.hasExtra(EXTRAConstants.OUTPUT_TOPARTYNAME)){
                 strToPartyName = intent.getStringExtra(EXTRAConstants.OUTPUT_TOPARTYNAME);
             }
+            if (intent.hasExtra(EXTRAConstants.OUTPUT_TOPERSON)){
+                strToPerson = intent.getStringExtra(EXTRAConstants.OUTPUT_TOPERSON);
+            }
+            if (intent.hasExtra(EXTRAConstants.OUTPUT_TOTEL)){
+                strToTel = intent.getStringExtra(EXTRAConstants.OUTPUT_TOTEL);
+            }
             if (intent.hasExtra(EXTRAConstants.OUTPUT_TOADDRESS)){
                 strToAddress = intent.getStringExtra(EXTRAConstants.OUTPUT_TOADDRESS);
             }
@@ -302,8 +328,17 @@ public class OutPutOrderConfirmActivity extends BaseFragmentActivity implements 
             setTieltLayoutHeight();
             mImageViewGoBack = (ImageView) this.findViewById(R.id.button_goback);
             mTextViewTime = (TextView) this.findViewById(R.id.tv_time);
-            tv_outputfrom_info= (TextView) this.findViewById(R.id.tv_outputfrom_info);
-            tv_outputto_info= (TextView) this.findViewById(R.id.tv_outputto_info);
+            // 收货
+            tv_outputfrom_partName= (TextView) this.findViewById(R.id.tv_outputfrom_party_name);
+            tv_outputfrom_person= (TextView) this.findViewById(R.id.tv_outputfrom_person);
+            tv_outputfrom_tel= (TextView) this.findViewById(R.id.tv_outputfrom_tel);
+            tv_outputfrom_address= (TextView) this.findViewById(R.id.tv_outputfrom_address);
+            // 发货
+            tv_outputto_partName= (TextView) this.findViewById(R.id.tv_outputto_party_name);
+            tv_outputto_person= (TextView) this.findViewById(R.id.tv_outputto_person);
+            tv_outputto_tel= (TextView) this.findViewById(R.id.tv_outputto_tel);
+            tv_outputto_address= (TextView) this.findViewById(R.id.tv_outputto_address);
+            // 总计
             mTextViewTotalCount = (TextView) this.findViewById(R.id.tv_total_count);
             mTextViewOrgPrice = (TextView) this.findViewById(R.id.tv_org_price);
             mTextViewActPrice = (TextView) this.findViewById(R.id.tv_act_price);
@@ -320,11 +355,25 @@ public class OutPutOrderConfirmActivity extends BaseFragmentActivity implements 
             mEditTextMark = (EditText) this.findViewById(R.id.et_mark);
             mBtAddGift = (Button) this.findViewById(R.id.bt_addgift);
             if (strOutputOrderType!=null&&strOutputOrderType.equals("output_return")){
-                tv_outputfrom_info.setText("发货信息："+strToPartyName+"\n\t\t\t\t\t\t\t\t"+strToAddress);
-                tv_outputto_info.setText("收货信息："+strAddressInfo);
+                tv_outputfrom_partName.setText(strToPartyName);
+                tv_outputfrom_person.setText(strToPerson);
+                tv_outputfrom_tel.setText(strToTel);
+                tv_outputfrom_address.setText(strToAddress);
+
+                tv_outputto_partName.setText(strPartyName);
+                tv_outputto_person.setText(strContactPerson);
+                tv_outputto_tel.setText(strContactTel);
+                tv_outputto_address.setText(strAddressInfo);
             }else {
-                tv_outputfrom_info.setText("发货信息："+strAddressInfo);
-                tv_outputto_info.setText("收货信息："+strToPartyName+"\n\t\t\t\t\t\t\t\t"+strToAddress);
+                tv_outputfrom_partName.setText(strPartyName);
+                tv_outputfrom_person.setText(strContactPerson);
+                tv_outputfrom_tel.setText(strContactTel);
+                tv_outputfrom_address.setText(strAddressInfo);
+
+                tv_outputto_partName.setText(strToPartyName);
+                tv_outputto_person.setText(strToPerson);
+                tv_outputto_tel.setText(strToTel);
+                tv_outputto_address.setText(strToAddress);
             }
 
         } catch (Exception e) {

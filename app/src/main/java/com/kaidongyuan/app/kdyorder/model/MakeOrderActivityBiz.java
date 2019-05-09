@@ -14,6 +14,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.kaidongyuan.app.kdyorder.R;
 import com.kaidongyuan.app.kdyorder.app.MyApplication;
+import com.kaidongyuan.app.kdyorder.bean.Party;
 import com.kaidongyuan.app.kdyorder.bean.PayType;
 import com.kaidongyuan.app.kdyorder.bean.Product;
 import com.kaidongyuan.app.kdyorder.bean.ProductPolicy;
@@ -90,9 +91,13 @@ public class MakeOrderActivityBiz {
      */
     private List<ProductTB> mProductBrandsType;
     /**
-     * 存放产品数据的集合
+     * 存放筛选后的产品数据的集合
      */
-    private List<Product> mCurrentProductData;
+    private List<Product> mFilterProductData;
+    /**
+     * 存放从后台获取的所有产品数据集合
+     */
+    private List<Product> mTotalProductData;
     /**
      * 用户选择的下单产品
      */
@@ -108,6 +113,7 @@ public class MakeOrderActivityBiz {
 
     public MakeOrderActivityBiz(MakeOrderActivity activity) {
         this.mActivity = activity;
+        this.mFilterProductData = new ArrayList<>();
     }
 
     /**
@@ -313,7 +319,8 @@ public class MakeOrderActivityBiz {
         try {
             List<Product> products = mProductListArr[index];
             if (products != null && products.size() > 0 && index>0) {//如果缓存中有产品数据则直接显示，不发送请求
-                mCurrentProductData = products;
+                mTotalProductData = products;
+                mFilterProductData = mTotalProductData;
                 setCurrentBrandAndType();
                 mActivity.getProductDataSuccess();
                 return false;
@@ -379,11 +386,12 @@ public class MakeOrderActivityBiz {
             int type = object.getInteger("type");
             if (type == 1) {
                 setCurrentBrandAndType();
-                mCurrentProductData = JSON.parseArray(object.getString("result"), Product.class);
+                mTotalProductData = JSON.parseArray(object.getString("result"), Product.class);
+                mFilterProductData = mTotalProductData;
                 if (mTempSelectedOrderTypeIndexInOrderTypes!=0) { //如果获取的是全部的产品，则不缓存数据，内存占用太大
-                    mProductListArr[mTempSelectedOrderTypeIndexInOrderTypes] = mCurrentProductData;
+                    mProductListArr[mTempSelectedOrderTypeIndexInOrderTypes] = mFilterProductData;
                 }
-                if (mCurrentProductData.size() > 0) {
+                if (mFilterProductData.size() > 0) {
                     mActivity.getProductDataSuccess();
                 } else {
                     mActivity.getDataError("获取产品数据失败，产品数据为空！");
@@ -437,8 +445,8 @@ public class MakeOrderActivityBiz {
      *
      * @return 产品数据
      */
-    public List<Product> getmCurrentProductData() {
-        return mCurrentProductData == null ? new ArrayList<Product>() : mCurrentProductData;
+    public List<Product> getmFilterProductData() {
+        return mFilterProductData == null ? new ArrayList<Product>() : mFilterProductData;
     }
 
     /**
@@ -557,7 +565,7 @@ public class MakeOrderActivityBiz {
      */
     public void addProductSize(int dataIndex) {
         try {
-            Product choiceProduct = mCurrentProductData.get(dataIndex);
+            Product choiceProduct = mFilterProductData.get(dataIndex);
             int index = getChoiceProductIndexInChoicedProductList(choiceProduct);
             if (index == -1) {
                 mChoiceProducts.add(mChoiceProducts.size(), choiceProduct);
@@ -628,7 +636,7 @@ public class MakeOrderActivityBiz {
      */
     public void deleteProductSize(int dataIndex) {
         try {
-            Product choiceProduct = mCurrentProductData.get(dataIndex);
+            Product choiceProduct = mFilterProductData.get(dataIndex);
             int index = getChoiceProductIndexInChoicedProductList(choiceProduct);
             deleteProductSizeInChoicedProducts(index);
         } catch (Exception e) {
@@ -677,7 +685,7 @@ public class MakeOrderActivityBiz {
      */
     public void setProductSize(int dataIndex, int productCount) {
         try {
-            Product choiceProdut = mCurrentProductData.get(dataIndex);
+            Product choiceProdut = mFilterProductData.get(dataIndex);
             int index = mChoiceProducts.indexOf(choiceProdut);
             if (index == -1) {
                 mChoiceProducts.add(mChoiceProducts.size(), choiceProdut);
@@ -870,6 +878,29 @@ public class MakeOrderActivityBiz {
         } catch (Exception e) {
             ExceptionUtil.handlerException(e);
             return key;
+        }
+    }
+
+    /**
+     * 根据用户输入查找客户
+     * @param msg 输入的信息
+     */
+    public void searchProduct(String msg) {
+        try {
+            if (msg == null || msg.length() <= 0) {
+                mFilterProductData = mTotalProductData;
+            } else {
+                ArrayList<Product> repartylist = new ArrayList<>();
+                for (Product product : mTotalProductData) {
+                    if (product.getPRODUCT_NAME().contains(msg)) {
+                        repartylist.add(product);
+                    }
+                }
+                mFilterProductData = repartylist;
+            }
+        } catch (Exception e) {
+            ExceptionUtil.handlerException(e);
+            mFilterProductData.clear();
         }
     }
 }

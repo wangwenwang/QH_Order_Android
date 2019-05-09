@@ -45,7 +45,6 @@
             android:src="@drawable/back" />
     </com.zhy.android.percent.support.PercentRelativeLayout>
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -159,6 +158,43 @@
             android:textSize="@dimen/text_size_normal" />
     </LinearLayout>
 
+    <com.zhy.android.percent.support.PercentRelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:paddingTop="3dp"
+        android:paddingBottom="3dp">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:background="@drawable/makeorder_fragment_search_edittext_bg"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            />
+
+        <ImageView
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginLeft="20dp"
+            android:background="@drawable/ic_search"
+            />
+
+        <EditText
+            android:id="@+id/edittext_headview_content"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginLeft="55dp"
+            android:layout_marginRight="20dp"
+            android:paddingLeft="5dp"
+            android:hint="按产品名称搜索"
+            android:textSize="14sp"
+            android:textColor="@color/text_color_normal"
+            android:gravity="center_vertical"
+            android:background="@null"
+            />
+    </com.zhy.android.percent.support.PercentRelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"

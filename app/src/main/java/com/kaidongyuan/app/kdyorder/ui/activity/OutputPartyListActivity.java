@@ -373,6 +373,8 @@ public class OutputPartyListActivity extends BaseActivity implements AdapterView
             intent.putExtra(EXTRAConstants.OUTPUT_TOPARTYCODE,toAddress.getITEM_CODE());
             intent.putExtra(EXTRAConstants.OUTPUT_TOPARTYNAME,toAddress.getPARTY_NAME());
             intent.putExtra(EXTRAConstants.OUTPUT_TOADDRESS,toAddress.getADDRESS_INFO());
+            intent.putExtra(EXTRAConstants.OUTPUT_TOPERSON,toAddress.getCONTACT_PERSON());
+            intent.putExtra(EXTRAConstants.OUTPUT_TOTEL,toAddress.getCONTACT_TEL());
             setResult(Activity.RESULT_OK,intent);
             finish();
         } catch (Exception e) {

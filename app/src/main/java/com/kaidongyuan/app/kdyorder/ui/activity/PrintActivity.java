@@ -520,7 +520,7 @@ public class PrintActivity extends BaseActivity implements View.OnClickListener 
                             // 头部
                             // 抬头 居中
                             list.add(DataForSendToPrinterPos80.selectAlignment(1));
-                            list.add(StringUtils.strTobytes("深圳市凯东源贸易有限公司"));
+                            list.add(StringUtils.strTobytes("前海凯东源茂利达"));
                             list.add(DataForSendToPrinterPos80.printAndFeedLine());
                             list.add(DataForSendToPrinterPos80.selectAlignment(0));
                             list.add(StringUtils.strTobytes("---------------------------------------------"));

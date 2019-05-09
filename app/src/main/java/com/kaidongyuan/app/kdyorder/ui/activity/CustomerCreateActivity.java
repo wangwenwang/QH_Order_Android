@@ -41,6 +41,7 @@ import com.kaidongyuan.app.kdyorder.util.DensityUtil;
 import com.kaidongyuan.app.kdyorder.util.ExceptionUtil;
 import com.kaidongyuan.app.kdyorder.util.StringUtils;
 import com.kaidongyuan.app.kdyorder.util.ToastUtil;
+import com.kaidongyuan.app.kdyorder.util.Tools;
 import com.kaidongyuan.app.kdyorder.widget.loadingdialog.MyLoadingDialog;
 
 import java.util.ArrayList;
@@ -382,6 +383,7 @@ public class CustomerCreateActivity extends BaseActivity implements View.OnClick
         try {
             if (mBiz.getChannels() == null || mBiz.getChannels().size() <= 0) {
                 getMeetingLineDatas();
+                ToastUtil.showToastBottom("未维护渠道...", Toast.LENGTH_SHORT);
                 return;
             }
             if (mChoiceChannelDialog == null) {

@@ -10,6 +10,8 @@ import android.os.Message;
 import android.os.Parcelable;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +19,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -31,10 +34,12 @@ import com.kaidongyuan.app.kdyorder.adapter.OrderBrandsAdapter;
 import com.kaidongyuan.app.kdyorder.adapter.OrderProductAdapter;
 import com.kaidongyuan.app.kdyorder.adapter.OrderTypesAdapter;
 import com.kaidongyuan.app.kdyorder.adapter.PaymentTypeAdapter;
+import com.kaidongyuan.app.kdyorder.bean.Party;
 import com.kaidongyuan.app.kdyorder.bean.Product;
 import com.kaidongyuan.app.kdyorder.constants.BusinessConstants;
 import com.kaidongyuan.app.kdyorder.constants.EXTRAConstants;
 import com.kaidongyuan.app.kdyorder.model.MakeOrderActivityBiz;
+import com.kaidongyuan.app.kdyorder.ui.fragment.MakeOrderFragment;
 import com.kaidongyuan.app.kdyorder.util.CheckStringEmptyUtil;
 import com.kaidongyuan.app.kdyorder.util.DensityUtil;
 import com.kaidongyuan.app.kdyorder.util.ExceptionUtil;
@@ -247,6 +252,10 @@ public class MakeOrderActivity extends BaseActivity implements View.OnClickListe
      * 处理消息的 Handler
      */
     private Handler mHandler;
+    /**
+     * 搜索客户编辑框
+     */
+    private EditText mEdittextSearch;
 
 
     @Override
@@ -307,6 +316,7 @@ public class MakeOrderActivity extends BaseActivity implements View.OnClickListe
             mRlChoiceProductdetial = null;
             mListViewChoicegiftdetial = null;
             mChoicedProductAdapter = null;
+            mEdittextSearch = null;
         } catch (Exception e) {
             ExceptionUtil.handlerException(e);
         }
@@ -406,6 +416,7 @@ public class MakeOrderActivity extends BaseActivity implements View.OnClickListe
             mChoicedProductAdapter = new ChoicedProductAdapter(this, null);
             mListViewChoicegiftdetial.setAdapter(mChoicedProductAdapter);
             setProductListViewWidth();
+            mEdittextSearch = (EditText) this.findViewById(R.id.edittext_headview_content);
         } catch (Exception e) {
             ExceptionUtil.handlerException(e);
         }
@@ -463,6 +474,7 @@ public class MakeOrderActivity extends BaseActivity implements View.OnClickListe
             mListViewBrands.setOnItemClickListener(this);
             mListViewProductType.setOnItemClickListener(this);
             this.findViewById(R.id.bt_hidproductdetail).setOnClickListener(this);
+            mEdittextSearch.addTextChangedListener(new MakeOrderActivity.InnerTextWatcher());
             mOrderProductAdapter.setInterface(new OrderProductAdapter.OrderProductAdapterInterface() {
                 @Override
                 public void addProduct(int dataIndex) {
@@ -479,7 +491,7 @@ public class MakeOrderActivity extends BaseActivity implements View.OnClickListe
                 @Override
                 public void setProductCount(int dataIndex, int giftCount) {
 
-                    Product p = mBiz.getmCurrentProductData().get(dataIndex);
+                    Product p = mBiz.getmFilterProductData().get(dataIndex);
                 if(Tools.hasBASE_RATE(p.getBASE_RATE())) {
 
                     mBiz.setProductSize(dataIndex, giftCount * (int)p.getBASE_RATE());
@@ -716,7 +728,7 @@ public class MakeOrderActivity extends BaseActivity implements View.OnClickListe
         try {
             mDrawerLayout.closeDrawers();
             mLoadingDialog.dismiss();
-            List<Product> products = mBiz.getmCurrentProductData();
+            List<Product> products = mBiz.getmFilterProductData();
             if (products.size() <= 0) {
                 ToastUtil.showToastBottom("产品数据为空!", Toast.LENGTH_SHORT);
             }
@@ -803,7 +815,7 @@ public class MakeOrderActivity extends BaseActivity implements View.OnClickListe
             mChoicedProductAdapter.notifyChange(mBiz.getChoiceProducts());
             mOrderBrandsAdapter.notifyChange(mBiz.getOrderBrands(), mBiz.getCurrentSelectedBrandIndex());
             mOrderTypesAdapter.notifyChange(mBiz.getOrderTypes(), mBiz.getCurrentSelectedOrderTypeIndex());
-            mOrderProductAdapter.notifyChange(mBiz.getmCurrentProductData(), mBiz.getChoiceProducts());
+            mOrderProductAdapter.notifyChange(mBiz.getmFilterProductData(), mBiz.getChoiceProducts());
             mTextViewCurrentOrderType.setText(String.valueOf(mBiz.getCurrentProductType()));
             mTtextViewCurrentOrderBrand.setText(String.valueOf(mBiz.getCurrentOrderBrand()));
             mTextViewChoicedProductSize.setText(String.valueOf(mBiz.getChoicedProductSize()));
@@ -950,6 +962,38 @@ public class MakeOrderActivity extends BaseActivity implements View.OnClickListe
             mHandler.sendMessageDelayed(message, DETIAL_OUT_PICE_TIME);
         } catch (Exception e) {
             ExceptionUtil.handlerException(e);
+        }
+    }
+
+    /**
+     * 内部监听编辑框变化的类
+     */
+    private class InnerTextWatcher implements TextWatcher {
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {//用户输入的文字变化开始搜索，显示结果
+            try {
+                String msg = s.toString();
+                mBiz.searchProduct(msg);//搜索客户
+                //显示搜索后的客户列表
+                List<Product> products = mBiz.getmFilterProductData();
+                mOrderProductAdapter.notifyChange(products, mBiz.getChoiceProducts());
+//                if (products.size() <= 0) {
+//                    mTextviewNodata.setVisibility(View.VISIBLE);
+//                } else {
+//                    mTextviewNodata.setVisibility(View.GONE);
+//                }
+            } catch (Exception e) {
+                ExceptionUtil.handlerException(e);
+            }
         }
     }
 }

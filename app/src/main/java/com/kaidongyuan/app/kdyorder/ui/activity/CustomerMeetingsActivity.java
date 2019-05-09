@@ -364,9 +364,9 @@ public class CustomerMeetingsActivity extends BaseActivity implements View.OnCli
                     break;
                 }
             }
-            strLine = strLine.equals("") ? customerMeetingLines.get(0).getITEM_NAME() : strLine;
+//            strLine = strLine.equals("") ? customerMeetingLines.get(0).getITEM_NAME() : strLine;
+            strLine = "全部";
             tvMeetingType.setText(strLine);
-
             if (isHasFirstPartys()) {
                 if (mBiz.reFreshCustomerMeetingDatas()) {
                     showLoadingDialog();
@@ -628,7 +628,7 @@ public class CustomerMeetingsActivity extends BaseActivity implements View.OnCli
 
         if (!isHasFirstPartys()) {
 
-            ToastUtil.showToastBottom("供应商不能为空", Toast.LENGTH_SHORT);
+            ToastUtil.showToastBottom("供货商不能为空", Toast.LENGTH_SHORT);
             return;
         }
 
@@ -647,20 +647,24 @@ public class CustomerMeetingsActivity extends BaseActivity implements View.OnCli
 
                 if (hasVisitng) {
 
-                    AlertDialog.Builder builder = new AlertDialog.Builder(CustomerMeetingsActivity.this);
-                    builder.setTitle("");
-                    builder.setMessage("上次拜访未完成，不能新建拜访");
-                    builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
+//                    AlertDialog.Builder builder = new AlertDialog.Builder(CustomerMeetingsActivity.this);
+//                    builder.setTitle("");
+//                    builder.setMessage("上次拜访未完成，不能新建拜访");
+//                    builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialogInterface, int i) {
+//
+////                            Intent intent = new Intent(CustomerMeetingsActivity.this, CustomerMeetingCreateActivity.class);
+////                            intent.putExtra("CustomerMeeting", customerM);
+////                            startActivity(intent);
+//                        }
+//                    });
+////                    builder.setNegativeButton("取消", null);
+//                    builder.show();
 
-//                            Intent intent = new Intent(CustomerMeetingsActivity.this, CustomerMeetingCreateActivity.class);
-//                            intent.putExtra("CustomerMeeting", customerM);
-//                            startActivity(intent);
-                        }
-                    });
-//                    builder.setNegativeButton("取消", null);
-                    builder.show();
+                    Intent intent = new Intent(CustomerMeetingsActivity.this, CustomerMeetingCreateActivity.class);
+                    intent.putExtra("CustomerMeeting", customerM);
+                    startActivity(intent);
                 } else {
 
                     Intent intent = new Intent(CustomerMeetingsActivity.this, CustomerMeetingCreateActivity.class);

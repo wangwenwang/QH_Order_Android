@@ -109,6 +109,36 @@
 
             </LinearLayout>
 
+
+
+            <LinearLayout
+                android:id="@+id/ll_productInventory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="0dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="库存:"
+                    android:textSize="@dimen/text_size_small"
+                    android:textColor="@color/black"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_productInventory"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0000"
+                    android:layout_marginLeft="@dimen/minefragment_block_righttextview_marginLeft"
+                    android:textSize="@dimen/text_size_normal"
+                    android:textColor="@color/red"
+                    />
+            </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/ll_promotion"
                 android:layout_width="wrap_content"
@@ -133,35 +163,6 @@
                     android:textColor="@color/black"
                     />
 
-
-                <LinearLayout
-                    android:id="@+id/ll_productInventory"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="0dp"
-                    android:paddingLeft="16dp"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    >
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="库存:"
-                        android:textSize="@dimen/text_size_small"
-                        android:textColor="@color/black"
-                        />
-
-                    <TextView
-                        android:id="@+id/tv_productInventory"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="0000"
-                        android:layout_marginLeft="@dimen/minefragment_block_righttextview_marginLeft"
-                        android:textSize="@dimen/text_size_normal"
-                        android:textColor="@color/red"
-                        />
-                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
 
@@ -212,6 +213,7 @@
                 android:id="@+id/ll_big_uom"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:paddingBottom="6dp"
                 android:gravity="center"
                 android:orientation="horizontal"

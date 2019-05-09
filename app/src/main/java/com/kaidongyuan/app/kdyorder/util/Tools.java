@@ -1,20 +1,36 @@
 package com.kaidongyuan.app.kdyorder.util;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Color;
+import android.net.Uri;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
+import android.widget.Toast;
+
+//import com.kaidongyuan.app.kdyorder.ui.activity.CustomerMeetingCreateActivity;
+//import com.kongzue.dialog.listener.OnMenuItemClickListener;
+//import com.kongzue.dialog.v2.BottomMenu;
 
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
+import java.net.URISyntaxException;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
+
+import static android.widget.Toast.LENGTH_LONG;
+//import static com.kongzue.dialog.v2.TipDialog.SHOW_TIME_SHORT;
 
 /**
  * Created by Administrator on 2019/2/11.
@@ -182,5 +198,124 @@ public class Tools {
             }
         }
         return false;
+    }
+
+
+
+    /**
+     * 跳转手机地图APP
+     *
+     * @param address 地址
+     * @param mContext  上下文
+     * @param appName   APP名字
+     *
+     * @return
+     */
+    public static void ToNavigation(final String address, final Context mContext, final String appName) {
+
+
+
+
+//        List<String> list = new ArrayList<>();
+//        list.add("菜单1");
+//        list.add("菜单2");
+//        list.add("菜单3");
+//        BottomMenu.show((AppCompatActivity) mContext, list, new OnMenuItemClickListener() {
+//            @Override
+//            public void onClick(String text, int index) {
+//                Toast.makeText(mContext,"菜单 " + text + " 被点击了",SHOW_TIME_SHORT).show();
+//            }
+//        },true);
+
+
+//        List list = new ArrayList();
+//        if (SystemUtil.isInstalled(mContext, "com.autonavi.minimap")) {
+//
+//            list.add("高德地图");
+//        }
+//        if (SystemUtil.isInstalled(mContext, "com.baidu.BaiduMap")) {
+//
+//            list.add("百度地图");
+//        }
+//
+//        PromptDialog promptDialog = new PromptDialog((Activity) CustomerMeetingCreateActivity.mContext);
+//        promptDialog.getDefaultBuilder().touchAble(true).round(3).loadingDuration(3000);
+//
+//        PromptButton cancle = new PromptButton("取消", null);
+//        cancle.setTextColor(Color.parseColor("#0076ff"));
+//        if (list.size() == 2) {
+//            promptDialog.showAlertSheet("请选择地图", true, cancle,
+//                    new PromptButton("高德地图", new PromptButtonListener() {
+//                        @Override
+//                        public void onClick(PromptButton button) {
+//
+//                            Log.d("LM", "调用高德地图");
+//                            minimap(mContext, address, appName);
+//                        }
+//                    }),
+//                    new PromptButton("百度地图", new PromptButtonListener() {
+//                        @Override
+//                        public void onClick(PromptButton button) {
+//
+//                            Log.d("LM", "调用百度地图");
+//                            BaiduMap(mContext, address);
+//                        }
+//                    })
+//            );
+//        } else if (list.size() == 1) {
+//
+//            if (list.get(0).equals("高德地图")) {
+//
+//                Log.d("LM", "调用高德地图");
+//                minimap(mContext, address, appName);
+//            } else if (list.get(0).equals("百度地图")) {
+//
+//                Log.d("LM", "调用百度地图");
+//                BaiduMap(mContext, address);
+//            }
+//        } else {
+//
+//            Toast.makeText(mContext, "未检索到本机已安装‘百度地图’或‘高德地图’App", LENGTH_LONG).show();
+//        }
+    }
+
+
+    private static void minimap(Context mContext, String address, String appName) {
+        //跳转到高德导航
+        Intent autoIntent = new Intent();
+        try {
+            autoIntent.setData(Uri
+                    .parse("androidamap://route?" +
+                            "sourceApplication=" + appName +
+                            "&slat=" + "" +
+                            "&slon=" + "" +
+                            "&dlat=" + "" +
+                            "&dlon=" + "" +
+                            "&dname=" + address +
+                            "&dev=0" +
+                            "&m=2" +
+                            "&t=0"
+                    ));
+        } catch (Exception e) {
+            Log.i("LM", "高德地图异常" + e);
+        }
+        mContext.startActivity(autoIntent);
+    }
+
+    private static void BaiduMap(Context mContext, String address) {
+
+        //跳转到百度导航
+        try {
+            Intent baiduintent = Intent.parseUri("intent://map/direction?" +
+                    "origin=" + "" +
+                    "&destination=" + address +
+                    "&mode=driving" +
+                    "&src=Name|AppName" +
+                    "#Intent;scheme=bdapp;package=com.baidu.BaiduMap;end", 0);
+            mContext.startActivity(baiduintent);
+        } catch (URISyntaxException e) {
+            Log.d("LM", "URISyntaxException : " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 }

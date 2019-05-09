@@ -413,11 +413,11 @@ public class InputInventoryActivity extends BaseActivity implements View.OnClick
             mExpandableListViewProduct = (ExpandableListView) this.findViewById(R.id.lv_product);
             if (strInputOrderType!=null&&strInputOrderType.equals("input_return")){
                 tv_outputfrom_info.setVisibility(View.INVISIBLE);
-                tv_outputto_info.setText("收货地址："+String.valueOf(mOrderAddressInformation));
+                tv_outputto_info.setText("收货方："+String.valueOf(mOrderPartyName));
                 mOutPutToPartyAddress=mOrderAddressInformation;
                 mOrderProductAdapter = new PartyInventoryProductAdapter(this, null, null,true);
             }else if (strInputOrderType!=null&&strInputOrderType.equals("input_other")){
-                tv_outputto_info.setText("收货信息："+String.valueOf(mOrderAddressInformation));
+                tv_outputto_info.setText("收货方："+String.valueOf(mOrderPartyName));
                 tv_outputfrom_info.setVisibility(View.INVISIBLE);
                 mOutPutToPartyCode="";
                 mOutPutToPartyName="其它入库客户";

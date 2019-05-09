@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:gravity="center"
-            android:text="新建拜访"
+            android:text="确认客户信息"
             android:textColor="@color/text_title_color"
             android:textSize="@dimen/title_size"
             android:textStyle="bold" />
@@ -251,43 +251,63 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="5dp">
+            android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:paddingLeft="5dp"
                 android:text="联系电话：" />
 
             <TextView
                 android:id="@+id/tv_contact_tel"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="2dp"
                 android:text=""
                 android:textColor="@color/red"
                 android:textSize="@dimen/text_size_small" />
+
+            <ImageView
+                android:id="@+id/button_call_tel"
+                android:layout_width="38dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/lm_visit_tel" />
+
+
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="5dp">
+            android:layout_height="wrap_content">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:layout_marginBottom="10dp"
+                android:paddingLeft="5dp"
                 android:text="详细地址：" />
 
             <TextView
                 android:id="@+id/tv_party_address"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_marginRight="40dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="2dp"
                 android:text=""
                 android:textColor="@color/red"
                 android:textSize="@dimen/text_size_small" />
+
+
+            <!--<ImageView-->
+                <!--android:id="@+id/button_nav"-->
+                <!--android:layout_width="38dp"-->
+                <!--android:layout_marginLeft="-40dp"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:src="@drawable/lm_visit_nav" />-->
         </LinearLayout>
     </LinearLayout>
 

@@ -169,6 +169,14 @@ public class EXTRAConstants {
      */
     public static final String OUTPUT_TOPARTYNAME="OUTPUT_TOPARTYNAME";
     /**
+     * 出库收货人
+     */
+    public static final String OUTPUT_TOPERSON="OUTPUT_TOPERSON";
+    /**
+     * 出库收货电话
+     */
+    public static final String OUTPUT_TOTEL="OUTPUT_TOTEL";
+    /**
      * 出库收货地址
      */
     public static final String OUTPUT_TOADDRESS="OUTPUT_TOADDRESS";

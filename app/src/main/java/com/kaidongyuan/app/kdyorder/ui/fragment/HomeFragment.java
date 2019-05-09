@@ -206,7 +206,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                     Intent kpiTrackIntent = new Intent(this.getActivity(), KpiTrackActivity.class);
                     startActivity(kpiTrackIntent);
                     break;
-                case R.id.percentrl_order_check:     // 跳转到 订单查询
+                case R.id.percentrl_order_check:     // 跳转到 拜访订单
                     Intent checkOrderIntent = new Intent(BroadcastConstants.JUMPTO_CHECKORDER_FRAGMENT);
                     MyApplication.getAppContext().sendBroadcast(checkOrderIntent);
                     break;
