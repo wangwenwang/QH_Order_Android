@@ -30,25 +30,8 @@ public class WelcomeActivityBiz {
      * @param mImageViewPicture 显示图片的控件
      */
     public void setImageViewBackground(ImageView mImageViewPicture) {
-        try {
-            String businessType = SharedPreferencesUtil.getValueByName(SharedPreferenceConstants.BUSSINESS_CODE,
-                    SharedPreferenceConstants.NAME, SharedPreferencesUtil.STRING);
-            //根据业务类型不同，打开app显示不同的图片
-            if (businessType.contains(BusinessConstants.TYPE_YIBAO)) {
-                mImageViewPicture.setBackgroundResource(R.drawable.bg_splash);
-            } else if (businessType.contains(BusinessConstants.TYPE_DIKUI)) {
-                mImageViewPicture.setBackgroundResource(R.drawable.bg_splash2);
-            }else if (businessType.contains(BusinessConstants.TYPE_KANGSHIFU)) {
-                mImageViewPicture.setBackgroundResource(R.drawable.bg_splash);
-            }else if (businessType.contains(BusinessConstants.TYPE_KDYMY)){
-                mImageViewPicture.setBackgroundResource(R.drawable.login_background);
-            }else {
-                mImageViewPicture.setImageResource(R.drawable.login_background);
-            }
-        } catch (Exception e) {
-            mImageViewPicture.setImageResource(R.drawable.login_background);
-            ExceptionUtil.handlerException(e);
-        }
+
+        mImageViewPicture.setImageResource(R.drawable.login_background);
     }
 }
 
