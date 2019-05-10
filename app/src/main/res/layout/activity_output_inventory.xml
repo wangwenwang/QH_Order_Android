@@ -42,7 +42,18 @@
             android:paddingLeft="@dimen/title_imageview_paddingleft"
             android:paddingRight="@dimen/title_imageview_paddingright"
             android:paddingTop="@dimen/title_imageview_paddingtop"
-            android:src="@drawable/back" />
+            android:src="@drawable/back"/>
+
+        <TextView
+            android:id="@+id/tv_title_right"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:text="跳过"
+            android:paddingRight="10dp"
+            android:gravity="center"
+            android:textColor="@color/text_title_color"
+            android:textSize="@dimen/text_size_normal"/>
     </com.zhy.android.percent.support.PercentRelativeLayout>
 
 

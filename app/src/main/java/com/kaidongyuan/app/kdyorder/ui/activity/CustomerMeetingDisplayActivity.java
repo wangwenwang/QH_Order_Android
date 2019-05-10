@@ -420,6 +420,8 @@ public class CustomerMeetingDisplayActivity extends BaseActivity implements View
         MyApplication.getInstance().finishActivity(ArrivedStoreActivity.class);
         MyApplication.getInstance().finishActivity(CustomerMeetingCheckInventoryActivity.class);
         MyApplication.getInstance().finishActivity(CustomerMeetingRecomOrderActivity.class);
+        MyApplication.getInstance().finishActivity(OutputInventoryActivity.class);
+        MyApplication.getInstance().finishActivity(OutPutOrderConfirmActivity.class);
         this.finish();
     }
 

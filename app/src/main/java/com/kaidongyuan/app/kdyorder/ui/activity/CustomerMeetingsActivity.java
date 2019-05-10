@@ -152,7 +152,6 @@ public class CustomerMeetingsActivity extends BaseActivity implements View.OnCli
     protected void onRestart() {
         super.onRestart();
         Log.d("LM", "onRestart: ");
-        mBiz.reFreshCustomerMeetingDatas();
     }
 
     @Override
@@ -166,7 +165,7 @@ public class CustomerMeetingsActivity extends BaseActivity implements View.OnCli
         super.onResume();
         Log.d("LM", "onResume: ");
 
-
+        mBiz.reFreshCustomerMeetingDatas();
     }
 
     @Override

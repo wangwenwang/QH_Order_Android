@@ -614,6 +614,14 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
+        <!--查销售单-->
+        <activity
+            android:name=".ui.activity.CustomerMeetingOrderActivity"
+            android:launchMode="standard"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+
         <!--****************************************** 百度地图配置开始 ******************************************-->
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"

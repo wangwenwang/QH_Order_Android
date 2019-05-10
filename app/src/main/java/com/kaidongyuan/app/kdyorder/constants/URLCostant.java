@@ -238,6 +238,8 @@ public class URLCostant {
     public static final String OutPutCancel=BASE_URL+"OutPutCancel";
     //1.6 获取出库列表
     public static final String GetOupputList=BASE_URL+"GetOupputList";
+    //1.6.1 获取出库列表 （GetOupputList升级版，增加了参数）
+    public static final String GetAppOutPutList=BASE_URL+"GetAppOutPutList";
     //1.7 获取出库详情
     public static final String GetOupputInfo=BASE_URL+"GetOupputInfo";
     //1.8 获取库存列表数据
@@ -299,7 +301,7 @@ public class URLCostant {
     public static final String GetVisitVividDisplay=BASE_URL+"GetVisitVividDisplay";
     // 离店
     public static final String GetVisitLeaveShop=BASE_URL+"GetVisitLeaveShop";
-    // 获取客户拜访订单
+    // 获取客户销售单
     public static final String GetVisitAppOrder=BASE_URL+"GetVisitAppOrder";
     // 获取客户拜访照片
     public static final String GetPictureByVisitIdx=BASE_URL+"GetPictureByVisitIdx";

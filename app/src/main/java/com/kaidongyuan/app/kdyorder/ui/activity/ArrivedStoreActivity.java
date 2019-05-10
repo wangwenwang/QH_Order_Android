@@ -21,6 +21,7 @@ import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.kaidongyuan.app.kdyorder.R;
 import com.kaidongyuan.app.kdyorder.adapter.GridImageAdapter;
+import com.kaidongyuan.app.kdyorder.app.MyApplication;
 import com.kaidongyuan.app.kdyorder.bean.CustomerMeeting;
 import com.kaidongyuan.app.kdyorder.model.ArrivedStoreActivityBiz;
 import com.kaidongyuan.app.kdyorder.util.BitmapUtil;
@@ -214,12 +215,19 @@ public class ArrivedStoreActivity extends BaseActivity implements View.OnClickLi
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.button_goback:
-                this.finish();
+                pop();
                 break;
             case R.id.button_submit:
                 nextOnclick();
                 break;
         }
+    }
+
+    private void pop() {
+
+        MyApplication.getInstance().finishActivity(CustomerMeetingCreateActivity.class);
+        MyApplication.getInstance().finishActivity(ArrivedStoreActivity.class);
+        this.finish();
     }
 
     private void nextOnclick() {
@@ -309,6 +317,7 @@ public class ArrivedStoreActivity extends BaseActivity implements View.OnClickLi
 
     @Override
     public void onBackPressed() {
+        pop();
         if (choicsSnackbar != null && choicsSnackbar.isShown()) {
             choicsSnackbar.dismiss();
         } else {
@@ -332,7 +341,6 @@ public class ArrivedStoreActivity extends BaseActivity implements View.OnClickLi
     public void EnterShopSuccess(String message) {
         try {
             mLoadingDialog.dismiss();
-            ToastUtil.showToastBottom(String.valueOf(message), Toast.LENGTH_SHORT);
             Intent intent = new Intent(this, CustomerMeetingCheckInventoryActivity.class);
             intent.putExtra("CustomerMeeting", customerM);
             startActivity(intent);

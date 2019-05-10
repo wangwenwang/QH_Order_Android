@@ -12,12 +12,15 @@ import com.kaidongyuan.app.kdyorder.R;
 import com.kaidongyuan.app.kdyorder.app.MyApplication;
 import com.kaidongyuan.app.kdyorder.constants.BroadcastConstants;
 import com.kaidongyuan.app.kdyorder.constants.BusinessConstants;
+import com.kaidongyuan.app.kdyorder.constants.EXTRAConstants;
 import com.kaidongyuan.app.kdyorder.ui.activity.BusinessInventoryActivity;
 import com.kaidongyuan.app.kdyorder.ui.activity.ChartCheckActivity;
 import com.kaidongyuan.app.kdyorder.ui.activity.CheckTmsOrderListActivity;
+import com.kaidongyuan.app.kdyorder.ui.activity.CustomerMeetingOrderActivity;
 import com.kaidongyuan.app.kdyorder.ui.activity.CustomerMeetingsActivity;
 import com.kaidongyuan.app.kdyorder.ui.activity.InventoryPartyListActivity;
 import com.kaidongyuan.app.kdyorder.ui.activity.KpiTrackActivity;
+import com.kaidongyuan.app.kdyorder.ui.activity.OutputOrderListActivity;
 import com.kaidongyuan.app.kdyorder.util.ExceptionUtil;
 import com.kaidongyuan.app.kdyorder.util.OrderUtil;
 import com.kaidongyuan.app.kdyorder.util.ToastUtil;
@@ -206,9 +209,12 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                     Intent kpiTrackIntent = new Intent(this.getActivity(), KpiTrackActivity.class);
                     startActivity(kpiTrackIntent);
                     break;
-                case R.id.percentrl_order_check:     // 跳转到 拜访订单
-                    Intent checkOrderIntent = new Intent(BroadcastConstants.JUMPTO_CHECKORDER_FRAGMENT);
-                    MyApplication.getAppContext().sendBroadcast(checkOrderIntent);
+                case R.id.percentrl_order_check:     // 跳转到 查销售单
+                    //出库明细
+                    Intent intent5=new Intent(this.getActivity(),CustomerMeetingOrderActivity.class);
+                    intent5.putExtra(EXTRAConstants.ORDER_PARTY_ID,"181038");
+                    intent5.putExtra(EXTRAConstants.ORDER_PARTY_ADDRESS_IDX,"184277");
+                    startActivity(intent5);
                     break;
                 case R.id.percentrl_customer_man:    // 跳转到 客户管理
                     ToastUtil.showToastBottom("维护中...", Toast.LENGTH_SHORT);

@@ -123,7 +123,33 @@ public class CustomerMeetingShowStepActivity extends BaseActivity implements Vie
         fillInfo();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d("LM", "onResume: ");;
+
+        if (customerM.getGRADE().equals("0")) {
+
+            ToastUtil.showToastBottom(String.valueOf("当前被拜访的客户为供货商，无出库单"), Toast.LENGTH_SHORT);
+        }
+        //『供货商』对『经销商』的入库单
+        else if (customerM.getGRADE().equals("1")) {
+
+            mBiz.GetVisitAppOrder_AGENT(customerM.getVISIT_IDX(), "AppOrder");
+        }
+        //『经销商』对『门店』的出库单
+        else if (customerM.getGRADE().equals("2")) {
+
+            mBiz.GetVisitAppOrder(customerM.getVISIT_IDX(), "OutPut");
+        } else {
+
+            ToastUtil.showToastBottom(String.valueOf("未知客户类型，字段GRADE"), Toast.LENGTH_SHORT);
+        }
+    }
+
     private void initData() {
+
+        Log.d("LM", "initData");
 
         customerM = (CustomerMeeting) getIntent().getParcelableExtra("CustomerMeeting");
         if (customerM != null) {
@@ -177,6 +203,7 @@ public class CustomerMeetingShowStepActivity extends BaseActivity implements Vie
                 button_leave_shop.setVisibility(View.VISIBLE);
                 button_leave_shop_space.setVisibility(View.VISIBLE);
             }
+
             // 展示订单
 //            this.mTextviewNodata = (TextView) this.findViewById(R.id.textview_nodata);
 //            mTextviewNodata.setVisibility(View.GONE);
@@ -196,14 +223,12 @@ public class CustomerMeetingShowStepActivity extends BaseActivity implements Vie
 
                 this.mAgentAdapter = new AgentOrderListAdapter(null, CustomerMeetingShowStepActivity.this);
                 mOutputOrderListView.setAdapter(mAgentAdapter);
-                mBiz.GetVisitAppOrder_AGENT(customerM.getVISIT_IDX(), "AppOrder");
             }
             //『经销商』对『门店』的出库单
             else if (customerM.getGRADE().equals("2")) {
 
                 this.mAdapter = new OutputSimpleOrderListAdapter(null, CustomerMeetingShowStepActivity.this);
                 mOutputOrderListView.setAdapter(mAdapter);
-                mBiz.GetVisitAppOrder(customerM.getVISIT_IDX(), "OutPut");
             } else {
 
                 ToastUtil.showToastBottom(String.valueOf("未知客户类型，字段GRADE"), Toast.LENGTH_SHORT);
@@ -367,6 +392,8 @@ public class CustomerMeetingShowStepActivity extends BaseActivity implements Vie
         MyApplication.getInstance().finishActivity(ArrivedStoreActivity.class);
         MyApplication.getInstance().finishActivity(CustomerMeetingCheckInventoryActivity.class);
         MyApplication.getInstance().finishActivity(CustomerMeetingRecomOrderActivity.class);
+        MyApplication.getInstance().finishActivity(OutputInventoryActivity.class);
+        MyApplication.getInstance().finishActivity(OutPutOrderConfirmActivity.class);
         MyApplication.getInstance().finishActivity(CustomerMeetingDisplayActivity.class);
         this.finish();
     }

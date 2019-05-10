@@ -5,9 +5,11 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -35,8 +37,11 @@ import com.kaidongyuan.app.kdyorder.adapter.CheckInvertoryListAdapter;
 import com.kaidongyuan.app.kdyorder.adapter.CheckInvertoryListOKAdapter;
 import com.kaidongyuan.app.kdyorder.app.MyApplication;
 import com.kaidongyuan.app.kdyorder.bean.CustomerMeeting;
+import com.kaidongyuan.app.kdyorder.bean.FatherAddress;
+import com.kaidongyuan.app.kdyorder.bean.OutPutToAddress;
 import com.kaidongyuan.app.kdyorder.bean.Product;
 import com.kaidongyuan.app.kdyorder.bean.ProductTB;
+import com.kaidongyuan.app.kdyorder.constants.EXTRAConstants;
 import com.kaidongyuan.app.kdyorder.constants.URLCostant;
 import com.kaidongyuan.app.kdyorder.interfaces.OnClickListenerStrInterface;
 import com.kaidongyuan.app.kdyorder.model.CustomerMeetingCheckInventoryActivityBiz;
@@ -344,6 +349,7 @@ public class CustomerMeetingCheckInventoryActivity extends BaseActivity implemen
                 Intent intent = new Intent(this, CustomerMeetingRecomOrderActivity.class);
                 intent.putExtra("CustomerMeeting", customerM);
                 startActivity(intent);
+                Tools.GetFatherAddress(customerM.getADDRESS_IDX(), this, 0);
             } else {
 
                 ToastUtil.showToastBottom(String.valueOf(msg), Toast.LENGTH_SHORT);
@@ -667,4 +673,58 @@ public class CustomerMeetingCheckInventoryActivity extends BaseActivity implemen
         Log.d("LM", "onItemClick: + 22");
         return false;
     }
+
+
+
+    public void GetVisitAppOrderSuccess(FatherAddress FM, int position) {
+
+        // 建议订单
+        if (FM != null) {
+            // 收货信息
+            OutPutToAddress OT = new OutPutToAddress();
+            OT.setADDRESS_INFO(customerM.getPARTY_ADDRESS());
+            OT.setCONTACT_PERSON(customerM.getCONTACTS());
+            OT.setCONTACT_TEL(customerM.getCONTACTS_TEL());
+            OT.setIDX(customerM.getADDRESS_IDX());
+            OT.setITEM_CODE(customerM.getPARTY_NO());
+            OT.setPARTY_NAME(customerM.getPARTY_NAME());
+
+            // 发货信息
+            Intent intent4 = new Intent(this, OutputInventoryActivity.class);
+            intent4.putExtra(EXTRAConstants.ORDER_PARTY_ID, FM.getIDX());
+            intent4.putExtra(EXTRAConstants.ORDER_PARTY_NO, FM.getPARTY_CODE());
+            intent4.putExtra(EXTRAConstants.ORDER_PARTY_NAME, FM.getPARTY_NAME());
+            intent4.putExtra(EXTRAConstants.INVENTORY_PARTY_CITY, FM.getPARTY_CITY());
+            intent4.putExtra(EXTRAConstants.ORDER_PARTY_ADDRESS_IDX, FM.getADDRESS_IDX());
+            intent4.putExtra(EXTRAConstants.ORDER_ADDRESS_CODE, FM.getADDRESS_CODE());
+            intent4.putExtra(EXTRAConstants.ORDER_ADDRESS_INFORMATION, FM.getADDRESS_INFO());
+            intent4.putExtra(EXTRAConstants.ORDER_ADDRESS_ContactPerson, FM.getCONTACT_PERSON());
+            intent4.putExtra(EXTRAConstants.ORDER_ADDRESS_ContactTel, FM.getCONTACT_TEL());
+            intent4.putExtra(EXTRAConstants.OUTPUT_ORDER_TYPE, "output_visit_sale");
+            intent4.putExtra("OutPutToAddress", (Parcelable) OT);
+            intent4.putExtra("CustomerMeeting", (Parcelable) customerM);
+            intent4.putExtra(EXTRAConstants.OUTPUT_VISIT_IDX, customerM.getVISIT_IDX());
+
+            startActivity(intent4);
+        } else {
+            ToastUtil.showToastBottom(String.valueOf("找不到上级"), Toast.LENGTH_SHORT);
+        }
+    }
+
+    public void GetFatherAddressError(String msg) {
+
+
+    }
+
+//    /**
+//     *键盘监听接口
+//     */
+//    OnKeyBoardHideListener onKeyBoardHideListener;
+//    public void setOnKeyBoardHideListener(OnKeyBoardHideListener onKeyBoardHideListener) {
+//        this.onKeyBoardHideListener = onKeyBoardHideListener;
+//    }
+//
+//    public interface OnKeyBoardHideListener{
+//        void onKeyHide(int keyCode, KeyEvent event);
+//    }
 }

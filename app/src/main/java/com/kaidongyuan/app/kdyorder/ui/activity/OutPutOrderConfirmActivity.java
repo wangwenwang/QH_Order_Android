@@ -16,12 +16,21 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.example.mylibrary.SlideDateTimeListener;
 import com.example.mylibrary.SlideDateTimePicker;
 import com.kaidongyuan.app.kdyorder.R;
 import com.kaidongyuan.app.kdyorder.adapter.OrderProductDetailAdapter;
 import com.kaidongyuan.app.kdyorder.adapter.OrderPromotionAdapter;
 import com.kaidongyuan.app.kdyorder.app.MyApplication;
+import com.kaidongyuan.app.kdyorder.bean.CustomerMeeting;
 import com.kaidongyuan.app.kdyorder.bean.OrderGift;
 import com.kaidongyuan.app.kdyorder.bean.Product;
 import com.kaidongyuan.app.kdyorder.bean.PromotionDetail;
@@ -29,10 +38,13 @@ import com.kaidongyuan.app.kdyorder.bean.PromotionOrder;
 import com.kaidongyuan.app.kdyorder.constants.BusinessConstants;
 import com.kaidongyuan.app.kdyorder.constants.EXTRAConstants;
 import com.kaidongyuan.app.kdyorder.constants.SharedPreferenceConstants;
+import com.kaidongyuan.app.kdyorder.constants.URLCostant;
 import com.kaidongyuan.app.kdyorder.model.OrderConfirmActivityBiz;
 import com.kaidongyuan.app.kdyorder.model.OutPutOrderConfirmActivityBiz;
 import com.kaidongyuan.app.kdyorder.util.DensityUtil;
 import com.kaidongyuan.app.kdyorder.util.ExceptionUtil;
+import com.kaidongyuan.app.kdyorder.util.HttpUtil;
+import com.kaidongyuan.app.kdyorder.util.NetworkUtil;
 import com.kaidongyuan.app.kdyorder.util.OrderUtil;
 import com.kaidongyuan.app.kdyorder.util.SharedPreferencesUtil;
 import com.kaidongyuan.app.kdyorder.util.ToastUtil;
@@ -43,7 +55,9 @@ import com.kaidongyuan.app.kdyorder.widget.loadingdialog.MyLoadingDialog;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by ${tom} on 2017/9/23.
@@ -186,6 +200,9 @@ public class OutPutOrderConfirmActivity extends BaseFragmentActivity implements 
      */
     public String VISIT_IDX;
 
+    // 拜访模型
+    CustomerMeeting customerM;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         try {
@@ -301,6 +318,10 @@ public class OutPutOrderConfirmActivity extends BaseFragmentActivity implements 
             }
             if (intent.hasExtra("VISIT_IDX")){
                 VISIT_IDX=intent.getStringExtra("VISIT_IDX");
+            }
+
+            if (intent.hasExtra("CustomerMeeting")) {
+                customerM = intent.getParcelableExtra("CustomerMeeting");
             }
 
             //所选出库产品
@@ -533,8 +554,16 @@ public class OutPutOrderConfirmActivity extends BaseFragmentActivity implements 
         try {
             mLoadingDialog.dismiss();
             ToastUtil.showToastBottom("提交订单成功！", Toast.LENGTH_SHORT);
-            MyApplication.getInstance().finishActivity(OutputInventoryActivity.class);
-            this.finish();
+
+            if (strOutputOrderType!=null&&strOutputOrderType.equals("output_visit_sale")){
+
+                nextOnclick();
+            }else {
+
+                MyApplication.getInstance().finishActivity(OutputInventoryActivity.class);
+                this.finish();
+            }
+
         } catch (Exception e) {
             ExceptionUtil.handlerException(e);
         }
@@ -724,6 +753,76 @@ public class OutPutOrderConfirmActivity extends BaseFragmentActivity implements 
             mTextViewActPrice.setText(mBiz.getActPrice());
         } catch (Exception e) {
             ExceptionUtil.handlerException(e);
+        }
+    }
+
+
+    public void nextOnclick() {
+        showLoadingDialog();
+        try {
+            StringRequest request = new StringRequest(Request.Method.POST, URLCostant.GetVisitRecommendedOrder, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    Logger.w(this.getClass() + ".RecomOrder:" + response);
+                    RecomOrderSuccess(response, customerM);
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Logger.w(this.getClass() + ".RecomOrder:" + error.toString());
+                    if (NetworkUtil.isNetworkAvailable()) {
+                        mLoadingDialog.dismiss();
+                        ToastUtil.showToastBottom(String.valueOf("请求失败!"), Toast.LENGTH_SHORT);
+                    } else {
+                        mLoadingDialog.dismiss();
+                        ToastUtil.showToastBottom(String.valueOf("请检查网络是否正常连接！"), Toast.LENGTH_SHORT);
+                    }
+                }
+            }) {
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("strVisitIdx", customerM.getVISIT_IDX());
+                    params.put("strRecommendedOrder", "");
+                    params.put("strLicense", "");
+                    return params;
+                }
+            };
+            request.setTag("fds");
+            request.setRetryPolicy(new DefaultRetryPolicy(
+                    DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+            HttpUtil.getRequestQueue().add(request);
+
+        } catch (Exception e) {
+            ExceptionUtil.handlerException(e);
+        }
+    }
+
+    /**
+     * 处理网络请求返回数据成功
+     *
+     * @param response 返回的数据
+     */
+    private void RecomOrderSuccess(String response, CustomerMeeting customerM) {
+        try {
+            JSONObject object = JSON.parseObject(response);
+            int type = object.getInteger("type");
+            String msg = object.getString("msg");
+            mLoadingDialog.dismiss();
+            if (type == 1) {
+
+                Intent intent = new Intent(this, CustomerMeetingDisplayActivity.class);
+                intent.putExtra("CustomerMeeting", customerM);
+                startActivity(intent);
+            } else {
+
+                ToastUtil.showToastBottom(String.valueOf(msg), Toast.LENGTH_SHORT);
+            }
+        } catch (Exception e) {
+            ExceptionUtil.handlerException(e);
+            ToastUtil.showToastBottom("服务器返回数据异常！", Toast.LENGTH_SHORT);
         }
     }
 }

@@ -290,7 +290,7 @@ public class OutPutOrderDetailActivity extends BaseActivity implements View.OnCl
     public void confirmOutPutOrderSuccess() {
         try {
             mLoadingDialog.dismiss();
-            ToastUtil.showToastMid("成功确认此出库单，请刷新出库单列表数据！",Toast.LENGTH_LONG);
+//            ToastUtil.showToastMid("成功确认此出库单，请刷新出库单列表数据！",Toast.LENGTH_LONG);
             this.finish();
         } catch (Exception e) {
             ExceptionUtil.handlerException(e);

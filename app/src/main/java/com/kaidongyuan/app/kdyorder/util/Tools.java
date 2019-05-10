@@ -17,6 +17,21 @@ import android.widget.Toast;
 //import com.kongzue.dialog.listener.OnMenuItemClickListener;
 //import com.kongzue.dialog.v2.BottomMenu;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.kaidongyuan.app.kdyorder.bean.FatherAddress;
+import com.kaidongyuan.app.kdyorder.constants.URLCostant;
+import com.kaidongyuan.app.kdyorder.ui.activity.CustomerMeetingCheckInventoryActivity;
+import com.kaidongyuan.app.kdyorder.ui.activity.CustomerMeetingRecomOrderActivity;
+import com.kaidongyuan.app.kdyorder.ui.activity.CustomerMetHistoryActivity;
+import com.kaidongyuan.app.kdyorder.util.logger.Logger;
+
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
 import java.net.URISyntaxException;
@@ -26,8 +41,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import static android.widget.Toast.LENGTH_LONG;
 //import static com.kongzue.dialog.v2.TipDialog.SHOW_TIME_SHORT;
@@ -316,6 +333,155 @@ public class Tools {
         } catch (URISyntaxException e) {
             Log.d("LM", "URISyntaxException : " + e.getMessage());
             e.printStackTrace();
+        }
+    }
+
+
+    public static boolean GetFatherAddress(final String strAddressIdx, final CustomerMetHistoryActivity mActivity, final int position) {
+
+        try {
+            StringRequest request = new StringRequest(Request.Method.POST, URLCostant.GetFatherAddress, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    Logger.w(this.getClass() + ".GetFatherAddress:" + response);
+                    GetFatherAddressSuccess(response, mActivity, position);
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Logger.w(this.getClass() + ".GetFatherAddress:" + error.toString());
+                    if (NetworkUtil.isNetworkAvailable()) {
+                        mActivity.GetFatherAddressError("获取上级地址失败!");
+                    } else {
+                        mActivity.GetFatherAddressError("请检查网络是否正常连接！");
+                    }
+                }
+            }) {
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("strAddressIdx", strAddressIdx);
+                    params.put("strLicense", "");
+                    return params;
+                }
+            };
+            request.setTag("fds");
+            request.setRetryPolicy(new DefaultRetryPolicy(
+                    DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+            HttpUtil.getRequestQueue().add(request);
+            return true;
+        } catch (Exception e) {
+            ExceptionUtil.handlerException(e);
+            return false;
+        }
+    }
+
+    /**
+     * 处理网络请求返回数据成功
+     *
+     * @param response 返回的数据
+     */
+    private static void GetFatherAddressSuccess(String response, CustomerMetHistoryActivity mActivity, int position) {
+        try {
+            JSONObject object = JSON.parseObject(response);
+            int type = object.getInteger("type");
+            FatherAddress fatherAddressM;
+            if (type == 1) {
+                if (object.containsKey("result")) {
+                    List<FatherAddress> fads = JSON.parseArray(object.getString("result"), FatherAddress.class);
+                    if(fads.size()>0) {
+                        fatherAddressM = fads.get(0);
+                        mActivity.GetVisitAppOrderSuccess(fatherAddressM, position);
+                    }else {
+
+                        mActivity.GetFatherAddressError("获取上级信息失败!");
+                    }
+                }
+            } else {
+                mActivity.GetFatherAddressError(object.getString("msg"));
+            }
+        } catch (Exception e) {
+            ExceptionUtil.handlerException(e);
+            mActivity.GetFatherAddressError("获取上级信息失败!");
+        }
+    }
+
+
+
+
+
+
+
+    public static boolean GetFatherAddress(final String strAddressIdx, final CustomerMeetingCheckInventoryActivity mActivity, final int position) {
+
+        try {
+            StringRequest request = new StringRequest(Request.Method.POST, URLCostant.GetFatherAddress, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    Logger.w(this.getClass() + ".GetFatherAddress:" + response);
+                    GetFatherAddressSuccess(response, mActivity, position);
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Logger.w(this.getClass() + ".GetFatherAddress:" + error.toString());
+                    if (NetworkUtil.isNetworkAvailable()) {
+                        mActivity.GetFatherAddressError("获取上级地址失败!");
+                    } else {
+                        mActivity.GetFatherAddressError("请检查网络是否正常连接！");
+                    }
+                }
+            }) {
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("strAddressIdx", strAddressIdx);
+                    params.put("strLicense", "");
+                    return params;
+                }
+            };
+            request.setTag("fds");
+            request.setRetryPolicy(new DefaultRetryPolicy(
+                    DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+            HttpUtil.getRequestQueue().add(request);
+            return true;
+        } catch (Exception e) {
+            ExceptionUtil.handlerException(e);
+            return false;
+        }
+    }
+
+    /**
+     * 处理网络请求返回数据成功
+     *
+     * @param response 返回的数据
+     */
+    private static void GetFatherAddressSuccess(String response, CustomerMeetingCheckInventoryActivity mActivity, int position) {
+        try {
+            JSONObject object = JSON.parseObject(response);
+            int type = object.getInteger("type");
+            FatherAddress fatherAddressM;
+            if (type == 1) {
+                if (object.containsKey("result")) {
+                    List<FatherAddress> fads = JSON.parseArray(object.getString("result"), FatherAddress.class);
+                    if(fads.size()>0) {
+                        fatherAddressM = fads.get(0);
+                        mActivity.GetVisitAppOrderSuccess(fatherAddressM, position);
+                    }else {
+
+                        mActivity.GetFatherAddressError("获取上级信息失败!");
+                    }
+                }
+            } else {
+                mActivity.GetFatherAddressError(object.getString("msg"));
+            }
+        } catch (Exception e) {
+            ExceptionUtil.handlerException(e);
+            mActivity.GetFatherAddressError("获取上级信息失败!");
         }
     }
 }

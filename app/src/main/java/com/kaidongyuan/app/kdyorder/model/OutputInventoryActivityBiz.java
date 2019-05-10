@@ -558,12 +558,19 @@ public class OutputInventoryActivityBiz {
     public void addProductSize(int dataIndex) {
         try {
             Product choiceProduct = mCurrentProductData.get(dataIndex);
-            int index = getChoiceProductIndexInChoicedProductList(choiceProduct);
-            if (index == -1) {
-                mChoiceProducts.add(mChoiceProducts.size(), choiceProduct);
+
+            int maxSize = (int)choiceProduct.getSTOCK_QTY();
+            if (1 <= maxSize) {
+
+                int index = getChoiceProductIndexInChoicedProductList(choiceProduct);
+                if (index == -1) {
+                    mChoiceProducts.add(mChoiceProducts.size(), choiceProduct);
+                }
+                index = getChoiceProductIndexInChoicedProductList(choiceProduct);
+                addProductSizeInChoicedProducts(index);
+            }else {
+                ToastUtil.showToastBottom("产品数量超过库存数量!", Toast.LENGTH_SHORT);
             }
-            index = getChoiceProductIndexInChoicedProductList(choiceProduct);
-            addProductSizeInChoicedProducts(index);
         } catch (Exception e) {
             ExceptionUtil.handlerException(e);
         }

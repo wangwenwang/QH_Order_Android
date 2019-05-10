@@ -80,6 +80,7 @@ public class CustomerMeetingRecomOrderActivity extends BaseActivity implements V
         mContext = this;
 
         setContentView(R.layout.activity_customer_recommend_order);
+
         initData();
         initView();
         setListener();
@@ -89,26 +90,29 @@ public class CustomerMeetingRecomOrderActivity extends BaseActivity implements V
     @Override
     protected void onResume() {
         super.onResume();
-        if (customerM.getGRADE().equals("0")) {
+        if(customerM != null) {
 
-            ToastUtil.showToastBottom(String.valueOf("当前被拜访的客户为供货商，无出库单"), Toast.LENGTH_SHORT);
-        }
-        //『供货商』对『经销商』的入库单
-        else if (customerM.getGRADE().equals("1")) {
+            if (customerM.getGRADE().equals("0")) {
 
-            this.mAgentAdapter = new AgentOrderListAdapter(null, CustomerMeetingRecomOrderActivity.this);
-            mOutputOrderListView.setAdapter(mAgentAdapter);
-            mBiz.GetVisitAppOrder_AGENT(customerM.getVISIT_IDX(), "AppOrder");
-        }
-        //『经销商』对『门店』的出库单
-        else if (customerM.getGRADE().equals("2")) {
+                ToastUtil.showToastBottom(String.valueOf("当前被拜访的客户为供货商，无出库单"), Toast.LENGTH_SHORT);
+            }
+            //『供货商』对『经销商』的入库单
+            else if (customerM.getGRADE().equals("1")) {
 
-            this.mAdapter = new OutputSimpleOrderListAdapter(null, CustomerMeetingRecomOrderActivity.this);
-            mOutputOrderListView.setAdapter(mAdapter);
-            mBiz.GetVisitAppOrder(customerM.getVISIT_IDX(), "OutPut");
-        } else {
+                this.mAgentAdapter = new AgentOrderListAdapter(null, CustomerMeetingRecomOrderActivity.this);
+                mOutputOrderListView.setAdapter(mAgentAdapter);
+                mBiz.GetVisitAppOrder_AGENT(customerM.getVISIT_IDX(), "AppOrder");
+            }
+            //『经销商』对『门店』的出库单
+            else if (customerM.getGRADE().equals("2")) {
 
-            ToastUtil.showToastBottom(String.valueOf("未知客户类型，字段GRADE"), Toast.LENGTH_SHORT);
+                this.mAdapter = new OutputSimpleOrderListAdapter(null, CustomerMeetingRecomOrderActivity.this);
+                mOutputOrderListView.setAdapter(mAdapter);
+                mBiz.GetVisitAppOrder(customerM.getVISIT_IDX(), "OutPut");
+            } else {
+
+                ToastUtil.showToastBottom(String.valueOf("未知客户类型，字段GRADE"), Toast.LENGTH_SHORT);
+            }
         }
     }
 
@@ -374,6 +378,7 @@ public class CustomerMeetingRecomOrderActivity extends BaseActivity implements V
 
     public void GetFatherAddressSuccess() {
 
+        makeOrderOnclick(null);
     }
 
     @Override

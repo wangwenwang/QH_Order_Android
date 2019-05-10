@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -27,12 +28,16 @@ import com.kaidongyuan.app.kdyorder.adapter.LineChoiceAdapter;
 import com.kaidongyuan.app.kdyorder.app.MyApplication;
 import com.kaidongyuan.app.kdyorder.bean.CustomerMeeting;
 import com.kaidongyuan.app.kdyorder.bean.CustomerMeetingLine;
+import com.kaidongyuan.app.kdyorder.bean.FatherAddress;
+import com.kaidongyuan.app.kdyorder.bean.OutPutToAddress;
+import com.kaidongyuan.app.kdyorder.constants.EXTRAConstants;
 import com.kaidongyuan.app.kdyorder.interfaces.OnClickListenerStrInterface;
 import com.kaidongyuan.app.kdyorder.model.CustomerMetHistoryActivityBiz;
 import com.kaidongyuan.app.kdyorder.util.DateUtil;
 import com.kaidongyuan.app.kdyorder.util.DensityUtil;
 import com.kaidongyuan.app.kdyorder.util.ExceptionUtil;
 import com.kaidongyuan.app.kdyorder.util.ToastUtil;
+import com.kaidongyuan.app.kdyorder.util.Tools;
 import com.kaidongyuan.app.kdyorder.widget.loadingdialog.MyLoadingDialog;
 import com.kaidongyuan.app.kdyorder.widget.xlistview.XListView;
 
@@ -371,9 +376,11 @@ public class CustomerMetHistoryActivity extends BaseActivity implements View.OnC
                 startActivity(intent);
             } else if (status.equals("检查库存")) {
 
-                Intent intent = new Intent(this, CustomerMeetingRecomOrderActivity.class);
-                intent.putExtra("CustomerMeeting", customerM);
-                startActivity(intent);
+//                Intent intent = new Intent(this, CustomerMeetingRecomOrderActivity.class);
+//                intent.putExtra("CustomerMeeting", customerM);
+//                startActivity(intent);
+
+                Tools.GetFatherAddress(customerM.getADDRESS_IDX(), this, position);
             } else if (status.equals("建议订单")) {
 
                 Intent intent = new Intent(this, CustomerMeetingDisplayActivity.class);
@@ -395,5 +402,47 @@ public class CustomerMetHistoryActivity extends BaseActivity implements View.OnC
         } catch (Exception e) {
             ExceptionUtil.handlerException(e);
         }
+    }
+
+    public void GetVisitAppOrderSuccess(FatherAddress FM, int position) {
+
+        CustomerMeeting customerM = mBiz.getCustomerMeetingList().get(position);
+
+        // 建议订单
+        if (FM != null) {
+            // 收货信息
+            OutPutToAddress OT = new OutPutToAddress();
+            OT.setADDRESS_INFO(customerM.getPARTY_ADDRESS());
+            OT.setCONTACT_PERSON(customerM.getCONTACTS());
+            OT.setCONTACT_TEL(customerM.getCONTACTS_TEL());
+            OT.setIDX(customerM.getADDRESS_IDX());
+            OT.setITEM_CODE(customerM.getPARTY_NO());
+            OT.setPARTY_NAME(customerM.getPARTY_NAME());
+
+            // 发货信息
+            Intent intent4 = new Intent(this, OutputInventoryActivity.class);
+            intent4.putExtra(EXTRAConstants.ORDER_PARTY_ID, FM.getIDX());
+            intent4.putExtra(EXTRAConstants.ORDER_PARTY_NO, FM.getPARTY_CODE());
+            intent4.putExtra(EXTRAConstants.ORDER_PARTY_NAME, FM.getPARTY_NAME());
+            intent4.putExtra(EXTRAConstants.INVENTORY_PARTY_CITY, FM.getPARTY_CITY());
+            intent4.putExtra(EXTRAConstants.ORDER_PARTY_ADDRESS_IDX, FM.getADDRESS_IDX());
+            intent4.putExtra(EXTRAConstants.ORDER_ADDRESS_CODE, FM.getADDRESS_CODE());
+            intent4.putExtra(EXTRAConstants.ORDER_ADDRESS_INFORMATION, FM.getADDRESS_INFO());
+            intent4.putExtra(EXTRAConstants.ORDER_ADDRESS_ContactPerson, FM.getCONTACT_PERSON());
+            intent4.putExtra(EXTRAConstants.ORDER_ADDRESS_ContactTel, FM.getCONTACT_TEL());
+            intent4.putExtra(EXTRAConstants.OUTPUT_ORDER_TYPE, "output_visit_sale");
+            intent4.putExtra("OutPutToAddress", (Parcelable) OT);
+            intent4.putExtra("CustomerMeeting", (Parcelable) customerM);
+            intent4.putExtra(EXTRAConstants.OUTPUT_VISIT_IDX, customerM.getVISIT_IDX());
+
+            startActivity(intent4);
+        } else {
+            ToastUtil.showToastBottom(String.valueOf("找不到上级"), Toast.LENGTH_SHORT);
+        }
+    }
+
+    public void GetFatherAddressError(String msg) {
+
+
     }
 }

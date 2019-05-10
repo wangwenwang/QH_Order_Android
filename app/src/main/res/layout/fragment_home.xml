@@ -132,7 +132,7 @@
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
                     android:background="@color/line_color"/>
-                <!--拜访订单-->
+                <!--查销售单-->
                 <com.zhy.android.percent.support.PercentRelativeLayout
                     android:id="@+id/percentrl_order_check"
                     android:layout_width="0dp"
@@ -161,7 +161,7 @@
                         app:layout_heightPercent="@string/block_textview_height"
                         android:layout_alignParentBottom="true"
                         android:gravity="center_horizontal|top"
-                        android:text="拜访订单"
+                        android:text="查销售单"
                         android:textSize="@dimen/blockTextSize"
                         android:textColor="@color/text_color_normal"
                         />

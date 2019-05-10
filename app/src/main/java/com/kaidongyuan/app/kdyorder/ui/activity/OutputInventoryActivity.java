@@ -28,20 +28,33 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.kaidongyuan.app.kdyorder.R;
 import com.kaidongyuan.app.kdyorder.adapter.ChoicedProductAdapter;
 import com.kaidongyuan.app.kdyorder.adapter.OrderBrandsAdapter;
 import com.kaidongyuan.app.kdyorder.adapter.OrderTypesAdapter;
 import com.kaidongyuan.app.kdyorder.adapter.PartyInventoryProductAdapter;
 import com.kaidongyuan.app.kdyorder.adapter.PaymentTypeAdapter;
+import com.kaidongyuan.app.kdyorder.app.MyApplication;
+import com.kaidongyuan.app.kdyorder.bean.CustomerMeeting;
 import com.kaidongyuan.app.kdyorder.bean.OutPutToAddress;
 import com.kaidongyuan.app.kdyorder.bean.Product;
 import com.kaidongyuan.app.kdyorder.constants.BusinessConstants;
 import com.kaidongyuan.app.kdyorder.constants.EXTRAConstants;
+import com.kaidongyuan.app.kdyorder.constants.URLCostant;
 import com.kaidongyuan.app.kdyorder.model.OutputInventoryActivityBiz;
 import com.kaidongyuan.app.kdyorder.util.CheckStringEmptyUtil;
 import com.kaidongyuan.app.kdyorder.util.DensityUtil;
 import com.kaidongyuan.app.kdyorder.util.ExceptionUtil;
+import com.kaidongyuan.app.kdyorder.util.HttpUtil;
+import com.kaidongyuan.app.kdyorder.util.NetworkUtil;
 import com.kaidongyuan.app.kdyorder.util.OrderUtil;
 import com.kaidongyuan.app.kdyorder.util.ToastUtil;
 import com.kaidongyuan.app.kdyorder.util.logger.Logger;
@@ -49,7 +62,9 @@ import com.kaidongyuan.app.kdyorder.widget.loadingdialog.MyLoadingDialog;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by ${tom} on 2017/9/21.
@@ -288,6 +303,12 @@ public class OutputInventoryActivity extends BaseActivity implements View.OnClic
     TextView textViewPartyAddress_receive = null;
     TextView textViewPartyAddressContact_receive=null;
 
+    // 拜访模型
+    CustomerMeeting customerM;
+
+    private TextView tvTitleView;
+    private TextView tvTitleRight;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         try {
@@ -410,6 +431,9 @@ public class OutputInventoryActivity extends BaseActivity implements View.OnClic
                     mOutPutToTel = OT.getCONTACT_TEL();
                     mOutPutToPartyAddress = OT.getADDRESS_INFO();
                 }
+                if (intent.hasExtra("CustomerMeeting")) {
+                    customerM = intent.getParcelableExtra("CustomerMeeting");
+                }
             }
             if (intent.hasExtra(EXTRAConstants.OUTPUT_VISIT_IDX)){
                 VISIT_IDX=intent.getStringExtra(EXTRAConstants.OUTPUT_VISIT_IDX);
@@ -481,9 +505,15 @@ public class OutputInventoryActivity extends BaseActivity implements View.OnClic
             mListViewChoicegiftdetial.setAdapter(mChoicedProductAdapter);
             setProductListViewWidth();
 
+            tvTitleRight = (TextView) findViewById(R.id.tv_title_right);
+            tvTitleView = (TextView) findViewById(R.id.textView_title);
+
             // 客户拜访 --> 建议订单（销售出库）
             if(strOutputOrderType.equals("output_visit_sale")) {
                 tv_outputto_info.setText("收货方：" + CheckStringEmptyUtil.checkStringIsEmptyWithNoSet(mOutPutToPartyName));
+                tvTitleView.setText("建议订单");
+            }else {
+                tvTitleRight.setVisibility(View.GONE);
             }
         } catch (Exception e) {
             ExceptionUtil.handlerException(e);
@@ -540,6 +570,7 @@ public class OutputInventoryActivity extends BaseActivity implements View.OnClic
             mListViewBrands.setOnItemClickListener(this);
             mListViewProductType.setOnItemClickListener(this);
             this.findViewById(R.id.bt_hidproductdetail).setOnClickListener(this);
+            tvTitleRight.setOnClickListener(this);
             mOrderProductAdapter.setInterface(new PartyInventoryProductAdapter.OrderProductAdapterInterface() {
                 @Override
                 public void addProduct(int dataIndex) {
@@ -618,6 +649,9 @@ public class OutputInventoryActivity extends BaseActivity implements View.OnClic
         try {
             switch (v.getId()) {
                 case R.id.button_goback://返回上一界面
+                    MyApplication.getInstance().finishActivity(CustomerMeetingCreateActivity.class);
+                    MyApplication.getInstance().finishActivity(ArrivedStoreActivity.class);
+                    MyApplication.getInstance().finishActivity(CustomerMeetingCheckInventoryActivity.class);
                     this.finish();
                     break;
                 case R.id.linearlayout_producttype://选择产品分类
@@ -642,7 +676,6 @@ public class OutputInventoryActivity extends BaseActivity implements View.OnClic
                     startActivity(promotionInformationIntent);
                     break;
                 case R.id.textview_other_informations://查看其它信息
-                    mLinearLayoutPaymentType.setVisibility(View.GONE);
                     showConfirmDialog();
                     break;
                 case R.id.iv_shopping_car://查看已选商品详情
@@ -682,6 +715,9 @@ public class OutputInventoryActivity extends BaseActivity implements View.OnClic
                     Intent intent=new Intent(this,OutputPartyListActivity.class);
                     intent.putExtra(EXTRAConstants.ORDER_PARTY_ADDRESS_IDX,mOrderAddressIdx);
                     startActivityForResult(intent,REQUESETCODE_OUTPUTPARTYLIST);
+                    break;
+                case R.id.tv_title_right:
+                    skipOnclick();
                     break;
             }
         } catch (Exception e) {
@@ -723,6 +759,7 @@ public class OutputInventoryActivity extends BaseActivity implements View.OnClic
             if (strOutputOrderType!=null){
                 intent.putExtra(EXTRAConstants.OUTPUT_ORDER_TYPE,strOutputOrderType);
             }
+            intent.putExtra("CustomerMeeting", customerM);
             startActivity(intent);
         } catch (Exception e) {
             ExceptionUtil.handlerException(e);
@@ -802,7 +839,7 @@ public class OutputInventoryActivity extends BaseActivity implements View.OnClic
             notifyDataChange();
             mExpandableListViewProduct.setSelectedGroup(0);
             if (mIsFirstTimeShow) {
-                showConfirmDialog();
+//                showConfirmDialog();
             }
         } catch (Exception e) {
             ExceptionUtil.handlerException(e);
@@ -850,9 +887,9 @@ public class OutputInventoryActivity extends BaseActivity implements View.OnClic
                 textViewPartyAddress_receive = (TextView) window.findViewById(R.id.textview_address_receive);
                 textViewPartyAddressContact_receive= (TextView) window.findViewById(R.id.textview_contact_receive);
             }
-            if (!mIsFirstTimeShow && mButtonCancelInConfirmDialog != null) {
+//            if (!mIsFirstTimeShow && mButtonCancelInConfirmDialog != null) {
                 mButtonCancelInConfirmDialog.setVisibility(View.GONE);
-            }
+//            }
             if (textViewPartyName != null) {
                 textViewPartyName.setText(String.valueOf(mOrderPartyName));
             }
@@ -886,9 +923,9 @@ public class OutputInventoryActivity extends BaseActivity implements View.OnClic
             if (mPaymentTypeAdapter != null) {
                 mPaymentTypeAdapter.notifyChange(mBiz.getPayTypes());
             }
-            if (!mIsFirstTimeShow) {
+//            if (!mIsFirstTimeShow) {
                 mConfirmCustomerInformationDialog.setCancelable(true);
-            }
+//            }
             mConfirmCustomerInformationDialog.show();
         } catch (Exception e) {
             ExceptionUtil.handlerException(e);
@@ -1082,6 +1119,75 @@ public class OutputInventoryActivity extends BaseActivity implements View.OnClic
             mHandler.sendMessageDelayed(message, DETIAL_OUT_PICE_TIME);
         } catch (Exception e) {
             ExceptionUtil.handlerException(e);
+        }
+    }
+
+    public void skipOnclick() {
+        showLoadingDialog();
+        try {
+            StringRequest request = new StringRequest(Request.Method.POST, URLCostant.GetVisitRecommendedOrder, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    Logger.w(this.getClass() + ".RecomOrder:" + response);
+                    RecomOrderSuccess(response, customerM);
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Logger.w(this.getClass() + ".RecomOrder:" + error.toString());
+                    if (NetworkUtil.isNetworkAvailable()) {
+                        mLoadingDialog.dismiss();
+                        ToastUtil.showToastBottom(String.valueOf("请求失败!"), Toast.LENGTH_SHORT);
+                    } else {
+                        mLoadingDialog.dismiss();
+                        ToastUtil.showToastBottom(String.valueOf("请检查网络是否正常连接！"), Toast.LENGTH_SHORT);
+                    }
+                }
+            }) {
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("strVisitIdx", customerM.getVISIT_IDX());
+                    params.put("strRecommendedOrder", "");
+                    params.put("strLicense", "");
+                    return params;
+                }
+            };
+            request.setTag("fds");
+            request.setRetryPolicy(new DefaultRetryPolicy(
+                    DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+            HttpUtil.getRequestQueue().add(request);
+
+        } catch (Exception e) {
+            ExceptionUtil.handlerException(e);
+        }
+    }
+
+    /**
+     * 处理网络请求返回数据成功
+     *
+     * @param response 返回的数据
+     */
+    private void RecomOrderSuccess(String response, CustomerMeeting customerM) {
+        try {
+            JSONObject object = JSON.parseObject(response);
+            int type = object.getInteger("type");
+            String msg = object.getString("msg");
+            mLoadingDialog.dismiss();
+            if (type == 1) {
+
+                Intent intent = new Intent(this, CustomerMeetingDisplayActivity.class);
+                intent.putExtra("CustomerMeeting", customerM);
+                startActivity(intent);
+            } else {
+
+                ToastUtil.showToastBottom(String.valueOf(msg), Toast.LENGTH_SHORT);
+            }
+        } catch (Exception e) {
+            ExceptionUtil.handlerException(e);
+            ToastUtil.showToastBottom("服务器返回数据异常！", Toast.LENGTH_SHORT);
         }
     }
 }
