@@ -341,6 +341,58 @@
                 android:background="@color/line_color" />
 
 
+            <com.zhy.android.percent.support.PercentLinearLayout
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_heightPercent="33%h"
+                app:layout_widthPercent="33.3%w">
+
+                <com.zhy.android.percent.support.PercentRelativeLayout
+                    android:id="@+id/percentrl_inventory_manage"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/block_pressed_background"
+                    >
+                    <ImageView
+                        android:id="@+id/imageview_inventory_manage"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        app:layout_widthPercent="@string/block_imageview_width"
+                        app:layout_heightPercent="@string/block_imageview_height"
+                        app:layout_marginTopPercent="@string/block_marginTopPercent"
+                        app:layout_marginBottomPercent="@string/block_marginBottomPercent"
+                        app:layout_marginLeftPercent="@string/block_marginLeftPercent"
+                        app:layout_marginRightPercent="@string/block_marginRightPercent"
+                        android:src="@drawable/ic_party_inventory"
+                        android:scaleType="fitXY"
+                        />
+                    <TextView
+                        android:id="@+id/textview_chart"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        app:layout_widthPercent="@string/block_textview_width"
+                        app:layout_heightPercent="@string/block_textview_height"
+                        android:layout_alignParentBottom="true"
+                        android:gravity="center_horizontal|top"
+                        android:text="库存登记"
+                        android:textSize="@dimen/blockTextSize"
+                        android:textColor="@color/text_color_normal"
+                        />
+                </com.zhy.android.percent.support.PercentRelativeLayout>
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/line_color"/>
+
+
+            </com.zhy.android.percent.support.PercentLinearLayout>
+            <View
+                android:layout_width="match_parent"
+                app:layout_widthPercent="33.34%w"
+                android:layout_height="1dp"
+                android:background="@color/line_color" />
+
         </com.zhy.android.percent.support.PercentLinearLayout>
 
     </com.zhy.android.percent.support.PercentLinearLayout>

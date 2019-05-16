@@ -96,7 +96,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             mEtUserName = null;
             mEtPassword = null;
             mBtLogin = null;
-            mBtRegister = null;
+//            mBtRegister = null;
             mBiz = null;
             mListViewBusiness = null;
             mButtonCancelLogin = null;
@@ -133,7 +133,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             mEtUserName = (EditText) this.findViewById(R.id.et_username);
             mEtPassword = (EditText) this.findViewById(R.id.et_pwd);
             mBtLogin = (Button) this.findViewById(R.id.btn_login);
-            mBtRegister= (Button) this.findViewById(R.id.btn_register);
+//            mBtRegister= (Button) this.findViewById(R.id.btn_register);
 
             //设置上次登录的用户名和密码
             mEtUserName.setText(String.valueOf(mBiz.getUserName()));
@@ -146,7 +146,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private void initListener() {
         try {
             mBtLogin.setOnClickListener(this);
-            mBtRegister.setOnClickListener(this);
+//            mBtRegister.setOnClickListener(this);
         } catch (Exception e) {
             ExceptionUtil.handlerException(e);
         }
@@ -159,10 +159,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 case R.id.btn_login:
                     login();
                     break;
-                case R.id.btn_register:
-                    Intent registterIntent = new Intent(LoginActivity.this, RegisterActivity.class);
-                    startActivity(registterIntent);
-                    break;
+//                case R.id.btn_register:
+//                    Intent registterIntent = new Intent(LoginActivity.this, RegisterActivity.class);
+//                    startActivity(registterIntent);
+//                    break;
                 case R.id.button_cancelLogin:
                     mBusinessDialog.dismiss();
                     break;
@@ -208,7 +208,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             MyApplication.isLogin = true;
             mBtLogin.setText("登录成功");
             mBtLogin.setEnabled(true);
-            mBtRegister.setEnabled(true);
+//            mBtRegister.setEnabled(true);
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(intent);
             finish();
@@ -228,7 +228,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 ToastUtil.showToastBottom(message, Toast.LENGTH_SHORT);
             }
             mBtLogin.setEnabled(true);
-            mBtRegister.setEnabled(true);
+//            mBtRegister.setEnabled(true);
             mBtLogin.setText("重新登录");
         } catch (Exception e) {
             ExceptionUtil.handlerException(e);
@@ -297,7 +297,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private void initLoginButton() {
         try {
             mBtLogin.setEnabled(true);
-            mBtRegister.setEnabled(true);
+//            mBtRegister.setEnabled(true);
             mBtLogin.setText("登录");
         } catch (Exception e) {
             ExceptionUtil.handlerException(e);

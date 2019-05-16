@@ -18,6 +18,7 @@ import com.kaidongyuan.app.kdyorder.ui.activity.ChartCheckActivity;
 import com.kaidongyuan.app.kdyorder.ui.activity.CheckTmsOrderListActivity;
 import com.kaidongyuan.app.kdyorder.ui.activity.CustomerMeetingOrderActivity;
 import com.kaidongyuan.app.kdyorder.ui.activity.CustomerMeetingsActivity;
+import com.kaidongyuan.app.kdyorder.ui.activity.InventoryManageActivity;
 import com.kaidongyuan.app.kdyorder.ui.activity.InventoryPartyListActivity;
 import com.kaidongyuan.app.kdyorder.ui.activity.KpiTrackActivity;
 import com.kaidongyuan.app.kdyorder.ui.activity.OutputOrderListActivity;
@@ -74,6 +75,10 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
      * 跳转到 客户管理
      */
     private PercentRelativeLayout mPercentrlCustomerMan;
+    /**
+     *跳转到查看库存登记表
+     */
+    private PercentRelativeLayout mPercentrlInventoryManage;
 
 
     @Nullable
@@ -111,6 +116,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
             mPercentrlPartyInventory = (PercentRelativeLayout) mParentView.findViewById(R.id.percentrl_party_inventory);
             mPercentrlOrderCheck = (PercentRelativeLayout) mParentView.findViewById(R.id.percentrl_order_check);
             mPercentrlCustomerMan = (PercentRelativeLayout) mParentView.findViewById(R.id.percentrl_customer_man);
+            mPercentrlInventoryManage= (PercentRelativeLayout) mParentView.findViewById(R.id.percentrl_inventory_manage);
 
         } catch (Exception e) {
             ExceptionUtil.handlerException(e);
@@ -163,6 +169,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
             mPercentrlKpiTrack.setOnClickListener(this);
             mPercentrlOrderCheck.setOnClickListener(this);
             mPercentrlCustomerMan.setOnClickListener(this);
+            mPercentrlInventoryManage.setOnClickListener(this);
         } catch (Exception e) {
             ExceptionUtil.handlerException(e);
         }
@@ -218,6 +225,10 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                     break;
                 case R.id.percentrl_customer_man:    // 跳转到 客户管理
                     ToastUtil.showToastBottom("维护中...", Toast.LENGTH_SHORT);
+                    break;
+                case R.id.percentrl_inventory_manage:// 跳转到 库存登记
+                    Intent inventoryManageIntent = new Intent(this.getActivity(), InventoryManageActivity.class);
+                    startActivity(inventoryManageIntent);
                     break;
                 default:
                     break;

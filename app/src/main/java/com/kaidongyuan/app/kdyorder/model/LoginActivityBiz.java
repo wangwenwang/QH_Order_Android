@@ -207,14 +207,20 @@ public class LoginActivityBiz {
     private void getBusinessListSuccess(String response) {
         try {
             JSONObject object = JSON.parseObject(response);
-            List<Business> businessList = JSON.parseArray(object.getString("result"), Business.class);
-            if (businessList.size() == 0) {
+            if(object.getString("type").equals("-2")) {
+
                 mActivity.loginError("查询业务列表失败");
-            } else if (businessList.size() == 1) {
-                writeBusinessToApplicationAndSharedPreference(businessList.get(0));
-                mActivity.loginSuccess();
-            } else {
-                mActivity.showBusinessDialog(businessList);
+            }else {
+
+                List<Business> businessList = JSON.parseArray(object.getString("result"), Business.class);
+                if (businessList.size() == 0) {
+                    mActivity.loginError("查询业务列表失败");
+                } else if (businessList.size() == 1) {
+                    writeBusinessToApplicationAndSharedPreference(businessList.get(0));
+                    mActivity.loginSuccess();
+                } else {
+                    mActivity.showBusinessDialog(businessList);
+                }
             }
         } catch (JSONException e) {
             mActivity.loginError("登录失败! ");
