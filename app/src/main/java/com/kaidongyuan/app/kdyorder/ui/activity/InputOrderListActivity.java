@@ -48,6 +48,9 @@ public class InputOrderListActivity extends BaseActivity implements View.OnClick
      * 没有数据时显示的控件，默认为不显示
      */
     private TextView mTextviewNodata;
+
+    private TextView title_view_text;
+
     /**
      * 网络请求是的 Dialog
      */
@@ -88,6 +91,9 @@ public class InputOrderListActivity extends BaseActivity implements View.OnClick
             mOutputOrderListView.setPullRefreshEnable(true);
             this.mAdapter = new InputSimpleOrderListAdapter(null, InputOrderListActivity.this);
             mOutputOrderListView.setAdapter(mAdapter);
+
+            title_view_text = (TextView) this.findViewById(R.id.title_view_text);
+            title_view_text.setText("入库明细");
         } catch (Exception e) {
             ExceptionUtil.handlerException(e);
         }
