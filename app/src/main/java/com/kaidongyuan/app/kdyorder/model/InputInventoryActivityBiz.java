@@ -354,7 +354,7 @@ public class InputInventoryActivityBiz {
                 mActivity.getProductDataSuccess();
                 return false;
             }
-            StringRequest request = new StringRequest(Request.Method.POST, URLCostant.GetOutProductList, new Response.Listener<String>() {
+            StringRequest request = new StringRequest(Request.Method.POST, URLCostant.GetInputProductListType, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
                     Logger.w(this.getClass() + "getProductsDataSuccess:" + response);
@@ -381,13 +381,12 @@ public class InputInventoryActivityBiz {
                         mTempCurrentProductType = "";
                     }
                     Map<String, String> params = new HashMap<>();
-                    params.put("Business_idx", MyApplication.getInstance().getBusiness().getBUSINESS_IDX());
-                    params.put("strPage","1");//放弃分页加载
-                    params.put("strPageCount","999");//放弃分页加载
+                    params.put("strBusinessId", MyApplication.getInstance().getBusiness().getBUSINESS_IDX());
+                    params.put("strPartyIdx", mOrderPartyId);
                     params.put("strPartyAddressIdx", mOrderAddressIdx);
-                    params.put("strLicense", "");
                     params.put("strProductType", mTempCurrentProductType);
                     params.put("strProductClass", mTempCurrrentOrderBrand);
+                    params.put("strLicense", "");
                     return params;
                 }
             };

@@ -204,6 +204,7 @@ public class OutputInventoryActivity extends BaseActivity implements View.OnClic
      * 发货方，收货方
      */
     private TextView tv_outputfrom_info,tv_outputto_info;
+    private RelativeLayout rl_outputto_info;
     /**
      * 产品分类列表
      */
@@ -466,6 +467,7 @@ public class OutputInventoryActivity extends BaseActivity implements View.OnClic
             tv_outputfrom_info= (TextView) this.findViewById(R.id.tv_outputfrom_info);
 
             tv_outputto_info= (TextView) this.findViewById(R.id.tv_outputto_info);
+            rl_outputto_info = (RelativeLayout) this.findViewById(R.id.rl_outputto_info);
             mListViewProductType = (ListView) this.findViewById(R.id.lv_types);
             mDrawerLayout = (DrawerLayout) this.findViewById(R.id.drawerlayout_products);
             mExpandableListViewProduct = (ExpandableListView) this.findViewById(R.id.lv_product);
@@ -563,7 +565,7 @@ public class OutputInventoryActivity extends BaseActivity implements View.OnClic
             mLinearLayoutBrands.setOnClickListener(this);
             mTextViewPromotions.setOnClickListener(this);
             mTextViewOtherInformations.setOnClickListener(this);
-            tv_outputto_info.setOnClickListener(this);
+            rl_outputto_info.setOnClickListener(this);
             mImageViewChoicedProduct.setOnClickListener(this);
             mTextViewCommit.setOnClickListener(this);
             mSwiprefreshLayoutProduct.setOnRefreshListener(this);
@@ -707,7 +709,7 @@ public class OutputInventoryActivity extends BaseActivity implements View.OnClic
                         mLinearLayoutPaymentType.setVisibility(View.VISIBLE);
                     }
                     break;
-                case R.id.tv_outputto_info://跳转到选择收货地址的页面
+                case R.id.rl_outputto_info://跳转到选择收货地址的页面
                     // 客户拜访 --> 建议订单（销售出库），不能更改收货信息
                     if(strOutputOrderType.equals("output_visit_sale")) {
                         return;

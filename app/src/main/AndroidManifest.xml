@@ -261,6 +261,7 @@
         <activity
             android:name=".ui.activity.InventoryPartyListActivity"
             android:configChanges="orientation|screenSize"
+            android:windowSoftInputMode="stateHidden|stateUnchanged"
             android:exported="false"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
@@ -308,6 +309,7 @@
         <activity
             android:name=".ui.activity.OutputPartyListActivity"
             android:configChanges="orientation|screenSize"
+            android:windowSoftInputMode="stateHidden|stateUnchanged"
             android:exported="false"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />

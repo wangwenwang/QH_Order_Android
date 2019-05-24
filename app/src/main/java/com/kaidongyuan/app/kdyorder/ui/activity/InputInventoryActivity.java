@@ -268,6 +268,9 @@ public class InputInventoryActivity extends BaseActivity implements View.OnClick
     private Handler mHandler;
 
     private String strInputOrderType;
+
+    private TextView tvTitleRight;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         try {
@@ -447,6 +450,10 @@ public class InputInventoryActivity extends BaseActivity implements View.OnClick
             mChoicedProductAdapter = new ChoicedProductAdapter(this, null);
             mListViewChoicegiftdetial.setAdapter(mChoicedProductAdapter);
             setProductListViewWidth();
+
+            tvTitleRight = (TextView) findViewById(R.id.tv_title_right);
+            tvTitleRight.setVisibility(View.GONE);
+
         } catch (Exception e) {
             ExceptionUtil.handlerException(e);
         }

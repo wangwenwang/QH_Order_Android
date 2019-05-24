@@ -228,8 +228,10 @@ public class URLCostant {
     /************************经销商库存进销存管理系列接口******************************/
     //1.1出库的收货人
     public static final String GetToAddressList=BASE_URL+"GetToAddressList";
-    //1.2获取产品列表
+    //1.2获取产品列表    获取出库产品列表（库存产品）
     public static final String GetOutProductList=BASE_URL+"GetOutProductList";
+    //1.2.1获取产品列表  获取出库产品列表（全部产品）
+    public static final String GetInputProductListType=BASE_URL+"GetInputProductListType";
     //1.3 保存出库单
     public static final String SaveOutput=BASE_URL+"SaveOutput";
     //1.4 确认出库单
