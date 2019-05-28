@@ -916,6 +916,7 @@ public class AddGiftActivity extends BaseActivity implements View.OnClickListene
                 promotionDetail.LINE_NO = lineNumber;
                 promotionDetail.PO_VOLUME = promotionDetail.PO_VOLUME * promotionDetail.PO_QTY;
                 promotionDetail.PO_WEIGHT = promotionDetail.PO_WEIGHT * promotionDetail.PO_QTY;
+                promotionDetail.PO_UOM = promotionDetail.PO_UOM;
                 lineNumber++;
             }
         } catch (Exception e) {

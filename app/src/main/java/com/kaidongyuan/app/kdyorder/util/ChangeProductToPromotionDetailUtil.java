@@ -37,6 +37,7 @@ public class ChangeProductToPromotionDetailUtil {
             promotionDetail.OPERATOR_IDX = Long.parseLong(MyApplication.getInstance().getUser().getIDX().trim());
             promotionDetail.LOTTABLE09 = product.getISINVENTORY();
             promotionDetail.LOTTABLE11 = product.getPRODUCT_INVENTORY();
+            promotionDetail.PO_UOM = product.getPRODUCT_UOM();
             promotionDetailList.add(promotionDetail);
         }
 
