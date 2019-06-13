@@ -319,6 +319,10 @@ public class URLCostant {
     public static final String GetTargetByUserIdx=BASE_URL+"GetTargetByUserIdx";
     // 获取拜访历史
     public static final String GetPartyVisitHistory=BASE_URL+"GetPartyVisitHistory";
+    // 根据客户id，获取订单汇总报表
+    public static final String TotalOrderStatement=BASE_URL+"TotalOrderStatement";
+    // 获取订单总计报表信息(产品明细)
+    public static final String TotalOrderDetailStatement=BASE_URL+"TotalOrderDetailStatement";
 }
 
 

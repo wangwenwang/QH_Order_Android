@@ -33,6 +33,7 @@ public class OutPutSimpleOrder {
     private String ADUT_DATE;//	审核时间
     private String EDIT_DATE;//	修改时间
     private String OPER_USER;//	操作人
+    private String CONTACT_TEl;//	客户电话
 
     public String getIDX() {
         return IDX;
@@ -264,5 +265,13 @@ public class OutPutSimpleOrder {
 
     public void setOPER_USER(String OPER_USER) {
         this.OPER_USER = OPER_USER;
+    }
+
+    public String getCONTACT_TEl() {
+        return CONTACT_TEl;
+    }
+
+    public void setCONTACT_TEl(String CONTACT_TEl) {
+        this.CONTACT_TEl = CONTACT_TEl;
     }
 }

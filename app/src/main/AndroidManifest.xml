@@ -623,6 +623,27 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
+        <!--报表中心-->
+        <activity
+            android:name=".ui.activity.ChartCenterActivity"
+            android:launchMode="standard"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <!--订单总计报表-->
+        <activity
+            android:name=".ui.activity.ChartOrderSumActivity"
+            android:launchMode="standard"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <!--订单产品分析-->
+        <activity
+            android:name=".ui.activity.ChartOrderSumItemActivity"
+            android:launchMode="standard"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
 
         <!--****************************************** 百度地图配置开始 ******************************************-->
         <meta-data

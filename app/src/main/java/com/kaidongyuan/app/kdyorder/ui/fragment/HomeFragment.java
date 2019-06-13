@@ -14,6 +14,7 @@ import com.kaidongyuan.app.kdyorder.constants.BroadcastConstants;
 import com.kaidongyuan.app.kdyorder.constants.BusinessConstants;
 import com.kaidongyuan.app.kdyorder.constants.EXTRAConstants;
 import com.kaidongyuan.app.kdyorder.ui.activity.BusinessInventoryActivity;
+import com.kaidongyuan.app.kdyorder.ui.activity.ChartCenterActivity;
 import com.kaidongyuan.app.kdyorder.ui.activity.ChartCheckActivity;
 import com.kaidongyuan.app.kdyorder.ui.activity.CheckTmsOrderListActivity;
 import com.kaidongyuan.app.kdyorder.ui.activity.CustomerMeetingOrderActivity;
@@ -60,7 +61,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
      */
     private PercentRelativeLayout mPercentrlPartyInventory;
     /**
-     * 跳转到 查看报表
+     * 跳转到 报表中心
      */
     private PercentRelativeLayout mPercentrlChart;
     /**
@@ -201,16 +202,16 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     public void onClick(View v) {
         try {
             switch (v.getId()) {
-                case R.id.percentrl_visit_customer:  // 跳转到 查看报表
+                case R.id.percentrl_visit_customer:  // 跳转到 客户拜访
                     startActivity(new Intent(this.getActivity(), CustomerMeetingsActivity.class));
                     break;
                 case R.id.percentrl_party_inventory: // 跳转到 库存管理
                     Intent inventoryPartyListIntent=new Intent(this.getActivity(),InventoryPartyListActivity.class);
                     startActivity(inventoryPartyListIntent);
                     break;
-                case R.id.percentrl_chart:           // 跳转到 查看报表
-                    Intent chartCheckIntent = new Intent(this.getActivity(), ChartCheckActivity.class);
-                    startActivity(chartCheckIntent);
+                case R.id.percentrl_chart:           // 跳转到 报表中心
+                    Intent chartCenterIntent = new Intent(this.getActivity(), ChartCenterActivity.class);
+                    startActivity(chartCenterIntent);
                     break;
                 case R.id.percentrl_kpi_track:       // 跳转到 业绩追踪
                     Intent kpiTrackIntent = new Intent(this.getActivity(), KpiTrackActivity.class);

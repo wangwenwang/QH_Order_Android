@@ -534,6 +534,7 @@ public class OutPutOrderConfirmActivity extends BaseFragmentActivity implements 
                 setViewData();
                 //设置添加赠品按钮是否可见
                 String bussinessName = SharedPreferencesUtil.getValueByName(SharedPreferenceConstants.BUSSINESS_CODE, SharedPreferenceConstants.NAME, 0);
+//                if (!(bussinessName.contains(BusinessConstants.TYPE_YIBAO)||bussinessName.contains(BusinessConstants.TYPE_DIKUI))&& BusinessConstants.IS_HAVE_GIFT.equals(mBiz.getOrder().HAVE_GIFT)) {
                 if (!(bussinessName.contains(BusinessConstants.TYPE_YIBAO)||bussinessName.contains(BusinessConstants.TYPE_DIKUI))&& BusinessConstants.IS_HAVE_GIFT.equals(mBiz.getOrder().HAVE_GIFT)) {
                     mBtAddGift.setVisibility(View.VISIBLE);
                 } else {

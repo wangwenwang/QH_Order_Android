@@ -284,7 +284,7 @@
                         app:layout_heightPercent="30%h"
                         android:layout_alignParentBottom="true"
                         android:gravity="center_horizontal|top"
-                        android:text="查看报表"
+                        android:text="报表中心"
                         android:textSize="@dimen/blockTextSize"
                         android:textColor="@color/text_color_normal"
                         />

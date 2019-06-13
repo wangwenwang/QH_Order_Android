@@ -59,6 +59,9 @@ public class OutputSimpleOrderListAdapter extends BaseAdapter {
             holder = new Holder();
             holder.tv_OUTPUT_NO = (TextView) convertView.findViewById(R.id.tv_OUTPUT_NO);
             holder.tv_PARTY_NAME = (TextView) convertView.findViewById(R.id.tv_PARTY_NAME);
+            holder.tv_CONTACT_TEl = (TextView) convertView.findViewById(R.id.tv_CONTACT_TEl);
+            holder.tv_PARTY_INFO = (TextView) convertView.findViewById(R.id.tv_PARTY_INFO);
+            holder.tv_OPER_USER = (TextView) convertView.findViewById(R.id.tv_OPER_USER);
             holder.tv_ADD_DATE = (TextView) convertView.findViewById(R.id.tv_ADD_DATE);
             holder.tv_OUTPUT_TYPE = (TextView) convertView.findViewById(R.id.tv_OUTPUT_TYPE);
             holder.tv_OUTPUT_QTY = (TextView) convertView.findViewById(R.id.tv_OUTPUT_QTY);
@@ -69,6 +72,9 @@ public class OutputSimpleOrderListAdapter extends BaseAdapter {
         }
         holder.tv_OUTPUT_NO.setText(outPutSimpleOrder.getOUTPUT_NO());
         holder.tv_PARTY_NAME.setText(outPutSimpleOrder.getPARTY_NAME());
+        holder.tv_CONTACT_TEl.setText(outPutSimpleOrder.getCONTACT_TEl());
+        holder.tv_PARTY_INFO.setText(outPutSimpleOrder.getPARTY_INFO());
+        holder.tv_OPER_USER.setText(outPutSimpleOrder.getOPER_USER());
         holder.tv_ADD_DATE.setText(outPutSimpleOrder.getADD_DATE());
         if (outPutSimpleOrder.getOUTPUT_TYPE()!=null&&outPutSimpleOrder.getOUTPUT_TYPE().equals("销售出库")){
             holder.tv_OUTPUT_TYPE.setText("销售出库");
@@ -102,7 +108,7 @@ public class OutputSimpleOrderListAdapter extends BaseAdapter {
     }
 
     private class Holder {
-        private TextView tv_OUTPUT_NO, tv_PARTY_NAME, tv_ADD_DATE, tv_OUTPUT_TYPE, tv_OUTPUT_QTY,tv_OUTPUT_WORKFLOW;
+        private TextView tv_OUTPUT_NO, tv_PARTY_NAME, tv_CONTACT_TEl, tv_PARTY_INFO, tv_OPER_USER, tv_ADD_DATE, tv_OUTPUT_TYPE, tv_OUTPUT_QTY,tv_OUTPUT_WORKFLOW;
     }
 
 }
