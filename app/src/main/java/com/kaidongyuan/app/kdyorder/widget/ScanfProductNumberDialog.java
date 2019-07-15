@@ -60,10 +60,16 @@ public class ScanfProductNumberDialog extends Dialog implements View.OnClickList
         mButtonConfirm.setOnClickListener(this);
         mEditTextInputNumber.setOnClickListener(this);
 
-        if(Tools.hasBASE_RATE(produtM.getBASE_RATE())) {
-            mEditTextInputNumberUom.setText(produtM.getPACK_UOM());
+        if(produtM != null ) {
+
+            if(Tools.hasBASE_RATE(produtM.getBASE_RATE())) {
+                mEditTextInputNumberUom.setText(produtM.getPACK_UOM());
+            }else {
+                mEditTextInputNumberUom.setText(produtM.getPRODUCT_UOM());
+            }
         }else {
-            mEditTextInputNumberUom.setText(produtM.getPRODUCT_UOM());
+
+            mEditTextInputNumberUom.setText("");
         }
     }
 
