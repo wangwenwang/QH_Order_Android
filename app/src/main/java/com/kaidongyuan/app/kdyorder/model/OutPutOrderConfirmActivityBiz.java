@@ -273,7 +273,7 @@ public class OutPutOrderConfirmActivityBiz {
                     outPutOrder.OUTPUT_DATE="";
                     outPutOrder.ADUT_MARK="";
                     outPutOrder.OUTPUT_NO="";
-                    outPutOrder.PARTY_MARK="";
+                    outPutOrder.PARTY_MARK= mOrder.CONSIGNEE_REMARK;
                     outPutOrder.INPUT_NO="";
                     String strorder=JSON.toJSONString(outPutOrder);
                     params.put("result",strorder);
