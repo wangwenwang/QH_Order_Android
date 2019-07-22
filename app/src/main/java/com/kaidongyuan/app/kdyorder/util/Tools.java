@@ -161,7 +161,13 @@ public class Tools {
         return uf;
     }
 
-    public static String twoDecimal(float f) {
+    public static String oneDecimal(double f) {
+        DecimalFormat decimalFormat = new DecimalFormat("0.0");//将double类型保留两位小数，不四舍五入
+        String uf = decimalFormat.format(f);
+        return uf;
+    }
+
+    public static String twoDecimal(double f) {
         DecimalFormat decimalFormat = new DecimalFormat("0.00");//将double类型保留两位小数，不四舍五入
         String uf = decimalFormat.format(f);
         return uf;

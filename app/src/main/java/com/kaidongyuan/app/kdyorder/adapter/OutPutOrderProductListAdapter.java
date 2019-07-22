@@ -11,6 +11,7 @@ import com.kaidongyuan.app.kdyorder.R;
 import com.kaidongyuan.app.kdyorder.bean.BusinessFeeItem;
 import com.kaidongyuan.app.kdyorder.bean.OutPutOrderProduct;
 import com.kaidongyuan.app.kdyorder.util.StringUtils;
+import com.kaidongyuan.app.kdyorder.util.Tools;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,11 +72,11 @@ public class OutPutOrderProductListAdapter extends BaseAdapter {
         }
         holder.tv_product_name.setText(mProduct.getPRODUCT_NAME());
         holder.tv_product_qty.setText(mProduct.getOUTPUT_QTY()+mProduct.getOUTPUT_UOM());
-        holder.tv_ORG_PRICE.setText(mProduct.getORG_PRICE());
-        holder.tv_OUTPUT_WEIGHT.setText(mProduct.getOUTPUT_WEIGHT()+"");
-        holder.tv_ACT_PRICE.setText(mProduct.getACT_PRICE());
-        holder.tv_OUTPUT_VOLUME.setText(mProduct.getOUTPUT_VOLUME()+"");
-        holder.tv_SUM.setText(mProduct.getSUM());
+        holder.tv_ORG_PRICE.setText(Tools.twoDecimal(mProduct.getORG_PRICE()));
+        holder.tv_OUTPUT_WEIGHT.setText(Tools.twoDecimal(mProduct.getOUTPUT_WEIGHT()));
+        holder.tv_ACT_PRICE.setText(Tools.twoDecimal(mProduct.getACT_PRICE()));
+        holder.tv_OUTPUT_VOLUME.setText(Tools.twoDecimal(mProduct.getOUTPUT_VOLUME()));
+        holder.tv_SUM.setText(Tools.twoDecimal(mProduct.getSUM()));
         return convertView;
     }
 

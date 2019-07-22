@@ -37,6 +37,7 @@ public class OutPutOrderInfo implements java.io.Serializable {
     private String OPER_USER;//	操作人
     private String CONTACT_PERSON;//	联系人
     private String CONTACT_TEL;//	联系电话
+    private String PARTY_TEL;  //   收货 联系电话
 
     public String getIDX() {
         return IDX;
@@ -278,6 +279,14 @@ public class OutPutOrderInfo implements java.io.Serializable {
         this.CONTACT_TEL = CONTACT_TEL;
     }
 
+    public String getPARTY_TEL() {
+        return PARTY_TEL;
+    }
+
+    public void setPARTY_TEL(String PARTY_TEL) {
+        this.PARTY_TEL = PARTY_TEL;
+    }
+
     @Override
     public String toString() {
         return "OutPutOrderInfo{" +
@@ -312,6 +321,7 @@ public class OutPutOrderInfo implements java.io.Serializable {
                 ", OPER_USER='" + OPER_USER + '\'' +
                 ", CONTACT_PERSON='" + CONTACT_PERSON + '\'' +
                 ", CONTACT_TEL='" + CONTACT_TEL + '\'' +
+                ", PARTY_TEL='" + PARTY_TEL + '\'' +
                 '}';
     }
 }

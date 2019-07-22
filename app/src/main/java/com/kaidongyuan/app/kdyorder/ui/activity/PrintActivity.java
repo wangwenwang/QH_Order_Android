@@ -31,6 +31,7 @@ import android.widget.Toast;
 
 import com.kaidongyuan.app.kdyorder.R;
 import com.kaidongyuan.app.kdyorder.app.MyApplication;
+import com.kaidongyuan.app.kdyorder.bean.OrderDetails;
 import com.kaidongyuan.app.kdyorder.bean.OutPutOrderProduct;
 import com.kaidongyuan.app.kdyorder.constants.EXTRAConstants;
 import com.kaidongyuan.app.kdyorder.constants.SharedPreferenceConstants;
@@ -458,12 +459,6 @@ public class PrintActivity extends BaseActivity implements View.OnClickListener 
 
             printText("回单联");
         }
-
-//        // 打印回单联
-//        if (id == R.id.btPrintReceipt) {
-//
-//            printText("回单联");
-//        }
     }
 
     /*
@@ -517,39 +512,58 @@ public class PrintActivity extends BaseActivity implements View.OnClickListener 
                                 list.add(StringUtils.strTobytes("【回单联】"));
                             } list.add(DataForSendToPrinterPos80.printAndFeedLine());
 
+                            // 供应商
+                            String supplier = "";
+                            // 客户代码
+                            String patyCode = "";
+                            // 客户名称
+                            String patyName = "";
+                            // 客户地址
+                            String patyAddress = "";
+                            // 客户电话
+                            String patyTel = "";
+                            Intent intent = getIntent();
+                            List<OutPutOrderProduct> OPGoods = null;
+                            List<OrderDetails> IPGoods = null;
+                            outPutTotalPrice = 0;
+                            try {
+                                supplier = intent.getStringExtra(EXTRAConstants.EXTRA_OUTPUT_SUPPLIER);
+                                patyCode = intent.getStringExtra(EXTRAConstants.EXTRA_OUTPUT_PARTY_CODE);
+                                patyTel = intent.getStringExtra(EXTRAConstants.EXTRA_OUTPUT_PARTY_TEL);
+                                patyName = intent.getStringExtra(EXTRAConstants.EXTRA_OUTPUT_PARTY_NAME);
+                                patyAddress = intent.getStringExtra(EXTRAConstants.EXTRA_OUTPUT_PARTY_ADDRESS);
+                                OPGoods = (List<OutPutOrderProduct>) getIntent().getSerializableExtra(EXTRAConstants.EXTRA_OUTPUT_GOODS);
+                                IPGoods = (List<OrderDetails>) getIntent().getSerializableExtra(EXTRAConstants.EXTRA_PRINT_INPUT_GOODS);
+                            } catch (Exception e) {
+                            }
+
+
                             // 头部
                             // 抬头 居中
                             list.add(DataForSendToPrinterPos80.selectAlignment(1));
-                            list.add(StringUtils.strTobytes("前海凯东源茂利达"));
+                            list.add(StringUtils.strTobytes(supplier));
                             list.add(DataForSendToPrinterPos80.printAndFeedLine());
                             list.add(DataForSendToPrinterPos80.selectAlignment(0));
                             list.add(StringUtils.strTobytes("---------------------------------------------"));
                             list.add(DataForSendToPrinterPos80.printAndFeedLine());
 
-                            // 客户代码
-                            String patyCode = "";
-                            // 客户名称
-                            String patyName = "";
-                            // 客户电话
-                            String patyTel = "";
-                            Intent intent = getIntent();
-                            List<OutPutOrderProduct> goods = null;
-                            try {
-                                patyCode = intent.getStringExtra(EXTRAConstants.EXTRA_OUTPUT_PARTY_CODE);
-                                patyTel = intent.getStringExtra(EXTRAConstants.EXTRA_OUTPUT_PARTY_TEL);
-                                patyName = intent.getStringExtra(EXTRAConstants.EXTRA_OUTPUT_PARTY_NAME);
-                                goods = (List<OutPutOrderProduct>) getIntent().getSerializableExtra(EXTRAConstants.EXTRA_OUTPUT_GOODS);
-                            } catch (Exception e) {
-                            }
+
                             list.add(DataForSendToPrinterPos80.setAbsolutePrintPosition(00, 00));
                             // 客户代码/电话/ 居左
                             String partyCode = "客户代码：" + patyCode + "   [" + patyTel + "]";
-                            // 客户名称 居左
-                            String partyName = "客户名称：" + patyName;
                             list.add(StringUtils.strTobytes(partyCode));
                             list.add(DataForSendToPrinterPos80.printAndFeedLine());
+
+                            // 客户名称 居左
+                            String partyName = "客户名称：" + patyName;
                             list.add(StringUtils.strTobytes(partyName));
                             list.add(DataForSendToPrinterPos80.printAndFeedLine());
+
+                            // 客户名称 居左
+                            String partyAddress = "客户地址：" + patyAddress;
+                            list.add(StringUtils.strTobytes(partyAddress));
+                            list.add(DataForSendToPrinterPos80.printAndFeedLine());
+
                             list.add(StringUtils.strTobytes("---------------------------------------------"));
                             list.add(DataForSendToPrinterPos80.printAndFeedLine());
                             // 商品格式说明 居左
@@ -559,29 +573,47 @@ public class PrintActivity extends BaseActivity implements View.OnClickListener 
                             list.add(DataForSendToPrinterPos80.printAndFeedLine());
                             list.add(DataForSendToPrinterPos80.selectAlignment(0));
                             // 销售出库单
-                            if (goods != null) {
+                            if (OPGoods != null) {
 
-                                for (int i = 0; i < goods.size(); i++) {
+                                for (int i = 0; i < OPGoods.size(); i++) {
 
-                                    OutPutOrderProduct op = goods.get(i);
+                                    OutPutOrderProduct op = OPGoods.get(i);
                                     String name = (i + 1) + "." + op.getPRODUCT_NAME();
+                                    // 产品名称太长，分两行
+                                    String namePadPreix = name;
+                                    String nameSuffix = "";
+
                                     // 数量占位符
                                     String qtyLoc = "abcdefgheijklnmopqrstuv";
-                                    int nameLenght = Tools.textLength(name);
+                                    int nameLenght = Tools.textLength(namePadPreix);
                                     int pad = Tools.textLength(qtyLoc) - nameLenght;
                                     if (pad > 0) {
                                         for (int j = 0; j < pad; j++) {
-                                            name = name + " ";
+                                            namePadPreix = namePadPreix + " ";
+                                        }
+                                    }
+
+                                    // 产品名称超过设置长度，自动换行
+                                    if(pad < 0) {
+                                        int padPreix = 1;
+                                        for (int j = 0; j <= name.length(); j++) {
+                                            if(padPreix > 0) {
+                                                namePadPreix = name.substring(0,j);
+                                                int namePadPreixLenght = Tools.textLength(namePadPreix);
+                                                padPreix = Tools.textLength(qtyLoc) - namePadPreixLenght;
+                                            }else {
+                                                nameSuffix = name.substring(j - 1, name.length());
+                                                break;
+                                            }
                                         }
                                     }
 
                                     // 名称
                                     list.add(DataForSendToPrinterPos80.setAbsolutePrintPosition(00, 00));
-                                    list.add(StringUtils.strTobytes(name));
+                                    list.add(StringUtils.strTobytes(namePadPreix));
 
                                     // 数量
-//                                    String qty = "   x" + Tools.oneDecimal(op.getOUTPUT_QTY()) + "[" + op.getOUTPUT_UOM() + "]";
-                                    String qty = "   x" + op.getOUTPUT_QTY() + "[" + op.getOUTPUT_UOM() + "]";
+                                    String qty = "   " + Tools.oneDecimal(op.getOUTPUT_QTY()) + "[" + op.getOUTPUT_UOM() + "]";
                                     list.add(StringUtils.strTobytes(qty));
 
                                     // 金额
@@ -590,44 +622,112 @@ public class PrintActivity extends BaseActivity implements View.OnClickListener 
                                     list.add(StringUtils.strTobytes(price));
                                     list.add(DataForSendToPrinterPos80.printAndFeedLine());
 
+                                    if(pad < 0) {
+                                        // 名称(第二行)
+                                        list.add(DataForSendToPrinterPos80.setAbsolutePrintPosition(25, 00));
+                                        list.add(StringUtils.strTobytes(nameSuffix));
+                                        list.add(DataForSendToPrinterPos80.printAndFeedLine());
+                                    }
+
                                     // 总金额
                                     outPutTotalPrice += ((Tools.convertToFloat(op.getORG_PRICE(), 0) - Tools.convertToFloat(op.getMJ_PRICE(), 0)) * op.getOUTPUT_QTY());
                                     Log.d("LM", "processDataBeforeSend: ");
                                 }
-                                String totalQTY = "";
-                                float totalPrice = outPutTotalPrice;
-                                String orderNO = "";
+                            }else if(IPGoods != null) {
 
-                                try {
-                                    totalQTY = intent.getStringExtra(EXTRAConstants.EXTRA_OUTPUT_GOODS_QTY);
-                                    orderNO = intent.getStringExtra(EXTRAConstants.EXTRA_OUTPUT_NO);
-                                } catch (Exception e) {
-                                }
-                                // 尾部
-                                // 总数量、总金额
-                                list.add(DataForSendToPrinterPos80.selectAlignment(0));
-                                list.add(StringUtils.strTobytes("---------------------------------------------"));
-                                list.add(DataForSendToPrinterPos80.printAndFeedLine());
-                                String total = "总数量：" + Tools.oneDecimal(totalQTY) + "     总金额：" + Tools.twoDecimal(totalPrice);
-                                list.add(StringUtils.strTobytes(total));
-                                list.add(DataForSendToPrinterPos80.printAndFeedLine());
+                                for (int i = 0; i < IPGoods.size(); i++) {
 
-                                // 打印时间、开单人、帐号
-                                String userName = MyApplication.userName;
-                                String time = Tools.getCurrDate() + "  [" + MyApplication.getInstance().getUser().getUSER_NAME() + "  " + userName + "]";
-                                list.add(StringUtils.strTobytes(time));
-                                list.add(DataForSendToPrinterPos80.printAndFeedLine());
+                                    OrderDetails ip = IPGoods.get(i);
+                                    String name = (i + 1) + "." + ip.getPRODUCT_NAME();
+                                    // 产品名称太长，分两行
+                                    String namePadPreix = name;
+                                    String nameSuffix = "";
 
-                                // 订单号
-                                String ordNo = "订单号：" + orderNO;
-                                list.add(StringUtils.strTobytes(ordNo));
-                                list.add(DataForSendToPrinterPos80.printAndFeedLine());
+                                    // 数量占位符
+                                    String qtyLoc = "abcdefgheijklnmopqrstuv";
+                                    int nameLenght = Tools.textLength(namePadPreix);
+                                    int pad = Tools.textLength(qtyLoc) - nameLenght;
+                                    if (pad > 0) {
+                                        for (int j = 0; j < pad; j++) {
+                                            namePadPreix = namePadPreix + " ";
+                                        }
+                                    }
 
-                                if (CUSTOM_OR_RECEIPT.equals("回单联")) {
+                                    // 产品名称超过设置长度，自动换行
+                                    if(pad < 0) {
+                                        int padPreix = 1;
+                                        for (int j = 0; j <= name.length(); j++) {
+                                            if(padPreix > 0) {
+                                                namePadPreix = name.substring(0,j);
+                                                int namePadPreixLenght = Tools.textLength(namePadPreix);
+                                                padPreix = Tools.textLength(qtyLoc) - namePadPreixLenght;
+                                            }else {
+                                                nameSuffix = name.substring(j - 1, name.length());
+                                                break;
+                                            }
+                                        }
+                                    }
+
+                                    // 名称
+                                    list.add(DataForSendToPrinterPos80.setAbsolutePrintPosition(00, 00));
+                                    list.add(StringUtils.strTobytes(namePadPreix));
+
+                                    // 数量
+                                    String qty = "   " + Tools.oneDecimal(ip.getORDER_QTY()) + "[" + ip.getORDER_UOM() + "]";
+                                    list.add(StringUtils.strTobytes(qty));
+
+                                    // 金额
+                                    String price = "￥" + Tools.twoDecimal(ip.getACT_PRICE());
+                                    list.add(DataForSendToPrinterPos80.setAbsolutePrintPosition(200, 01));
+                                    list.add(StringUtils.strTobytes(price));
                                     list.add(DataForSendToPrinterPos80.printAndFeedLine());
-                                    list.add(StringUtils.strTobytes("客户签名："));
-                                    list.add(DataForSendToPrinterPos80.printAndFeedLine());
+
+                                    if(pad < 0) {
+                                        // 名称(第二行)
+                                        list.add(DataForSendToPrinterPos80.setAbsolutePrintPosition(25, 00));
+                                        list.add(StringUtils.strTobytes(nameSuffix));
+                                        list.add(DataForSendToPrinterPos80.printAndFeedLine());
+                                    }
+
+                                    // 总金额
+                                    outPutTotalPrice += (ip.getACT_PRICE() * ip.getORDER_QTY());
+                                    Log.d("LM", "processDataBeforeSend: ");
                                 }
+                            }
+
+                            // 尾部
+                            // 总数量、总金额
+                            String totalQTY = "";
+                            float totalPrice = outPutTotalPrice;
+                            String orderNO = "";
+
+                            try {
+                                totalQTY = intent.getStringExtra(EXTRAConstants.EXTRA_OUTPUT_GOODS_QTY);
+                                orderNO = intent.getStringExtra(EXTRAConstants.EXTRA_OUTPUT_NO);
+                            } catch (Exception e) {
+                            }
+                            list.add(DataForSendToPrinterPos80.selectAlignment(0));
+                            list.add(StringUtils.strTobytes("---------------------------------------------"));
+                            list.add(DataForSendToPrinterPos80.printAndFeedLine());
+                            String total = "总数量：" + Tools.oneDecimal(totalQTY) + "     总金额：" + Tools.twoDecimal(totalPrice);
+                            list.add(StringUtils.strTobytes(total));
+                            list.add(DataForSendToPrinterPos80.printAndFeedLine());
+
+                            // 打印时间、开单人、帐号
+                            String userName = MyApplication.userName;
+                            String time = Tools.getCurrDate() + "  [" + MyApplication.getInstance().getUser().getUSER_NAME() + "  " + userName + "]";
+                            list.add(StringUtils.strTobytes(time));
+                            list.add(DataForSendToPrinterPos80.printAndFeedLine());
+
+                            // 订单号
+                            String ordNo = "订单号：" + orderNO;
+                            list.add(StringUtils.strTobytes(ordNo));
+                            list.add(DataForSendToPrinterPos80.printAndFeedLine());
+
+                            if (CUSTOM_OR_RECEIPT.equals("回单联")) {
+                                list.add(DataForSendToPrinterPos80.printAndFeedLine());
+                                list.add(StringUtils.strTobytes("客户签名："));
+                                list.add(DataForSendToPrinterPos80.printAndFeedLine());
                             }
                             return list;
                         }

@@ -59,7 +59,7 @@ public class OutPutOrderDetailActivity extends BaseActivity implements View.OnCl
      */
     private MyLoadingDialog mLoadingDialog;
 
-// 打印
+    // 打印
     private TextView tv_Print;
 
 
@@ -257,9 +257,11 @@ public class OutPutOrderDetailActivity extends BaseActivity implements View.OnCl
                 break;
             case R.id.tv_print:
                 Intent printIntent = new Intent(OutPutOrderDetailActivity.this, PrintActivity.class);
+                printIntent.putExtra(EXTRAConstants.EXTRA_OUTPUT_SUPPLIER, mBiz.getInfo().getADDRESS_NAME());
                 printIntent.putExtra(EXTRAConstants.EXTRA_OUTPUT_PARTY_CODE, mBiz.getInfo().getPARTY_CODE());
                 printIntent.putExtra(EXTRAConstants.EXTRA_OUTPUT_PARTY_NAME, mBiz.getInfo().getPARTY_NAME());
-                printIntent.putExtra(EXTRAConstants.EXTRA_OUTPUT_PARTY_TEL, mBiz.getInfo().getCONTACT_TEL());
+                printIntent.putExtra(EXTRAConstants.EXTRA_OUTPUT_PARTY_ADDRESS, mBiz.getInfo().getPARTY_INFO());
+                printIntent.putExtra(EXTRAConstants.EXTRA_OUTPUT_PARTY_TEL, mBiz.getInfo().getPARTY_TEL());
                 printIntent.putExtra(EXTRAConstants.EXTRA_OUTPUT_GOODS_QTY, mBiz.getInfo().getOUTPUT_QTY());
                 printIntent.putExtra(EXTRAConstants.EXTRA_OUTPUT_NO, mBiz.getInfo().getOUTPUT_NO());
                 printIntent.putExtra(EXTRAConstants.EXTRA_OUTPUT_GOODS, (Serializable) mBiz.getList());

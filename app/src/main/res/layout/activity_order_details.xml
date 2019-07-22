@@ -34,6 +34,18 @@
             android:textSize="@dimen/title_size"
             android:textStyle="bold" />
 
+        <TextView
+            android:id="@+id/tv_print"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:gravity="center"
+            android:layout_marginRight="10dp"
+            android:text="打印"
+            android:textColor="@color/text_title_color"
+            android:textSize="@dimen/title_size"
+            android:textStyle="bold" />
+
         <ImageView
             android:id="@+id/button_goback"
             android:layout_width="38dp"

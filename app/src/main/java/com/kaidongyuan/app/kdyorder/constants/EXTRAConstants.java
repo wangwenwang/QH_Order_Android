@@ -209,6 +209,11 @@ public class EXTRAConstants {
     public static final String EXTRA_VISIT_IDX = "EXTRA_VISIT_IDX";
 
     /**
+     * 从出库单详细 跳转到 打印  供货商
+     */
+    public static final String EXTRA_OUTPUT_SUPPLIER = "EXTRA_OUTPUT_SUPPLIER";
+
+    /**
      * 从出库单详细 跳转到 打印  客户代码
      */
     public static final String EXTRA_OUTPUT_PARTY_CODE = "EXTRA_OUTPUT_PARTY_CODE";
@@ -217,6 +222,11 @@ public class EXTRAConstants {
      * 从出库单详细 跳转到 打印  客户名称
      */
     public static final String EXTRA_OUTPUT_PARTY_NAME = "EXTRA_OUTPUT_PARTY_NAME";
+
+    /**
+     * 从出库单详细 跳转到 打印  客户地址
+     */
+    public static final String EXTRA_OUTPUT_PARTY_ADDRESS = "EXTRA_OUTPUT_PARTY_ADDRESS";
 
     /**
      * 从出库单详细 跳转到 打印  客户电话
@@ -237,6 +247,11 @@ public class EXTRAConstants {
      * 从出库单详细 跳转到 打印  商品数组
      */
     public static final String EXTRA_OUTPUT_GOODS = "EXTRA_OUTPUT_GOODS";
+
+    /**
+     * 从出库单详细 跳转到 打印  采购订单 商品数组
+     */
+    public static final String EXTRA_PRINT_INPUT_GOODS = "EXTRA_PRINT_INPUT_GOODS";
 
 }
 

@@ -46,6 +46,8 @@ public class Order implements java.io.Serializable {
     private String MJ_REMARK;
 
     private String DRIVER_PAY;
+    private String ORD_TO_CTEL;
+    private String ORD_TO_CODE;
 
     private List<OrderDetails> OrderDetails;
     private List<StateTack> StateTack;
@@ -352,6 +354,22 @@ public class Order implements java.io.Serializable {
 
     public void setDRIVER_PAY(String DRIVER_PAY) {
         this.DRIVER_PAY = DRIVER_PAY;
+    }
+
+    public String getORD_TO_CTEL() {
+        return ORD_TO_CTEL;
+    }
+
+    public void setORD_TO_CTEL(String ORD_TO_CTEL) {
+        this.ORD_TO_CTEL = ORD_TO_CTEL;
+    }
+
+    public String getORD_TO_CODE() {
+        return ORD_TO_CODE;
+    }
+
+    public void setORD_TO_CODE(String ORD_TO_CODE) {
+        this.ORD_TO_CODE = ORD_TO_CODE;
     }
 
     public List<OrderDetails> getOrderDetails() {

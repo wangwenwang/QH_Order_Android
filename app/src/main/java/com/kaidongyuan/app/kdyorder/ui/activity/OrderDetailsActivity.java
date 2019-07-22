@@ -3,6 +3,7 @@ package com.kaidongyuan.app.kdyorder.ui.activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -30,6 +31,7 @@ import com.kaidongyuan.app.kdyorder.util.ToastUtil;
 import com.kaidongyuan.app.kdyorder.widget.MyListView;
 import com.kaidongyuan.app.kdyorder.widget.loadingdialog.MyLoadingDialog;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -144,6 +146,10 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
     private MyLoadingDialog mLoadingDialog;
     private String orderId;
 
+
+    // 打印
+    private TextView tv_Print;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         try {
@@ -242,6 +248,7 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
             this.mListViewPromotion = (MyListView) this.findViewById(R.id.lv_promotion);
             mPromotionApapter = new OrderDetailsAdapter(this, null);
             mListViewPromotion.setAdapter(mPromotionApapter);
+            this.tv_Print = (TextView) this.findViewById(R.id.tv_print);
         } catch (Exception e) {
             ExceptionUtil.handlerException(e);
         }
@@ -252,6 +259,7 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
             mImageViewGoBack.setOnClickListener(this);
             mButtonCheckOrderInformation.setOnClickListener(this);
             mButtonCancelOrder.setOnClickListener(this);
+            tv_Print.setOnClickListener(this);
         } catch (Exception e) {
             ExceptionUtil.handlerException(e);
         }
@@ -297,6 +305,20 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
                     }catch (Exception ex){
                         ExceptionUtil.handlerException(ex);
                     }
+                    break;
+                case R.id.tv_print:
+                    Intent printIntent = new Intent(OrderDetailsActivity.this, PrintActivity.class);
+                    printIntent.putExtra(EXTRAConstants.EXTRA_OUTPUT_SUPPLIER, mBiz.getOrderDetails().getORD_FROM_NAME());
+                    printIntent.putExtra(EXTRAConstants.EXTRA_OUTPUT_PARTY_CODE, mBiz.getOrderDetails().getORD_TO_CODE());
+                    printIntent.putExtra(EXTRAConstants.EXTRA_OUTPUT_PARTY_TEL, mBiz.getOrderDetails().getORD_TO_CTEL());
+                    printIntent.putExtra(EXTRAConstants.EXTRA_OUTPUT_PARTY_NAME, mBiz.getOrderDetails().getORD_TO_NAME());
+                    printIntent.putExtra(EXTRAConstants.EXTRA_OUTPUT_PARTY_ADDRESS, mBiz.getOrderDetails().getORD_TO_ADDRESS());
+                    printIntent.putExtra(EXTRAConstants.EXTRA_OUTPUT_GOODS_QTY, mBiz.getOrderDetails().getORD_ISSUE_QTY());
+                    printIntent.putExtra(EXTRAConstants.EXTRA_OUTPUT_NO, mBiz.getOrderDetails().getORD_NO());
+                    printIntent.putExtra(EXTRAConstants.EXTRA_PRINT_INPUT_GOODS, (Serializable) mBiz.getOrderDetails().getOrderDetails());
+                    startActivity(printIntent);
+
+                    Log.d("LM", "onClick: ");
                     break;
             }
         } catch (Exception e) {
