@@ -241,6 +241,30 @@
                             android:textColor="@color/red"
                             android:textSize="@dimen/text_size_normal" />
                     </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:singleLine="true"
+                            android:text="　　备注:"
+                            android:textSize="@dimen/text_size_small"
+                            android:textColor="@color/black" />
+
+                        <TextView
+                            android:id="@+id/tv_PARTY_MARK"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/minefragment_block_righttextview_marginLeft"
+                            android:background="@null"
+                            android:text="@string/no_set"
+                            android:textColor="@color/red"
+                            android:textSize="@dimen/text_size_normal" />
+                    </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
             <View

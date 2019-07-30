@@ -46,7 +46,7 @@ public class OutPutOrderDetailActivity extends BaseActivity implements View.OnCl
      * 账单信息
      */
     private TextView tv_OUTPUT_NO,tv_ADD_DATE,tv_ADDRESS_NAME,tv_ADDRESS_INFO,tv_PARTY_NAME,
-            tv_PARTY_INFO,textview_nodata;
+            tv_PARTY_INFO,tv_PARTY_MARK,textview_nodata;
     private ListView lv_outputorder_productlist;
 
     private Button bt_cancel,bt_confirm;
@@ -106,6 +106,7 @@ public class OutPutOrderDetailActivity extends BaseActivity implements View.OnCl
             this.tv_ADDRESS_INFO = (TextView) this.findViewById(R.id.tv_ADDRESS_INFO);
             this.tv_PARTY_NAME = (TextView) this.findViewById(R.id.tv_PARTY_NAME);
             this.tv_PARTY_INFO = (TextView) this.findViewById(R.id.tv_PARTY_INFO);
+            this.tv_PARTY_MARK = (TextView) this.findViewById(R.id.tv_PARTY_MARK);
             this.textview_nodata= (TextView) this.findViewById(R.id.textview_nodata);
             this.lv_outputorder_productlist= (ListView) this.findViewById(R.id.lv_outputorder_productlist);
             mAdapter=new OutPutOrderProductListAdapter(null,OutPutOrderDetailActivity.this);
@@ -198,6 +199,7 @@ public class OutPutOrderDetailActivity extends BaseActivity implements View.OnCl
             tv_ADDRESS_INFO.setText(minfo.getADDRESS_INFO());
             tv_PARTY_NAME.setText(minfo.getPARTY_NAME());
             tv_PARTY_INFO.setText(minfo.getPARTY_INFO());
+            tv_PARTY_MARK.setText(minfo.getPARTY_MARK());
             mAdapter.setData(mList);
             if (minfo.getOUTPUT_WORKFLOW()!=null&&minfo.getOUTPUT_WORKFLOW().equals("新建")
                     &&minfo.getOUTPUT_STATE()!=null&&minfo.getOUTPUT_STATE().equals("OPEN")){
